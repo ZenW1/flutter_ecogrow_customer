@@ -164,6 +164,12 @@ To use the latest translations changes, you will need to generate them:
 flutter gen-l10n --arb-dir="lib/l10n/arb"
 ```
 
+2. Import the generated file in your project:
+
+```flutter pub run build_runner build --delete-conflicting-outputs
+
+
+
 Alternatively, run `flutter run` and code generation will take place automatically.
 
 [coverage_badge]: coverage_badge.svg

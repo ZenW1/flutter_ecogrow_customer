@@ -7,21 +7,83 @@ environment:
   sdk: "^3.3.0"
 
 dependencies:
-  bloc: ^8.1.3
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.4
   flutter_localizations:
     sdk: flutter
-  intl: ^0.18.1
+
+  intl: any
+  cupertino_icons: ^1.0.6
+
+  #state management
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+
+  #imag
+  image_cropper: ^5.0.1
+  image_picker: ^1.0.7
+  flutter_svg: ^2.0.10+1
+
+  #utils
+  shared_preferences: ^2.2.2
+  firebase_core: ^2.32.0
+  firebase_analytics: ^10.9.0
+  sizer: ^2.0.15
+  dio: ^5.4.2+1
+
+  flutter_secure_storage: ^9.0.0
+  go_router: ^13.2.2
+  fluttertoast: ^8.2.4
+  loader_overlay: ^4.0.0
+  loading_indicator: ^3.1.1
+
+
+  #network
+  http_client :
+    path: package/http_client
+
+  #local_service
+  hive: ^2.2.3
+  pinput: ^4.0.0
+  cached_network_image: ^3.3.1
+  firebase_auth: ^4.20.0
+  firebase_crashlytics: ^3.5.7
+
 
 dev_dependencies:
-  bloc_test: ^9.1.6
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.3
   very_good_analysis: ^5.1.0
+  bloc_test: ^9.1.7
+  build_runner: ^2.4.9
+  flutter_gen_runner:
+
 
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/images/
+    - assets/images/splash/
+    - assets/svg/
+    - assets/fonts/
+
+  fonts:
+    - family: Kantumruy Pro
+      fonts:
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-Light.ttf
+          weight: 300
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/kantumruy_pro/KantumruyPro-Bold.ttf
+          weight: 700
