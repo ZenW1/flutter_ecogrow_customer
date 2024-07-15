@@ -1,23 +1,26 @@
 part of 'main_cubit.dart';
 
-class MainState {
-  final int selectedIndex;
+enum MainState {
+  home,
+  category,
+  cart,
+  order,
+  profile,
+}
 
-  const MainState({this.selectedIndex = 0});
-
-  MainState copyWith({int? selectedIndex}) {
-    return MainState(
-      selectedIndex: selectedIndex ?? this.selectedIndex,
-    );
+extension MainStateExtension on MainState {
+  int get tabIndex {
+    switch (this) {
+      case MainState.home:
+        return 0;
+      case MainState.category:
+        return 1;
+      case MainState.cart:
+        return 2;
+      case MainState.order:
+        return 3;
+      case MainState.profile:
+        return 4;
+    }
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is MainState && other.selectedIndex == selectedIndex;
-  }
-
-  @override
-  int get hashCode => selectedIndex.hashCode;
 }

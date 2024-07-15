@@ -4,16 +4,13 @@ import 'package:equatable/equatable.dart';
 part 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
-  MainCubit() : super(const MainState());
+  MainCubit() : super(MainState.home);
 
-  int get selectedIndex => state.selectedIndex;
-  bool get isHomeSelected => state.selectedIndex == 0;
+  int get selectedIndex => state.tabIndex;
 
-  void selectIndex(int index) {
-    emit(state.copyWith(selectedIndex: index));
-  }
+
 
   void setTabIndex(int index) {
-    emit(state.copyWith(selectedIndex: index));
+    emit(MainState.values[index]);
   }
 }

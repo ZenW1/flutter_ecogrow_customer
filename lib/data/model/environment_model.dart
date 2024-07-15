@@ -28,7 +28,8 @@ class EnvironmentModel extends Equatable {
         apiVersion: apiVersion,
         baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
         baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
-        color: color ?? Colors.green);
+        color: color ?? Colors.green,
+    );
   }
 
   // staging
@@ -45,7 +46,8 @@ class EnvironmentModel extends Equatable {
         apiVersion: apiVersion,
         baseUrl: baseUrl ?? 'http://staging.api.cambizexpress.camsolutiondemo.com/$apiVersion',
         baseUrlImage: baseUrlImage ?? 'http://staging.api.cambizexpress.camsolutiondemo.com/',
-        color: color ?? Colors.orange);
+        color: color ?? Colors.orange,
+    );
   }
 
   // production
@@ -62,7 +64,8 @@ class EnvironmentModel extends Equatable {
         apiVersion: apiVersion,
         baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
         baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
-        color: color);
+        color: color,
+    );
   }
 
   @override

@@ -33,7 +33,7 @@ class MainView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: IndexedStack(
-            index: context.read<MainCubit>().state.selectedIndex,
+            index: context.read<MainCubit>().state.tabIndex,
             children: const [
               HomePage(),
               CategoryPage(),
@@ -50,7 +50,7 @@ class MainView extends StatelessWidget {
               bottomNavigationBarItem(icon: 'order', label: 'Order'),
               bottomNavigationBarItem(icon: 'profile', label: 'Profile'),
             ],
-            currentIndex: context.read<MainCubit>().state.selectedIndex,
+            currentIndex: context.read<MainCubit>().state.tabIndex,
             type: BottomNavigationBarType.shifting,
             useLegacyColorScheme: false,
             selectedItemColor: AppColors.primary,

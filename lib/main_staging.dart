@@ -9,7 +9,7 @@ import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
 import 'package:http_client/http_client.dart';
 
 Future<void> main() async {
-  await bootstrap((sharedPreferences) {
+  await bootstrap((sharedPreferences) async {
       final environment = EnvironmentModel.production();
       final dioHttp = DioHttpClient(dio: Dio(), baseUrl: '');
 
@@ -17,6 +17,6 @@ Future<void> main() async {
         environment: environment,
         dioHttpClient: dioHttp,
       );
-    } as FutureOr<Widget> Function(),
+    },
   );
 }
