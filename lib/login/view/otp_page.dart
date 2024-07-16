@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../gen/assets.gen.dart';
 
 class OTPPage extends StatelessWidget {
   const OTPPage({super.key});
@@ -53,8 +52,8 @@ class OTPPage extends StatelessWidget {
                       const SizedBox(
                         height: 55,
                       ),
-                       const Center(
-                        child: CustomPinPutWidget(),
+                        Center(
+                        child: CustomPinPutWidget(controller: TextEditingController() ,),
                       ),
                       const SizedBox(
                         height: 16,

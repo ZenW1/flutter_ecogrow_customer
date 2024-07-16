@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
+import 'package:flutter_ecogrow_customer/category/view/category_item_widget.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/custom_show_product_bottom_widget.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/product_vertical_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
-
-import '../../category/view/category_item_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -31,15 +31,13 @@ class HomeView extends StatelessWidget {
     // imageurl fron internet
     ProductModel(
       name: 'ONION',
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIxB4TqKd66zyoFXx9QiHPP_bsfzq6xLPHA&s',
+      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIxB4TqKd66zyoFXx9QiHPP_bsfzq6xLPHA&s',
       condition: 'Fresh',
       price: '1.5',
     ),
     ProductModel(
       name: 'POTATO',
-      imageUrl:
-          'https://m.media-amazon.com/images/I/313dtY-LOEL._AC_UF1000,1000_QL80_.jpg',
+      imageUrl: 'https://m.media-amazon.com/images/I/313dtY-LOEL._AC_UF1000,1000_QL80_.jpg',
       condition: 'Fresh',
       price: '1.5',
     ),
@@ -52,15 +50,13 @@ class HomeView extends StatelessWidget {
     ),
     ProductModel(
       name: 'CUCUMBER',
-      imageUrl:
-          'https://www.fervalle.com/wp-content/uploads/2022/07/580b57fcd9996e24bc43c216-1024x869.png',
+      imageUrl: 'https://www.fervalle.com/wp-content/uploads/2022/07/580b57fcd9996e24bc43c216-1024x869.png',
       condition: 'Fresh',
       price: '1.5',
     ),
     ProductModel(
       name: 'CARROT',
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOvY2J8wtwxZDor81a79R1_9e93VaIEfNGOg&s',
+      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOvY2J8wtwxZDor81a79R1_9e93VaIEfNGOg&s',
       condition: 'Fresh',
       price: '1.5',
     ),
@@ -136,11 +132,10 @@ class HomeView extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'See all',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ),
@@ -156,15 +151,11 @@ class HomeView extends StatelessWidget {
                             vertical: Dimensions.paddingSizeSmall(),
                           ),
                           shrinkWrap: true,
-                          itemCount:
-                              context.read<CategoryCubit>().categoryList.length,
+                          itemCount: context.read<CategoryCubit>().categoryList.length,
                           itemBuilder: (context, index) {
                             return CategoryItemWidget(
-                              categoryItemModel: context
-                                  .read<CategoryCubit>()
-                                  .categoryList[index],
+                              categoryItemModel: context.read<CategoryCubit>().categoryList[index],
                               onTap: () {
-                                // Navigator.pushNamed(context, CategoryDetailPage.routePath, arguments: categoryList[index]);
                               },
                             );
                           },
@@ -178,11 +169,10 @@ class HomeView extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'See all',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ),
@@ -193,8 +183,7 @@ class HomeView extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                           vertical: Dimensions.paddingSizeSmall(),
                         ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.7,
                           crossAxisSpacing: 5,
@@ -207,6 +196,9 @@ class HomeView extends StatelessWidget {
                               CustomProductShowButtomSheet.showBottomSheet;
                             },
                             child: ProductVerticalWidget(
+                              onTap: () {
+                                context.go('/product');
+                              },
                               product: productList[index],
                             ),
                           );
@@ -231,6 +223,7 @@ class ProductModel {
     required this.condition,
     required this.price,
   });
+
   final String name;
   final String imageUrl;
   final String condition;

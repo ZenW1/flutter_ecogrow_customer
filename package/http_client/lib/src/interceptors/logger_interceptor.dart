@@ -29,7 +29,7 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onError(
-    DioError err,
+    DioException err,
     ErrorInterceptorHandler handler,
   ) {
     log('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');

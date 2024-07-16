@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -8,8 +8,6 @@ import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../gen/assets.gen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

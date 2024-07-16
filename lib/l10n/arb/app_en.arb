@@ -3,5 +3,13 @@
     "counterAppBarTitle": "Counter",
     "@counterAppBarTitle": {
         "description": "Text shown in the AppBar of the Counter Page"
+    },
+    "khmer" : "Khmer",
+    "@khmer": {
+        "description": "Khmer language"
+    },
+    "english" : "English",
+    "@english": {
+        "description": "English language"
     }
 }

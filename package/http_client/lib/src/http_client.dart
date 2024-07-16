@@ -95,7 +95,7 @@ class DioHttpClient implements HttpClient {
         ),
       );
       return response.data!;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -120,7 +120,7 @@ class DioHttpClient implements HttpClient {
       } else {
         return jsonDecode(response.data as String) as Map<String, dynamic>;
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -142,7 +142,7 @@ class DioHttpClient implements HttpClient {
         ),
       );
       return response.data!;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -162,7 +162,7 @@ class DioHttpClient implements HttpClient {
         ),
       );
       return response.data!;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -184,7 +184,7 @@ class DioHttpClient implements HttpClient {
         ),
       );
       return response.data!;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -208,20 +208,20 @@ class DioHttpClient implements HttpClient {
         ),
         onReceiveProgress: onReceiveProgress,
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
 
   // _handleError method
-  Exception _handleError(DioError e) {
-    if (e.type == DioErrorType.connectionTimeout) {
+  Exception _handleError(DioException e) {
+    if (e.type == DioExceptionType.connectionTimeout) {
       return RequestTimeoutException('Request Timeout');
-    } else if (e.type == DioErrorType.cancel) {
+    } else if (e.type == DioExceptionType.cancel) {
       return RequestCancelledException('Request Cancelled');
-    } else if (e.type == DioErrorType.receiveTimeout) {
+    } else if (e.type == DioExceptionType.receiveTimeout) {
       return RequestTimeoutException('Receive Timeout');
-    } else if (e.type == DioErrorType.unknown) {
+    } else if (e.type == DioExceptionType.unknown) {
       final data = e.response?.data;
       switch (e.response!.statusCode) {
         case 400:

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../data/model/environment_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
 
 part 'environment_state.dart';
 

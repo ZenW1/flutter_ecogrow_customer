@@ -6,7 +6,7 @@ class EnvironmentState extends Equatable {
   const EnvironmentState(
       {this.environment,
         this.message,
-        this.environmentStatus = EnvironmentStatus.initial});
+        this.environmentStatus = EnvironmentStatus.initial,});
 
   final EnvironmentModel? environment;
   final String? message;

@@ -9,12 +9,14 @@ class CustomCacheImageWidget extends StatelessWidget {
     this.onTap,
     this.width,
     this.height,
+    this.radius,
   });
 
   final String imageUrl;
   final VoidCallback? onTap;
   final double? width;
   final double? height;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class CustomCacheImageWidget extends StatelessWidget {
           height: height ?? 65,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-              Dimensions.paddingSizeSmall(),
+               radius ?? Dimensions.paddingSizeSmall(),
             ),
             image: DecorationImage(
               image: imageProvider,

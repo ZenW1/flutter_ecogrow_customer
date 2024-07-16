@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
@@ -34,10 +32,10 @@ extension CustomProductShowButtomSheet on BuildContext {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          const SizedBox(
                             width: 130,
                             height: 110,
-                            child: const CustomCacheImageWidget(
+                            child: CustomCacheImageWidget(
                               imageUrl:
                                   'https://image.oppo.com/content/dam/oppo/common/mkt/v2-2/a79-5g-en/listpage/a79-5g-427_600-green.png.thumb.webp',
                             ),
@@ -65,7 +63,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                                 ],
                               ),
                               const Text(
-                                '\$299',
+                                r'$299',
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.redColor),
                               ),
                             ],
@@ -79,7 +77,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                               child:  CircleAvatar(
                                 radius: 15,
                                 backgroundColor: AppColors.greyColor.withOpacity(0.1),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.close_outlined,
                                   color: Colors.black,
                                 ),
@@ -107,7 +105,6 @@ extension CustomProductShowButtomSheet on BuildContext {
                   ),
                 ),
                 Expanded(
-                  flex: 1,
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
@@ -117,7 +114,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                           fontColor: Colors.black,
                           isRow: true,
                           widget: Text(
-                            '\$598',
+                            r'$598',
                             style: TextStyle(
                               color: Colors.red,
                               fontSize: 20,

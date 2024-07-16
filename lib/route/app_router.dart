@@ -6,6 +6,8 @@ import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
 import 'package:flutter_ecogrow_customer/main/view/main_page.dart';
 import 'package:flutter_ecogrow_customer/order/order.dart';
+import 'package:flutter_ecogrow_customer/product/view/product_page.dart';
+import 'package:flutter_ecogrow_customer/profile/language/language.dart';
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:go_router/go_router.dart';
 
@@ -110,6 +112,31 @@ class AppRouter {
           },
         ),
       ),
+      GoRoute(
+        path: LanguagePage.routePath,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const LanguagePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        path: ProductPage.routePath,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const ProductPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+
     ],
   );
 }

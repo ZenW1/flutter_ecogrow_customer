@@ -169,6 +169,17 @@ flutter gen-l10n --arb-dir="lib/l10n/arb"
 ```flutter pub run build_runner build --delete-conflicting-outputs
 
 
+3. Create folder bloc and add file
+
+```
+mason make flutter_bloc_feature --name counter --type bloc --style basic
+
+4. Import script for run clean, get and build generate items
+
+flutter clean && flutter packages get && flutter run build_runner build -d
+flutter packages pub run build_runner build --delete-conflicting-outputs
+
+
 
 Alternatively, run `flutter run` and code generation will take place automatically.
 

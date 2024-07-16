@@ -1,0 +1,15 @@
+{
+    "@@locale": "km",
+    "counterAppBarTitle": "lkkfdaklaf",
+    "@counterAppBarTitle": {
+        "description": "Texto mostrado en la AppBar de la página del contador"
+    },
+    "khmer" : "ខ្មែរ",
+    "@khmer": {
+        "description": "ភាសាខ្មែរ"
+    },
+    "english" : "អង់គ្លេស",
+    "@english": {
+        "description": "ភាសាអង់គ្លេស"
+    }
+}

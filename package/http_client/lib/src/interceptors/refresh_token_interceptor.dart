@@ -53,7 +53,7 @@ class RefreshTokenInterceptor<T> extends QueuedInterceptor {
 
             // get key by separator '.' (dot) from responseTokenKey
             final keys = responseTokenKey.split('.');
-            String token = '';
+            var token = '';
             // access token is nested by key like 'data.token' => data['data']['token']
             // keys = ['data', 'token',...] => data['data']['token']
             for (final key in keys) {
@@ -77,7 +77,7 @@ class RefreshTokenInterceptor<T> extends QueuedInterceptor {
           handler.next(options);
         } else {
           handler.reject(
-            DioError(
+            DioException(
               requestOptions: options,
               error: 'Refresh token failed',
             ),
