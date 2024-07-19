@@ -10,7 +10,10 @@ class CustomPinPutWidget extends StatelessWidget {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: const TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+      textStyle: const TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600,),
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
@@ -28,8 +31,7 @@ class CustomPinPutWidget extends StatelessWidget {
       ),
     );
 
-
-    return  Pinput(
+    return Pinput(
       autofocus: true,
       onSubmitted: (String pin) {
         print('submit pin: $pin');

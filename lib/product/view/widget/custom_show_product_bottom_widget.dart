@@ -48,14 +48,18 @@ extension CustomProductShowButtomSheet on BuildContext {
                                 children: [
                                   const Text(
                                     'Laneige Lip Sleeping Mask\n EX - Grapefruit (20g)',
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,),
                                   ),
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
                                   ),
                                   const Text(
                                     'Grape Flavor',
-                                    style: TextStyle(fontSize: 12, color: AppColors.greyColor),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColors.greyColor,),
                                   ),
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
@@ -64,7 +68,10 @@ extension CustomProductShowButtomSheet on BuildContext {
                               ),
                               const Text(
                                 r'$299',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.redColor),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.redColor,),
                               ),
                             ],
                           ),
@@ -74,9 +81,10 @@ extension CustomProductShowButtomSheet on BuildContext {
                           Expanded(
                             child: InkWell(
                               onTap: () {},
-                              child:  CircleAvatar(
+                              child: CircleAvatar(
                                 radius: 15,
-                                backgroundColor: AppColors.greyColor.withOpacity(0.1),
+                                backgroundColor:
+                                    AppColors.greyColor.withOpacity(0.1),
                                 child: const Icon(
                                   Icons.close_outlined,
                                   color: Colors.black,

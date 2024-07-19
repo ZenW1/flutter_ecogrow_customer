@@ -87,11 +87,9 @@ extension AppButton on BuildContext {
     );
   }
 
-  static Widget backButton(BuildContext context,{Color? color}) {
+  static Widget backButton(BuildContext context, {Color? color}) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
+      onTap: () {},
       child: Container(
         width: 30,
         height: 30,
@@ -103,7 +101,7 @@ extension AppButton on BuildContext {
             width: 0.2,
           ),
         ),
-        child:  Center(
+        child: Center(
           child: Icon(
             Icons.arrow_back_ios_new,
             color: color ?? AppColors.primary,

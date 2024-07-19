@@ -4,8 +4,11 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 
 class CategoryItemWidget extends StatelessWidget {
-  const CategoryItemWidget(
-      {required this.categoryItemModel, required this.onTap, super.key,});
+  const CategoryItemWidget({
+    required this.categoryItemModel,
+    required this.onTap,
+    super.key,
+  });
 
   final CategoryItemModel categoryItemModel;
   final VoidCallback onTap;
@@ -57,7 +60,6 @@ class CategoryItemWidget extends StatelessWidget {
 }
 
 class CategoryItemModel {
-
   const CategoryItemModel({required this.title, required this.imageUrl});
   final String title;
   final String imageUrl;

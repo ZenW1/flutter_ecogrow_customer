@@ -46,7 +46,7 @@ class CustomCacheImageWidget extends StatelessWidget {
           height: height ?? 65,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-               radius ?? Dimensions.paddingSizeSmall(),
+              radius ?? Dimensions.paddingSizeSmall(),
             ),
             image: DecorationImage(
               image: imageProvider,
