@@ -28,7 +28,7 @@ class _LanguageViewState extends State<LanguageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBarWidget(
+      appBar: AppBarWidget(
         title: context.l10n.english,
       ),
       body: Container(
@@ -36,52 +36,52 @@ class _LanguageViewState extends State<LanguageView> {
           horizontal: 10,
         ),
         child: ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: context.read<LanguageCubit>().data.length,
-            itemBuilder: (context, index) {
-              final  data = context.read<LanguageCubit>().data[index];
-              return FilterChip(
-                backgroundColor: Colors.white,
-                label: Row(
-                  children: [
-                    Image.asset(
-                      data.image,
-                      width: 32,
-                      height: 32,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      data.title,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                    const Spacer(),
-                    Radio(
-                      value: data.value,
-                      groupValue: context.read<LanguageCubit>().selectedRadio,
-                      focusColor: AppColors.primary,
-                      onChanged: (value) {
-                        context.read<LanguageCubit>().setSelectedRadio(value!);
-                        setState(() {});
-                      },
-                    ),
-                  ],
-                ),
-                onSelected: (bool? onSelected) {
-                  context.read<LanguageCubit>().selectLanguage(
-                    data.locale!,
-                  );
-                },
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: 10,
-              );
-            },
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: context.read<LanguageCubit>().data.length,
+          itemBuilder: (context, index) {
+            final data = context.read<LanguageCubit>().data[index];
+            return FilterChip(
+              backgroundColor: Colors.white,
+              label: Row(
+                children: [
+                  Image.asset(
+                    data.image,
+                    width: 32,
+                    height: 32,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    data.title,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppColors.blackColor,
+                        ),
+                  ),
+                  const Spacer(),
+                  Radio(
+                    value: data.value,
+                    groupValue: context.read<LanguageCubit>().selectedRadio,
+                    focusColor: AppColors.primary,
+                    onChanged: (value) {
+                      context.read<LanguageCubit>().setSelectedRadio(value!);
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+              onSelected: (bool? onSelected) {
+                context.read<LanguageCubit>().selectLanguage(
+                      data.locale!,
+                    );
+              },
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              height: 10,
+            );
+          },
         ),
       ),
     );
@@ -89,7 +89,6 @@ class _LanguageViewState extends State<LanguageView> {
 }
 
 class LanguageModel {
-
   const LanguageModel({
     required this.locale,
     required this.title,
