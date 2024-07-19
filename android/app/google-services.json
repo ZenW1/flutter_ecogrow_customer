@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "642357116011",
+    "firebase_url": "https://ecogrow-marketplace-default-rtdb.firebaseio.com",
+    "project_id": "ecogrow-marketplace",
+    "storage_bucket": "ecogrow-marketplace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642357116011:android:c60cc51d83f7c2eba2052e",
+        "android_client_info": {
+          "package_name": "kh.com.ecogrow.ecommerce.sale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzIyRgm934hMeLrM6Myn-FDPApI6VlaKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
