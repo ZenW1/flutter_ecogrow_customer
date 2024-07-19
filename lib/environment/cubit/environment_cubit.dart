@@ -12,10 +12,13 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
     emit(state.copyWith(environmentStatus: EnvironmentStatus.loading));
     try {
       emit(
-        state.copyWith(environment: environment, environmentStatus: EnvironmentStatus.loaded),
+        state.copyWith(
+            environment: environment,
+            environmentStatus: EnvironmentStatus.loaded,),
       );
     } catch (err) {
-      emit(state.copyWith(message: '$err', environmentStatus: EnvironmentStatus.failure));
+      emit(state.copyWith(
+          message: '$err', environmentStatus: EnvironmentStatus.failure,),);
     }
   }
 }

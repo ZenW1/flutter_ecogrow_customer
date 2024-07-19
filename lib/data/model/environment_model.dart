@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -23,12 +22,12 @@ class EnvironmentModel extends Equatable {
     Color? color,
   }) {
     return EnvironmentModel(
-        environment: Environment.development,
-        name: name ?? 'Dev',
-        apiVersion: apiVersion,
-        baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
-        baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
-        color: color ?? Colors.green,
+      environment: Environment.development,
+      name: name ?? 'Dev',
+      apiVersion: apiVersion,
+      baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
+      baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
+      color: color ?? Colors.green,
     );
   }
 
@@ -41,12 +40,12 @@ class EnvironmentModel extends Equatable {
     Color? color,
   }) {
     return EnvironmentModel(
-        environment: Environment.staging,
-        name: name ?? 'Staging',
-        apiVersion: apiVersion,
-        baseUrl: baseUrl ?? 'http://staging.api.cambizexpress.camsolutiondemo.com/$apiVersion',
-        baseUrlImage: baseUrlImage ?? 'http://staging.api.cambizexpress.camsolutiondemo.com/',
-        color: color ?? Colors.orange,
+      environment: Environment.staging,
+      name: name ?? 'Staging',
+      apiVersion: apiVersion,
+      baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
+      baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
+      color: color ?? Colors.orange,
     );
   }
 
@@ -59,12 +58,12 @@ class EnvironmentModel extends Equatable {
     Color? color,
   }) {
     return EnvironmentModel(
-        environment: Environment.production,
-        name: name ?? 'Production',
-        apiVersion: apiVersion,
-        baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
-        baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
-        color: color,
+      environment: Environment.production,
+      name: name ?? 'Production',
+      apiVersion: apiVersion,
+      baseUrl: baseUrl ?? 'http://188.166.244.61/api/$apiVersion',
+      baseUrlImage: baseUrlImage ?? 'http://188.166.244.61/',
+      color: color,
     );
   }
 

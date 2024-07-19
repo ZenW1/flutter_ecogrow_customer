@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/environment/cubit/environment_cubit.dart';
 
-
 class EnvironmentsPage extends StatelessWidget {
   const EnvironmentsPage({super.key});
 
