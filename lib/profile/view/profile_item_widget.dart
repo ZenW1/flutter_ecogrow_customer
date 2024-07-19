@@ -23,18 +23,14 @@ class ProfileItemWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 16,
-          vertical: 5,
+          vertical: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              mainTitle!,
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: AppColors.blackColor,
-                  ),
-            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   icon,

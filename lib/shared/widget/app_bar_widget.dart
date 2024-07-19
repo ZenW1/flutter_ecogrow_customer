@@ -13,9 +13,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
-          color: AppColors.primary,
-          fontSize: 18,
-        ),
+              color: AppColors.primary,
+              fontSize: 18,
+            ),
       ),
       leading: AppButton.backButton(context),
     );

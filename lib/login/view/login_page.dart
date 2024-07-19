@@ -49,9 +49,9 @@ class LoginView extends StatelessWidget {
                                 .textTheme
                                 .titleMedium!
                                 .copyWith(
-                              fontSize: 24,
-                              color: AppColors.primary,
-                            ),
+                                  fontSize: 24,
+                                  color: AppColors.primary,
+                                ),
                           ),
                           const SizedBox(
                             height: 20,
@@ -85,7 +85,7 @@ class LoginView extends StatelessWidget {
                           GlobalTextField(
                             textInputType: TextInputType.number,
                             controller:
-                            context.read<LoginCubit>().numberController,
+                                context.read<LoginCubit>().numberController,
                             hintText: 'Phone Number',
                             filled: true,
                           ),

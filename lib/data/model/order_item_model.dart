@@ -1,8 +1,6 @@
-
 import 'package:flutter_ecogrow_customer/data/model/store_model.dart';
 
-class OrderItemModel{
-
+class OrderItemModel {
   const OrderItemModel({
     required this.id,
     required this.dateTime,

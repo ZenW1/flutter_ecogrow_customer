@@ -16,7 +16,7 @@ class OrderCubit extends Cubit<OrderState> {
       qty: '1',
       store: StoreModel(
         id: '1',
-       storeName: 'Ecogrow Store',
+        storeName: 'Ecogrow Store',
         storeImage: 'https://via.placeholder.com/150',
         storeCategory: 'Fruit Store',
         totalOrder: '15',
@@ -42,7 +42,7 @@ class OrderCubit extends Cubit<OrderState> {
       qty: '3',
       store: StoreModel(
         id: '3',
-       storeName: 'Ecogrow Store',
+        storeName: 'Ecogrow Store',
         storeImage: 'https://via.placeholder.com/150',
         storeCategory: 'Fruit Store',
         totalOrder: '15',

@@ -1,5 +1,4 @@
 class StoreModel {
-
   const StoreModel({
     required this.id,
     required this.storeName,

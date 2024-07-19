@@ -52,8 +52,10 @@ class OTPPage extends StatelessWidget {
                       const SizedBox(
                         height: 55,
                       ),
-                        Center(
-                        child: CustomPinPutWidget(controller: TextEditingController() ,),
+                      Center(
+                        child: CustomPinPutWidget(
+                          controller: TextEditingController(),
+                        ),
                       ),
                       const SizedBox(
                         height: 16,

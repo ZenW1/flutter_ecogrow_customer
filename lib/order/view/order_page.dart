@@ -34,10 +34,8 @@ class OrderView extends StatelessWidget {
               bottom: const TabBar(
                 tabAlignment: TabAlignment.fill,
                 indicatorColor: AppColors.primary,
-
                 indicatorWeight: 1,
                 indicatorSize: TabBarIndicatorSize.label,
-
                 indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
                 labelStyle: TextStyle(
                   fontSize: 16,

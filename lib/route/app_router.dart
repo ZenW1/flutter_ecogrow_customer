@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/cart/cart.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/location/location.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
 import 'package:flutter_ecogrow_customer/main/view/main_page.dart';
@@ -9,12 +10,17 @@ import 'package:flutter_ecogrow_customer/order/order.dart';
 import 'package:flutter_ecogrow_customer/product/view/product_page.dart';
 import 'package:flutter_ecogrow_customer/profile/language/language.dart';
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
+import 'package:flutter_ecogrow_customer/route/go_router_observable.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   AppRouter._();
+
   static final GoRouter router = GoRouter(
     initialLocation: LoginPage.routePath,
+    observers: [
+      MyNavigatorObserver(),
+    ],
     routes: [
       GoRoute(
         path: LoginPage.routePath,
@@ -136,7 +142,11 @@ class AppRouter {
           },
         ),
       ),
-
+      GoRoute(
+        path: LocationPage.routePath,
+        name: 'location',
+        builder: (context, state) => const LocationPage(),
+      ),
     ],
   );
 }

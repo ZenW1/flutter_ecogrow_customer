@@ -6,11 +6,11 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 
 class ProductVerticalWidget extends StatelessWidget {
+  const ProductVerticalWidget(
+      {required this.product, required this.onTap, super.key,});
 
-   const ProductVerticalWidget({required this.product, required this.onTap, super.key});
-
-   final ProductModel product;
-   final VoidCallback onTap;
+  final ProductModel product;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -42,27 +42,30 @@ class ProductVerticalWidget extends StatelessWidget {
                   SizedBox(
                     height: Dimensions.paddingSizeSmall(),
                   ),
-                   SizedBox(
+                  SizedBox(
                     width: 150,
                     height: 120,
                     child: CustomCacheImageWidget(
-                      imageUrl:
-                           product.imageUrl,
+                      imageUrl: product.imageUrl,
                     ),
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeDefault(),
                   ),
-                   Text(
-                     product.name,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w600,),
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeExtraSmall(),
                   ),
-                   Text(
-                     '\$${product.price}',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600,color: AppColors.redColor),
+                  Text(
+                    '\$${product.price}',
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.redColor,),
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeExtraSmall(),
@@ -87,7 +90,7 @@ class ProductVerticalWidget extends StatelessWidget {
                   //       ),
                   //     )
                   // ),
-                   Text(
+                  Text(
                     'Condition : ${product.condition}',
                     style: const TextStyle(
                       fontSize: 12,

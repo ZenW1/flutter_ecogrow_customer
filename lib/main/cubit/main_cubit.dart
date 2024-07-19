@@ -7,8 +7,6 @@ class MainCubit extends Cubit<MainState> {
 
   int get selectedIndex => state.tabIndex;
 
-
-
   void setTabIndex(int index) {
     emit(MainState.values[index]);
   }

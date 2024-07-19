@@ -31,114 +31,117 @@ class ProfileView extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                delegate: CustomerProfileHeader(),
-                pinned: true,
-              ),
-              SliverList.list(
-                children: [
-                  ProfileItemWidget(
-                    title: 'My Order',
-                    onTap: () {},
-                    icon: Assets.svg.myOrder,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Promotion',
-                    onTap: () {},
-                    icon: Assets.svg.privacy,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Wishlist',
-                    onTap: () {},
-                    icon: Assets.svg.wishlist,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Delivery Address',
-                    onTap: () {},
-                    icon: Assets.svg.deliveryAddress,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  mainTitleWidget(
-                    context,
-                    title: 'Wallets',
-                  ),
-                  ProfileItemWidget(
-                    title: 'Wallets',
-                    onTap: () {},
-                    icon: Assets.svg.wallet,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  mainTitleWidget(
-                    context,
-                    title: 'Membership',
-                  ),
-                  ProfileItemWidget(
-                    title: 'Membership',
-                    onTap: () {},
-                    icon: Assets.svg.memberShip,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Store Register',
-                    onTap: () {},
-                    icon: Assets.svg.store,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  mainTitleWidget(
-                    context,
-                    title: 'Setting',
-                  ),
-                  ProfileItemWidget(
-                    title: 'Notifications',
-                    onTap: () {},
-                    icon: Assets.svg.notification,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Language',
-                    onTap: () {
-                      GoRouter.of(context).push('/language');
-                    },
-                    icon: Assets.svg.language,
-                  ),
-                  mainTitleWidget(
-                    context,
-                    title: 'Support',
-                  ),
-                  ProfileItemWidget(
-                    title: 'About Us',
-                    onTap: () {},
-                    icon: Assets.svg.aboutUs,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Privacy Policy',
-                    onTap: () {},
-                    icon: Assets.svg.privacy,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Term & Condition',
-                    onTap: () {},
-                    icon: Assets.svg.termCondition,
-                  ),
-                  ProfileItemWidget(
-                    title: 'Help Center',
-                    onTap: () {},
-                    icon: Assets.svg.helpCenter,
-                  ),
-                  ProfileItemWidget(
-                    title: 'FAQ',
-                    onTap: () {},
-                    icon: Assets.svg.faq,
-                  ),
-                ],
-              ),
-            ],
+          body: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverPersistentHeader(
+                  delegate: CustomerProfileHeader(),
+                  pinned: true,
+                  floating: true,
+                ),
+                SliverList.list(
+                  children: [
+                    ProfileItemWidget(
+                      title: 'My Order',
+                      onTap: () {},
+                      icon: Assets.svg.myOrder,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Promotion',
+                      onTap: () {},
+                      icon: Assets.svg.privacy,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Wishlist',
+                      onTap: () {},
+                      icon: Assets.svg.wishlist,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Delivery Address',
+                      onTap: () {},
+                      icon: Assets.svg.deliveryAddress,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    mainTitleWidget(
+                      context,
+                      title: 'Wallets',
+                    ),
+                    ProfileItemWidget(
+                      title: 'Wallets',
+                      onTap: () {},
+                      icon: Assets.svg.wallet,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    mainTitleWidget(
+                      context,
+                      title: 'Membership',
+                    ),
+                    ProfileItemWidget(
+                      title: 'Membership',
+                      onTap: () {},
+                      icon: Assets.svg.memberShip,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Store Register',
+                      onTap: () {},
+                      icon: Assets.svg.store,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    mainTitleWidget(
+                      context,
+                      title: 'Setting',
+                    ),
+                    ProfileItemWidget(
+                      title: 'Notifications',
+                      onTap: () {},
+                      icon: Assets.svg.notification,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Language',
+                      onTap: () {
+                        GoRouter.of(context).push('/language');
+                      },
+                      icon: Assets.svg.language,
+                    ),
+                    mainTitleWidget(
+                      context,
+                      title: 'Support',
+                    ),
+                    ProfileItemWidget(
+                      title: 'About Us',
+                      onTap: () {},
+                      icon: Assets.svg.aboutUs,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Privacy Policy',
+                      onTap: () {},
+                      icon: Assets.svg.privacy,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Term & Condition',
+                      onTap: () {},
+                      icon: Assets.svg.termCondition,
+                    ),
+                    ProfileItemWidget(
+                      title: 'Help Center',
+                      onTap: () {},
+                      icon: Assets.svg.helpCenter,
+                    ),
+                    ProfileItemWidget(
+                      title: 'FAQ',
+                      onTap: () {},
+                      icon: Assets.svg.faq,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -148,6 +151,7 @@ class ProfileView extends StatelessWidget {
   Widget mainTitleWidget(BuildContext context, {required String title}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(
           height: 10,
@@ -179,6 +183,8 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const CircleAvatar(
             radius: 30,
@@ -225,10 +231,10 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 140;
+  double get maxExtent => 80;
 
   @override
-  double get minExtent => 50;
+  double get minExtent => 60 ;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

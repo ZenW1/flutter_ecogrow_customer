@@ -28,16 +28,17 @@ class HomeView extends StatelessWidget {
   HomeView({super.key});
 
   List<ProductModel> productList = [
-    // imageurl fron internet
     ProductModel(
       name: 'ONION',
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIxB4TqKd66zyoFXx9QiHPP_bsfzq6xLPHA&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIxB4TqKd66zyoFXx9QiHPP_bsfzq6xLPHA&s',
       condition: 'Fresh',
       price: '1.5',
     ),
     ProductModel(
       name: 'POTATO',
-      imageUrl: 'https://m.media-amazon.com/images/I/313dtY-LOEL._AC_UF1000,1000_QL80_.jpg',
+      imageUrl:
+          'https://m.media-amazon.com/images/I/313dtY-LOEL._AC_UF1000,1000_QL80_.jpg',
       condition: 'Fresh',
       price: '1.5',
     ),
@@ -50,7 +51,8 @@ class HomeView extends StatelessWidget {
     ),
     ProductModel(
       name: 'CUCUMBER',
-      imageUrl: 'https://www.fervalle.com/wp-content/uploads/2022/07/580b57fcd9996e24bc43c216-1024x869.png',
+      imageUrl:
+          'https://www.fervalle.com/wp-content/uploads/2022/07/580b57fcd9996e24bc43c216-1024x869.png',
       condition: 'Fresh',
       price: '1.5',
     ),
@@ -86,19 +88,24 @@ class HomeView extends StatelessWidget {
                           size: Dimensions.iconSizeLarge(),
                         ),
                         SizedBox(width: Dimensions.paddingSizeDefault()),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Location',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              'Phnom Penh Cambodia',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
+                        InkWell(
+                          onTap: () {
+                            GoRouter.of(context).go('/location');
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Location',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                'Phnom Penh Cambodia',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
                         ),
                         const Spacer(),
                         GestureDetector(
@@ -132,10 +139,11 @@ class HomeView extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'See all',
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                         ),
                       ),
@@ -151,12 +159,14 @@ class HomeView extends StatelessWidget {
                             vertical: Dimensions.paddingSizeSmall(),
                           ),
                           shrinkWrap: true,
-                          itemCount: context.read<CategoryCubit>().categoryList.length,
+                          itemCount:
+                              context.read<CategoryCubit>().categoryList.length,
                           itemBuilder: (context, index) {
                             return CategoryItemWidget(
-                              categoryItemModel: context.read<CategoryCubit>().categoryList[index],
-                              onTap: () {
-                              },
+                              categoryItemModel: context
+                                  .read<CategoryCubit>()
+                                  .categoryList[index],
+                              onTap: () {},
                             );
                           },
                         ),
@@ -169,10 +179,11 @@ class HomeView extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'See all',
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                         ),
                       ),
@@ -183,7 +194,8 @@ class HomeView extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                           vertical: Dimensions.paddingSizeSmall(),
                         ),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.7,
                           crossAxisSpacing: 5,
