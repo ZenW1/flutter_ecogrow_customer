@@ -23,7 +23,7 @@ class LoggingInterceptor extends Interceptor {
     Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) {
-    log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+    log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',);
     return super.onResponse(response, handler);
   }
 

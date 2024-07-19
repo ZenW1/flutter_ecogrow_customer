@@ -24,6 +24,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/otp2.png
   AssetGenImage get otp2 => const AssetGenImage('assets/images/otp2.png');
 
+  /// Directory path: assets/images/splash
+  $AssetsImagesSplashGen get splash => const $AssetsImagesSplashGen();
+
   /// List of all assets
   List<AssetGenImage> get values => [english, khmer, otp1, otp2];
 }
@@ -42,6 +45,9 @@ class $AssetsSvgGen {
 
   /// File path: assets/svg/category.svg
   String get category => 'assets/svg/category.svg';
+
+  /// File path: assets/svg/category_filled.svg
+  String get categoryFilled => 'assets/svg/category_filled.svg';
 
   /// File path: assets/svg/delivery_address.svg
   String get deliveryAddress => 'assets/svg/delivery_address.svg';
@@ -82,6 +88,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/order_filled.svg
   String get orderFilled => 'assets/svg/order_filled.svg';
 
+  /// File path: assets/svg/placemark.svg
+  String get placemark => 'assets/svg/placemark.svg';
+
   /// File path: assets/svg/privacy.svg
   String get privacy => 'assets/svg/privacy.svg';
 
@@ -112,6 +121,7 @@ class $AssetsSvgGen {
         cart,
         cartFilled,
         category,
+        categoryFilled,
         deliveryAddress,
         edit,
         faq,
@@ -125,6 +135,7 @@ class $AssetsSvgGen {
         notifications,
         order,
         orderFilled,
+        placemark,
         privacy,
         profile,
         profileFilled,
@@ -134,6 +145,17 @@ class $AssetsSvgGen {
         wallet,
         wishlist
       ];
+}
+
+class $AssetsImagesSplashGen {
+  const $AssetsImagesSplashGen();
+
+  /// File path: assets/images/splash/logo.png
+  AssetGenImage get logo =>
+      const AssetGenImage('assets/images/splash/logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [logo];
 }
 
 class Assets {

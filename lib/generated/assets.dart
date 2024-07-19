@@ -13,10 +13,12 @@ class Assets {
   static const String kantumruyProKantumruyProRegular = 'assets/fonts/kantumruy_pro/KantumruyPro-Regular.ttf';
   static const String kantumruyProKantumruyProSemiBold = 'assets/fonts/kantumruy_pro/KantumruyPro-SemiBold.ttf';
   static const String kantumruyProKantumruyProThin = 'assets/fonts/kantumruy_pro/KantumruyPro-Thin.ttf';
+  static const String splashLogo = 'assets/images/splash/logo.png';
   static const String svgAboutUs = 'assets/svg/about_us.svg';
   static const String svgCart = 'assets/svg/cart.svg';
   static const String svgCartFilled = 'assets/svg/cart_filled.svg';
   static const String svgCategory = 'assets/svg/category.svg';
+  static const String svgCategoryFilled = 'assets/svg/category_filled.svg';
   static const String svgDeliveryAddress = 'assets/svg/delivery_address.svg';
   static const String svgEdit = 'assets/svg/edit.svg';
   static const String svgFaq = 'assets/svg/faq.svg';
@@ -30,6 +32,7 @@ class Assets {
   static const String svgNotifications = 'assets/svg/notifications.svg';
   static const String svgOrder = 'assets/svg/order.svg';
   static const String svgOrderFilled = 'assets/svg/order_filled.svg';
+  static const String svgPlacemark = 'assets/svg/placemark.svg';
   static const String svgPrivacy = 'assets/svg/privacy.svg';
   static const String svgProfile = 'assets/svg/profile.svg';
   static const String svgProfileFilled = 'assets/svg/profile_filled.svg';

@@ -1,4 +1,4 @@
-package kh.com.ecogrow.ecommerce.sale.flutter_ecogrow_customer
+package kh.com.ecogrow.ecommerce.sale
 
 import io.flutter.embedding.android.FlutterActivity
 

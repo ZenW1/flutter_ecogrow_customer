@@ -1,5 +1,5 @@
 name: flutter_ecogrow_customer
-description: created by kon khmers
+description: created by kon khmer
 version: 1.0.0+1
 publish_to: none
 
@@ -25,9 +25,16 @@ dependencies:
   image_picker: ^1.0.7
   flutter_svg: ^2.0.10+1
 
-  #utils
+  #local storage
   shared_preferences: ^2.2.2
+  hive: ^2.2.3
+
+
+
+  #utils
   firebase_core: ^2.32.0
+
+
 #  firebase_analytics: ^10.9.0
   sizer: ^2.0.15
   dio: ^5.4.2+1
@@ -44,11 +51,14 @@ dependencies:
     path: package/http_client
 
   #local_service
-  hive: ^2.2.3
   pinput: ^4.0.0
   cached_network_image: ^3.3.1
   firebase_auth: ^4.20.0
   firebase_crashlytics: ^3.5.7
+  google_maps_flutter: ^2.3.1
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
+  permission_handler: ^11.3.1
 
 
 dev_dependencies:
