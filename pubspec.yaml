@@ -29,8 +29,6 @@ dependencies:
   shared_preferences: ^2.2.2
   hive: ^2.2.3
 
-
-
   #utils
   firebase_core: ^2.32.0
 
@@ -44,7 +42,6 @@ dependencies:
   fluttertoast: ^8.2.4
   loader_overlay: ^4.0.0
   loading_indicator: ^3.1.1
-
 
   #network
   http_client :
@@ -69,7 +66,6 @@ dev_dependencies:
   bloc_test: ^9.1.7
   build_runner: ^2.4.9
   flutter_gen_runner:
-
 
 flutter:
   uses-material-design: true

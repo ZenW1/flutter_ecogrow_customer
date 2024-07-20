@@ -6,8 +6,11 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 
 class ProductVerticalWidget extends StatelessWidget {
-  const ProductVerticalWidget(
-      {required this.product, required this.onTap, super.key,});
+  const ProductVerticalWidget({
+    required this.product,
+    required this.onTap,
+    super.key,
+  });
 
   final ProductModel product;
   final VoidCallback onTap;
@@ -55,7 +58,9 @@ class ProductVerticalWidget extends StatelessWidget {
                   Text(
                     product.name,
                     style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600,),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeExtraSmall(),
@@ -63,9 +68,10 @@ class ProductVerticalWidget extends StatelessWidget {
                   Text(
                     '\$${product.price}',
                     style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.redColor,),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.redColor,
+                    ),
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeExtraSmall(),

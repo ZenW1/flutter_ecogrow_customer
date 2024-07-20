@@ -10,6 +10,7 @@ import 'package:flutter_ecogrow_customer/order/order.dart';
 import 'package:flutter_ecogrow_customer/product/view/product_page.dart';
 import 'package:flutter_ecogrow_customer/profile/language/language.dart';
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
+import 'package:flutter_ecogrow_customer/register/view/register_page.dart';
 import 'package:flutter_ecogrow_customer/route/go_router_observable.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,9 +36,9 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: MainPage.routePath,
+        path: OTPPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: const MainPage(),
+          child: const OTPPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return ScaleTransition(
               scale: animation,
@@ -47,9 +48,21 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: OTPPage.routePath,
+        path: RegisterPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: const OTPPage(),
+          child: const RegisterPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        path: MainPage.routePath,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const MainPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return ScaleTransition(
               scale: animation,

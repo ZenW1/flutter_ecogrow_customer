@@ -49,8 +49,9 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   const Text(
                                     'Laneige Lip Sleeping Mask\n EX - Grapefruit (20g)',
                                     style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
@@ -58,8 +59,9 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   const Text(
                                     'Grape Flavor',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: AppColors.greyColor,),
+                                      fontSize: 12,
+                                      color: AppColors.greyColor,
+                                    ),
                                   ),
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
@@ -69,9 +71,10 @@ extension CustomProductShowButtomSheet on BuildContext {
                               const Text(
                                 r'$299',
                                 style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.redColor,),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.redColor,
+                                ),
                               ),
                             ],
                           ),

@@ -58,7 +58,8 @@ class HomeView extends StatelessWidget {
     ),
     ProductModel(
       name: 'CARROT',
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOvY2J8wtwxZDor81a79R1_9e93VaIEfNGOg&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOvY2J8wtwxZDor81a79R1_9e93VaIEfNGOg&s',
       condition: 'Fresh',
       price: '1.5',
     ),

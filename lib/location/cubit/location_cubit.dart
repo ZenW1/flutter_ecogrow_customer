@@ -10,15 +10,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(const LocationState(LatLng(11.5621224, 104.9161445), []));
+  LocationCubit()
+      : super(const LocationState(LatLng(11.5621224, 104.9161445), []));
   Position? position;
   List<Placemark> placemarks = [];
   List<Marker> myMarker = [];
 
-  String get locationAddress => placemarks.isNotEmpty ? placemarks[0].country! : 'No Address';
+  String get locationAddress =>
+      placemarks.isNotEmpty ? placemarks[0].country! : 'No Address';
 
   Completer<GoogleMapController> get controller => _controller;
-   Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   final Set<Circle> _circle = {
     Circle(
       circleId: const CircleId('voatPhnom'),
@@ -41,12 +43,15 @@ class LocationCubit extends Cubit<LocationState> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.',);
       }
     }
     position = await Geolocator.getCurrentPosition();
-    placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
-    emit(LocationState(LatLng(position!.latitude, position!.longitude), placemarks));
+    placemarks =
+        await placemarkFromCoordinates(position!.latitude, position!.longitude);
+    emit(LocationState(
+        LatLng(position!.latitude, position!.longitude), placemarks,),);
   }
 
   Future<void> getOnTapData() async {
@@ -72,10 +77,9 @@ class LocationCubit extends Cubit<LocationState> {
         newCameraPosition,
       ),
     );
-    emit(LocationState(LatLng(position!.latitude, position!.longitude), placemarks));
+    emit(LocationState(
+        LatLng(position!.latitude, position!.longitude), placemarks,),);
   }
 
-  Future<void> load() async {
-
-  }
+  Future<void> load() async {}
 }

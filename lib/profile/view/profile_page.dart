@@ -184,7 +184,6 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const CircleAvatar(
             radius: 30,
@@ -234,7 +233,7 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
   double get maxExtent => 80;
 
   @override
-  double get minExtent => 60 ;
+  double get minExtent => 60;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

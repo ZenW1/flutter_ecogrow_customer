@@ -16,7 +16,6 @@ class AppTheme {
         actionsIconTheme: IconThemeData(
           color: AppColors.primary,
         ),
-
         iconTheme: IconThemeData(
           color: AppColors.primary,
         ),

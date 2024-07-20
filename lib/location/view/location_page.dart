@@ -50,7 +50,8 @@ class _LocationViewState extends State<LocationView> {
             context: context,
             builder: (context) => const AlertDialog(
               title: Text('Location Permission'),
-              content: Text('Please enable location permission in your settings'),
+              content:
+                  Text('Please enable location permission in your settings'),
               actions: [
                 TextButton(
                   onPressed: Geolocator.openAppSettings,
@@ -64,7 +65,8 @@ class _LocationViewState extends State<LocationView> {
       if (permission == LocationPermission.denied) {
         return Future.error('Location permissions are denied');
       } else if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.',);
       }
     }
     return Geolocator.getCurrentPosition(

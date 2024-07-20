@@ -33,7 +33,7 @@ class CategoryItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 70,
+              height: 65,
               width: 100,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(

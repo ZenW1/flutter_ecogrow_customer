@@ -1,5 +1,1 @@
-
-
-class LocationPermissionService {
-
-}
+class LocationPermissionService {}

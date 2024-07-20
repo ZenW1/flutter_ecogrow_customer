@@ -47,6 +47,7 @@ class CartItemWidget extends StatelessWidget {
             ],
           ),
           ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: 2,
             shrinkWrap: true,
             itemBuilder: (context, index) {
