@@ -179,8 +179,6 @@ mason make flutter_bloc_feature --name counter --type bloc --style basic
 flutter clean && flutter packages get && flutter run build_runner build -d
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
-
-
 Alternatively, run `flutter run` and code generation will take place automatically.
 
 [coverage_badge]: coverage_badge.svg

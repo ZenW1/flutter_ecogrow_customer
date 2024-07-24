@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/cart/cart.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
+import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
@@ -147,6 +148,18 @@ class AppRouter {
         path: ProductPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
           child: const ProductPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        path: CheckoutPage.routePath,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const CheckoutPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return ScaleTransition(
               scale: animation,

@@ -58,18 +58,17 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      shadowColor: Colors.black.withOpacity(0.2),
-      elevation: 10,
       borderOnForeground: false,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(10),
       child: TextFormField(
         key: widget.key,
         validator: widget.validator,
         keyboardType: widget.textInputType,
         controller: widget.controller,
         onEditingComplete: () {
-          FocusScope.of(context).unfocus();
+          // FocusScope.of(context).unfocus();
         },
+        focusNode: FocusNode(),
         textDirection: TextDirection.ltr,
         onFieldSubmitted: widget.onSubmitted,
         textInputAction: TextInputAction.done,
@@ -93,13 +92,16 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
           //     )
           //   borderSide: BorderSide.none,
           // ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide.none,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.greyColor.withOpacity(0.5),
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              style: BorderStyle.none,
+            borderSide: BorderSide(
+              color: AppColors.greyColor.withOpacity(0.5),
             ),
           ),
           suffixIcon: widget.suffixIcon,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
+import 'package:go_router/go_router.dart';
 
 extension AppButton on BuildContext {
   BuildContext get context => this;
@@ -20,18 +21,11 @@ extension AppButton on BuildContext {
       decoration: BoxDecoration(
         gradient: gradient,
         color: backgroundColor ?? AppColors.primary,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: color ?? Colors.transparent,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
           shadowColor: Colors.transparent,
           backgroundColor: Colors.transparent,
         ),
@@ -89,7 +83,13 @@ extension AppButton on BuildContext {
 
   static Widget backButton(BuildContext context, {Color? color}) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (GoRouter.of(context).canPop()) {
+          GoRouter.of(context).pop();
+        } else {
+          GoRouter.of(context).go('/');
+        }
+      },
       child: Container(
         width: 30,
         height: 30,
@@ -106,6 +106,26 @@ extension AppButton on BuildContext {
             Icons.arrow_back_ios_new,
             color: color ?? AppColors.primary,
           ),
+        ),
+      ),
+    );
+  }
+
+  static Widget circleButton(
+    BuildContext context, {
+    required VoidCallback onTap,
+    required IconData icon,
+    Color? color,
+    Color? backgroundColor,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: backgroundColor ?? AppColors.whiteColor,
+        child: Icon(
+          icon,
+          color: color ?? AppColors.primary,
         ),
       ),
     );

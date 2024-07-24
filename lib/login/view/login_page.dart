@@ -56,11 +56,11 @@ class LoginView extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            'Explore our wide range of fresh produce, organic groceries, and eco-friendly good',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                          // Text(
+                          //   'Explore our wide range of fresh produce, organic groceries, and eco-friendly good',
+                          //   textAlign: TextAlign.left,
+                          //   style: Theme.of(context).textTheme.bodyMedium,
+                          // ),
                           const SizedBox(
                             height: 60,
                           ),

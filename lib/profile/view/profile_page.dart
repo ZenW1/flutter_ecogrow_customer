@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
+import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
+import 'package:flutter_ecogrow_customer/location/location.dart';
 
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_item_widget.dart';
@@ -42,23 +44,25 @@ class ProfileView extends StatelessWidget {
                 SliverList.list(
                   children: [
                     ProfileItemWidget(
-                      title: 'My Order',
+                      title: context.l10n.myOrder,
                       onTap: () {},
                       icon: Assets.svg.myOrder,
                     ),
                     ProfileItemWidget(
-                      title: 'Promotion',
+                      title: context.l10n.promotion,
                       onTap: () {},
                       icon: Assets.svg.privacy,
                     ),
                     ProfileItemWidget(
-                      title: 'Wishlist',
+                      title: context.l10n.wishlist,
                       onTap: () {},
                       icon: Assets.svg.wishlist,
                     ),
                     ProfileItemWidget(
-                      title: 'Delivery Address',
-                      onTap: () {},
+                      title: context.l10n.deliveryAddress,
+                      onTap: () {
+                        context.push(LocationPage.routePath);
+                      },
                       icon: Assets.svg.deliveryAddress,
                     ),
                     const SizedBox(
@@ -66,10 +70,10 @@ class ProfileView extends StatelessWidget {
                     ),
                     mainTitleWidget(
                       context,
-                      title: 'Wallets',
+                      title: context.l10n.wallet,
                     ),
                     ProfileItemWidget(
-                      title: 'Wallets',
+                      title: context.l10n.wallet,
                       onTap: () {},
                       icon: Assets.svg.wallet,
                     ),
@@ -78,15 +82,15 @@ class ProfileView extends StatelessWidget {
                     ),
                     mainTitleWidget(
                       context,
-                      title: 'Membership',
+                      title: context.l10n.memberShip,
                     ),
                     ProfileItemWidget(
-                      title: 'Membership',
+                      title: context.l10n.memberShip,
                       onTap: () {},
                       icon: Assets.svg.memberShip,
                     ),
                     ProfileItemWidget(
-                      title: 'Store Register',
+                      title: context.l10n.storeRegister,
                       onTap: () {},
                       icon: Assets.svg.store,
                     ),
@@ -95,15 +99,15 @@ class ProfileView extends StatelessWidget {
                     ),
                     mainTitleWidget(
                       context,
-                      title: 'Setting',
+                      title:  context.l10n.setting,
                     ),
                     ProfileItemWidget(
-                      title: 'Notifications',
+                      title: context.l10n.notification,
                       onTap: () {},
                       icon: Assets.svg.notification,
                     ),
                     ProfileItemWidget(
-                      title: 'Language',
+                      title: context.l10n.language,
                       onTap: () {
                         GoRouter.of(context).push('/language');
                       },

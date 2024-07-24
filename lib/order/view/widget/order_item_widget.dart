@@ -21,7 +21,7 @@ class OrderItemWidget extends StatelessWidget {
         horizontal: 10,
         vertical: 8,
       ),
-      decoration: CustomConstantWidget.shadowWidget(),
+      decoration: CustomConstantWidget.shadowBoxDecorationWidget(),
       height: MediaQuery.of(context).size.height * 0.177,
       padding: const EdgeInsets.all(16),
       child: Column(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class CustomDialog {
-  Future<void> showSuccessDialog() async {
+extension CustomDialog on Fluttertoast {
+  static Future<void> showSuccessDialog() async {
     await Fluttertoast.showToast(
       msg: 'Success',
       toastLength: Toast.LENGTH_SHORT,
@@ -13,9 +13,9 @@ class CustomDialog {
     );
   }
 
-  Future<void> showErrorDialog() async {
+  static Future<void> showErrorDialog(String? message) async {
     await Fluttertoast.showToast(
-      msg: 'Error',
+      msg: message!,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Colors.red,
@@ -24,9 +24,9 @@ class CustomDialog {
     );
   }
 
-  Future<void> showWarningDialog() async {
+  static Future<void> showWarningDialog(String? message) async {
     await Fluttertoast.showToast(
-      msg: 'Warning',
+      msg: message!,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Colors.orange,

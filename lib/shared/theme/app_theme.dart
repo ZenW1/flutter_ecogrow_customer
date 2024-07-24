@@ -6,6 +6,7 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 class AppTheme {
   static ThemeData getAppTheme() {
     return ThemeData(
+      useMaterial3: true,
       fontFamily: FontFamily.kantumruyPro,
       appBarTheme: const AppBarTheme(
         titleTextStyle: TextStyle(

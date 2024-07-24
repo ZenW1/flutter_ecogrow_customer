@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
-import 'package:flutter_ecogrow_customer/main/main.dart';
 import 'package:flutter_ecogrow_customer/register/register.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
@@ -87,7 +86,6 @@ class OTPPage extends StatelessWidget {
                           context,
                           onTap: () {
                             context.go(RegisterPage.routePath);
-
                           },
                           text: 'VERIFY OTP',
                           color: AppColors.primary,
