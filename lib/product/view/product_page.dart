@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/checkout/view/view.dart';
+import 'package:flutter_ecogrow_customer/main/main.dart';
 
 import 'package:flutter_ecogrow_customer/product/product.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -31,17 +34,30 @@ class ProductView extends StatelessWidget {
           body: CustomScrollView(
             slivers: [
               SliverAppBar(
-                leading: AppButton.backButton(context, color: Colors.white),
+                leading: Container(
+                  margin: const EdgeInsets.only(left: 16),
+                  child: AppButton.circleButton(
+                    context,
+                    onTap: () {
+                      if (GoRouter.of(context).canPop()) {
+                        GoRouter.of(context).pop();
+                      } else {
+                        context.pushReplacement(MainPage.routePath);
+                      }
+                    },
+                    icon: Icons.arrow_back_ios_new_rounded,
+                  ),
+                ),
+                leadingWidth: 56,
                 floating: true,
                 actions: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/cart');
-                    },
+                  AppButton.circleButton(
+                    context,
+                    onTap: () {},
+                    icon: Icons.shopping_cart,
+                  ),
+                  const SizedBox(
+                    width: 16,
                   ),
                 ],
                 expandedHeight: 250,
@@ -265,16 +281,19 @@ class ProductView extends StatelessWidget {
             ],
           ),
           bottomNavigationBar: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 16,
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: 32,
+              top: 16,
             ),
             child: Row(
               children: [
                 Expanded(
                   child: AppButton.roundedFilledButton(
                     context,
-                    onTap: () {},
+                    onTap: () {
+                    },
                     text: 'Add to Cart',
                   ),
                 ),
@@ -284,7 +303,9 @@ class ProductView extends StatelessWidget {
                 Expanded(
                   child: AppButton.roundedFilledButton(
                     context,
-                    onTap: () {},
+                    onTap: () {
+                      context.push(CheckoutPage.routePath);
+                    },
                     text: 'Buy Now',
                   ),
                 ),
