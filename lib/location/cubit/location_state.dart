@@ -1,14 +1,17 @@
 part of 'location_cubit.dart';
 
 class LocationState extends Equatable {
-  const LocationState(this.location, this.locationAddress);
-  final LatLng location;
-  final List<Placemark> locationAddress;
+  LocationState(this.location, this.placemarks, this.myMarker);
+  final LatLng? location;
+  // final List<Placemark> locationAddress;
+   late List<Placemark>? placemarks;
+  late List<Marker>? myMarker;
 
   @override
-  List<Object> get props => [location, locationAddress];
+  List<Object> get props => [location!, placemarks!, myMarker!];
 }
 
 class LocationSelector extends LocationState {
-  const LocationSelector(super.location, super.locationAddress);
+   LocationSelector(super.location, super.placemarks, super.myMarker);
 }
+

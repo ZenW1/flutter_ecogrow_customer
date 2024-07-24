@@ -1,11 +1,20 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
+import 'package:flutter_ecogrow_customer/location/view/google_map_page.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/custom_container_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationPage extends StatelessWidget {
   const LocationPage({super.key});
@@ -29,54 +38,9 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-  // List<Marker> myMarker = [];
-  // LatLng? currentLocation = const LatLng(11.5621224, 104.9161445);
-  // List<Placemark> locationAddress = [];
-  // final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
-
-  Future<Position> getCurrentPosition() async {
-    bool isServiceEnabled;
-    LocationPermission permission;
-    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isServiceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        unawaited(
-          showDialog(
-            context: context,
-            builder: (context) => const AlertDialog(
-              title: Text('Location Permission'),
-              content:
-                  Text('Please enable location permission in your settings'),
-              actions: [
-                TextButton(
-                  onPressed: Geolocator.openAppSettings,
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      } else if (permission == LocationPermission.deniedForever) {
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.',);
-      }
-    }
-    return Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-  }
-
   @override
   void initState() {
-    context.read<LocationCubit>().getCurrentLocation();
+    context.read<LocationCubit>().getCurrentLocation(context);
     super.initState();
   }
 
@@ -106,69 +70,111 @@ class _LocationViewState extends State<LocationView> {
             ),
           ),
           body: SafeArea(
-            child: GoogleMap(
-              onTap: (LatLng latLng) async {
-                // currentLocation = latLng;
-                //   myMarker.add(
-                //     Marker(
-                //       markerId: const MarkerId('newLocation'),
-                //       icon: BitmapDescriptor.defaultMarkerWithHue(
-                //         BitmapDescriptor.hueRed,
-                //       ),
-                //       position: latLng,
-                //       infoWindow: const InfoWindow(
-                //         title: 'this is my new location',
-                //         snippet: 'This is your location',
-                //       ),
-                //     ),
-                //   );
-                // locationAddress = await placemarkFromCoordinates(
-                //   latLng.latitude,
-                //   latLng.longitude,
-                // );
-                // setState(() {
-                //
-                // });
-
-                await context.read<LocationCubit>().getOnTapData();
-                setState(() {});
-              },
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                  state.location.latitude,
-                  state.location.longitude,
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AppTitleWidget(text: 'Choose your delivery location'),
+                    const SizedBox(height: 14),
+                    Text(
+                      'les’t find your unforgettable event. Choose your location below ti get started.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.greyColor,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    const AppTitleWidget(text: 'Note your Address'),
+                    const SizedBox(height: 16),
+                    GlobalTextField(
+                      textInputType: TextInputType.text,
+                      controller: TextEditingController(),
+                      hintText: 'Enter your address',
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      height: 250,
+                      decoration: CustomConstantWidget.shadowBoxDecorationWidget(
+                        radius: 20,
+                      ),
+                      width: double.infinity,
+                      child: GoogleMap(
+                        onCameraMoveStarted: () {
+                          print('Camera move started');
+                        },
+                        onCameraMove: (CameraPosition cameraPosition) {},
+                        onTap: (LatLng latLng) async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => GoogleMapPage(),
+                            ),
+                          );
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(
+                            state.location!.latitude,
+                            state.location!.longitude,
+                          ),
+                          zoom: 13,
+                        ),
+                        onMapCreated: context.read<LocationCubit>().controller.complete,
+                        markers: Set<Marker>.of(state.myMarker!),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    AppTitleWidget(
+                      text: 'Your Location',
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomContainerWidget(
+                      title: 'Home',
+                      subTitle: 'Terk laor3 Toul Kork, Phnom Penh',
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.greyColor,
+                        child: const Icon(Icons.home),
+                      ),
+                      trialing: Radio(
+                        value: 'home',
+                        groupValue: 'home',
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    CustomContainerWidget(
+                      title: 'Office',
+                      subTitle: 'Sensok, Phnom Penh',
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.greyColor,
+                        child: const Icon(Icons.work),
+                      ),
+                      trialing: Radio(
+                        value: 'home',
+                        groupValue: 'home',
+                        onChanged: (value) {},
+                      ),
+                    )
+                  ],
                 ),
-                zoom: 13,
               ),
-              onMapCreated: context.read<LocationCubit>().controller.complete,
-              markers: Set<Marker>.of(context.read<LocationCubit>().myMarker),
             ),
           ),
           bottomNavigationBar: Container(
-            margin: const EdgeInsets.all(10),
-            height: 100,
-            color: Colors.blue,
-            child: Column(
-              children: [
-                Center(
-                  child: Text(
-                    'Latitude: ${state.location.latitude}, Longitude: ${state.location.longitude} ',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    '${state.locationAddress.isNotEmpty ? state.locationAddress.first.locality : ''}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ],
+            margin: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 32,
+            ),
+            child: AppButton.roundedFilledButton(
+              context,
+              text: 'Save Location',
+              onTap: () {
+                GoRouter.of(context).pushReplacement('/main');
+              },
             ),
           ),
         );
