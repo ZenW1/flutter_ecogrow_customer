@@ -6,20 +6,13 @@ class Assets {
   static const String imagesKhmer = 'assets/images/khmer.png';
   static const String imagesOtp1 = 'assets/images/otp1.png';
   static const String imagesOtp2 = 'assets/images/otp2.png';
-  static const String kantumruyProKantumruyProBold =
-      'assets/fonts/kantumruy_pro/KantumruyPro-Bold.ttf';
-  static const String kantumruyProKantumruyProExtraLight =
-      'assets/fonts/kantumruy_pro/KantumruyPro-ExtraLight.ttf';
-  static const String kantumruyProKantumruyProLight =
-      'assets/fonts/kantumruy_pro/KantumruyPro-Light.ttf';
-  static const String kantumruyProKantumruyProMedium =
-      'assets/fonts/kantumruy_pro/KantumruyPro-Medium.ttf';
-  static const String kantumruyProKantumruyProRegular =
-      'assets/fonts/kantumruy_pro/KantumruyPro-Regular.ttf';
-  static const String kantumruyProKantumruyProSemiBold =
-      'assets/fonts/kantumruy_pro/KantumruyPro-SemiBold.ttf';
-  static const String kantumruyProKantumruyProThin =
-      'assets/fonts/kantumruy_pro/KantumruyPro-Thin.ttf';
+  static const String kantumruyProKantumruyProBold = 'assets/fonts/kantumruy_pro/KantumruyPro-Bold.ttf';
+  static const String kantumruyProKantumruyProExtraLight = 'assets/fonts/kantumruy_pro/KantumruyPro-ExtraLight.ttf';
+  static const String kantumruyProKantumruyProLight = 'assets/fonts/kantumruy_pro/KantumruyPro-Light.ttf';
+  static const String kantumruyProKantumruyProMedium = 'assets/fonts/kantumruy_pro/KantumruyPro-Medium.ttf';
+  static const String kantumruyProKantumruyProRegular = 'assets/fonts/kantumruy_pro/KantumruyPro-Regular.ttf';
+  static const String kantumruyProKantumruyProSemiBold = 'assets/fonts/kantumruy_pro/KantumruyPro-SemiBold.ttf';
+  static const String kantumruyProKantumruyProThin = 'assets/fonts/kantumruy_pro/KantumruyPro-Thin.ttf';
   static const String splashLogo = 'assets/images/splash/logo.png';
   static const String svgAboutUs = 'assets/svg/about_us.svg';
   static const String svgCart = 'assets/svg/cart.svg';
