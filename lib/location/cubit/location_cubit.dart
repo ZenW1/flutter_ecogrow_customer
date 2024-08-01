@@ -10,15 +10,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationState(LatLng(11.5621224, 104.9161445), [], []));
-
-  List<Placemark> placeMarks = [];
-  List<Marker> myMarker = [];
-
-  String get locationAddress => state.placemarks!.isNotEmpty ? state.placemarks![0].country! : 'No Address';
+  LocationCubit() : super(LocationState(const LatLng(11.5621224, 104.9161445), [], []));
 
   Completer<GoogleMapController> get controller => _controller;
-  Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   final Set<Circle> _circle = {
     Circle(
       circleId: const CircleId('voatPhnom'),
@@ -60,21 +55,20 @@ class LocationCubit extends Cubit<LocationState> {
         );
       }
     }
-    var position = await Geolocator.getCurrentPosition();
-    var placemarks = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
-    );
-    emit(
-      LocationState(
-        LatLng(position!.latitude, position!.longitude),
-        placemarks,
-        state.myMarker,
-      ),
-    );
+    final position = await Geolocator.getCurrentPosition();
+    await getPlaceMarkFromCoordinates(position.latitude, position.longitude).then((placeMarks) {
+      emit(
+        LocationState(
+          LatLng(position.latitude, position.longitude),
+          placeMarks,
+          state.myMarker,
+        ),
+      );
+    });
   }
 
-  Future<void> getOnTapData(LatLng latLng) async {
+  Future<void> getOnTapData(LatLng latLng,) async {
+    final myMarker = state.myMarker;
     myMarker!.add(
       Marker(
         markerId: const MarkerId('1'),
@@ -96,20 +90,21 @@ class LocationCubit extends Cubit<LocationState> {
         CameraUpdate.newCameraPosition(newCameraPosition),
       );
     }).then((value) => _controller.isCompleted);
-    emit(
-      LocationState(
-        latLng,
-        placeMarks,
-        myMarker,
-      ),
-    );
+
+    await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
+      emit(
+        LocationState(
+          latLng,
+          placeMark,
+          myMarker,
+        ),
+      );
+    });
+
   }
 
-  Future<void> getDataWhenCameraMove(CameraPosition cameraPosition) async {
-    var placeMarks = await placemarkFromCoordinates(
-      cameraPosition.target.latitude,
-      cameraPosition.target.longitude,
-    );
+  Future<void> getDataWhenCameraMove(
+      CameraPosition cameraPosition, List<Marker> myMarker) async {
     myMarker.add(
       Marker(
         markerId: const MarkerId('1'),
@@ -124,27 +119,78 @@ class LocationCubit extends Cubit<LocationState> {
         ),
       ),
     );
-    await _controller.future.then((controller) {
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    await  getPlaceMarkFromCoordinates(cameraPosition.target.latitude, cameraPosition.target.longitude).then((placeMark) {
+      emit(
+        LocationState(
+          cameraPosition.target,
+          placeMark,
+          myMarker,
+        ),
       );
     });
-    emit(
-      LocationState(
-        cameraPosition.target,
-        placeMarks,
-        myMarker,
-      ),
-    );
   }
 
-   String getLocationAddress()  {
-    var address = state.placemarks![0];
 
+  // on Idle Camera
 
-    var addresses =
-        '${address.name}, ${address.subLocality}, ${address.locality}, ${address.administrativeArea} ${address.postalCode}, ${address.country}';
-    return placeMarks.isNotEmpty ? addresses! : 'No Address';
+  // Future<void> onIdleCamera(
+  //   CameraPosition cameraPosition,
+  //   List<Marker> myMarker,
+  //   List<Placemark> placeMark,
+  // ) async {
+  //   myMarker.add(
+  //     Marker(
+  //       markerId: const MarkerId('1'),
+  //       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+  //       position: LatLng(
+  //         cameraPosition.target.latitude,
+  //         cameraPosition.target.longitude,
+  //       ),
+  //       infoWindow: const InfoWindow(
+  //         title: 'this is my new location',
+  //         snippet: 'This is your location',
+  //       ),
+  //     ),
+  //   );
+  //   // I want location to change slowly not too fast
+  //   await _controller.future.then((controller) {
+  //     controller.animateCamera(
+  //       CameraUpdate.newCameraPosition(cameraPosition),
+  //     );
+  //   });
+  //
+  //   emit(
+  //     LocationState(
+  //       cameraPosition.target,
+  //       placeMark,
+  //       myMarker,
+  //     ),
+  //   );
+  // }
+
+  Future<List<Placemark>> getPlaceMarkFromCoordinates(
+    double latitude,
+    double longitude,
+  ) async {
+    final placeMarks = await placemarkFromCoordinates(
+      latitude,
+      longitude,
+    );
+    return placeMarks;
+  }
+
+  String getLocationAddress(
+    List<Placemark>? placeMarks,
+  ) {
+    final address = state.placemarks!;
+
+    final addresses =
+        '${address.first.name}, ${address.first.subLocality}, ${address.first.locality}';
+    print(addresses);
+    return placeMarks!.isNotEmpty ? addresses : 'No Address';
   }
 
   Future<void> load() async {}

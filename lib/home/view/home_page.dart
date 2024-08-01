@@ -213,22 +213,22 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ],
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 150,
-                        child: AnimatedSmoothIndicator(
-                          activeIndex: state.currentIndex!,
-                          count:  state.indexCount!,
-                          effect: const ExpandingDotsEffect(
-                            activeDotColor: AppColors.primary,
-                            dotColor: AppColors.primary,
-                            dotHeight: 8,
-                            dotWidth: 8,
-                            expansionFactor: 4,
-                            spacing: 5,
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   right: 150,
+                      //   child: AnimatedSmoothIndicator(
+                      //     activeIndex: state.currentIndex!,
+                      //     count:  state.indexCount!,
+                      //     effect: const ExpandingDotsEffect(
+                      //       activeDotColor: AppColors.primary,
+                      //       dotColor: AppColors.primary,
+                      //       dotHeight: 8,
+                      //       dotWidth: 8,
+                      //       expansionFactor: 4,
+                      //       spacing: 5,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
 import 'package:flutter_ecogrow_customer/environment/cubit/environment_cubit.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
+import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 import 'package:flutter_ecogrow_customer/main/cubit/main_cubit.dart';
 import 'package:flutter_ecogrow_customer/profile/language/cubit/language_cubit.dart';
 import 'package:flutter_ecogrow_customer/route/app_router.dart';

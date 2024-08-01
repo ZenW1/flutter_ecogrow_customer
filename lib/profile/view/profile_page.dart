@@ -115,30 +115,30 @@ class ProfileView extends StatelessWidget {
                     ),
                     mainTitleWidget(
                       context,
-                      title: 'Support',
+                      title: context.l10n.support,
                     ),
                     ProfileItemWidget(
-                      title: 'About Us',
+                      title: context.l10n.aboutUs,
                       onTap: () {},
                       icon: Assets.svg.aboutUs,
                     ),
                     ProfileItemWidget(
-                      title: 'Privacy Policy',
+                      title: context.l10n.privacyPolicy,
                       onTap: () {},
                       icon: Assets.svg.privacy,
                     ),
                     ProfileItemWidget(
-                      title: 'Term & Condition',
+                      title: context.l10n.termCondition,
                       onTap: () {},
                       icon: Assets.svg.termCondition,
                     ),
                     ProfileItemWidget(
-                      title: 'Help Center',
+                      title: context.l10n.helpCenter,
                       onTap: () {},
                       icon: Assets.svg.helpCenter,
                     ),
                     ProfileItemWidget(
-                      title: 'FAQ',
+                      title: context.l10n.faq,
                       onTap: () {},
                       icon: Assets.svg.faq,
                     ),

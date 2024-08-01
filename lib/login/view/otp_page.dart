@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
+import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
 import 'package:flutter_ecogrow_customer/register/register.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -12,6 +13,7 @@ class OTPPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -25,7 +27,7 @@ class OTPPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'VERIFY OTP',
+                        context.l10n.verifyOtp,
                         textAlign: TextAlign.left,
                         style: Theme.of(context)
                             .textTheme
@@ -36,7 +38,7 @@ class OTPPage extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        'We have sent an OTP to your mobile number. Please enter the OTP below to verify your account.',
+                        context.l10n.verifyOtpDescription,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
@@ -65,13 +67,13 @@ class OTPPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Didn't receive the OTP?",
+                            context.l10n.didNOtReceiveOtp,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           TextButton(
                             onPressed: () {},
                             child: Text(
-                              'Resend OTP',
+                              context.l10n.resendOtp,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -87,7 +89,7 @@ class OTPPage extends StatelessWidget {
                           onTap: () {
                             context.go(RegisterPage.routePath);
                           },
-                          text: 'VERIFY OTP',
+                          text: context.l10n.confirm,
                           color: AppColors.primary,
                         ),
                       ),

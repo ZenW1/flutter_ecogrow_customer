@@ -27,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
       } else {
         emit(
           HomeState(
-            currentIndex: state.currentIndex! - 1,
+            currentIndex: currentIndex! -1 <= 0 ? 0 : currentIndex ,
             indexCount: indexCount,
           ),
         );
