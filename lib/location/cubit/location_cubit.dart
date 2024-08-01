@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationState(const LatLng(11.5621224, 104.9161445), [], []));
+  LocationCubit() : super(LocationState(const LatLng(11.5621224, 104.9161445), const [], const []));
 
   Completer<GoogleMapController> get controller => _controller;
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
@@ -73,7 +72,7 @@ class LocationCubit extends Cubit<LocationState> {
       Marker(
         markerId: const MarkerId('1'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        position: LatLng(latLng!.latitude, latLng!.longitude),
+        position: LatLng(latLng.latitude, latLng.longitude),
         infoWindow: const InfoWindow(
           title: 'this is my new location',
           snippet: 'This is your location',
@@ -81,7 +80,7 @@ class LocationCubit extends Cubit<LocationState> {
       ),
     );
     final newCameraPosition = CameraPosition(
-      target: LatLng(latLng!.latitude, latLng!.longitude),
+      target: LatLng(latLng.latitude, latLng.longitude),
       zoom: 15,
     );
 
@@ -104,7 +103,7 @@ class LocationCubit extends Cubit<LocationState> {
   }
 
   Future<void> getDataWhenCameraMove(
-      CameraPosition cameraPosition, List<Marker> myMarker) async {
+      CameraPosition cameraPosition, List<Marker> myMarker,) async {
     myMarker.add(
       Marker(
         markerId: const MarkerId('1'),

@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -121,7 +118,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       width: 10,
                     ),
                     Text(
-                     state.placemarks != null? context.read<LocationCubit>().getLocationAddress(state.placemarks!) : 'No address found',
+                     state.placemarks != null? context.read<LocationCubit>().getLocationAddress(state.placemarks) : 'No address found',
                       maxLines: 2,
                       softWrap: false,
                       textWidthBasis: TextWidthBasis.longestLine,
@@ -129,7 +126,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       textHeightBehavior: const TextHeightBehavior(
                         applyHeightToFirstAscent: false,
                         applyHeightToLastDescent: false,
-                      )
+                      ),
 
                     ),
                     const Spacer(),
@@ -137,7 +134,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ],
                 ),
                 const SizedBox(height: 16,),
-                const AppTitleWidget(text: 'We\'re missing your address',),
+                const AppTitleWidget(text: "We're missing your address",),
                 const SizedBox(height: 16,),
                 GlobalTextField(
                   textInputType: TextInputType.text,

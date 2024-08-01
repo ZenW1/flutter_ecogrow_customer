@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
@@ -82,14 +81,14 @@ class CheckoutView extends StatelessWidget {
                   ),
                   CustomContainerWidget(
                     title: 'Delivery Address',
-                    subTitle: 'Free shipping for orders over \$50',
+                    subTitle: r'Free shipping for orders over $50',
                     leading: Radio(
                       value: 1,
                       groupValue: 1,
                       onChanged: (value) {},
                     ),
                     trialing: Text(
-                      '\$5.00',
+                      r'$5.00',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.redColor,
                             fontWeight: FontWeight.w500,

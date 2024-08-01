@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
-import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class LoginPage extends StatelessWidget {

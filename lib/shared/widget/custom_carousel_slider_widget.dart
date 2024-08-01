@@ -54,7 +54,6 @@ class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget>
             options: CarouselOptions(
               height: MediaQuery.of(context).size.height * 0.4,
               autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 4),
               viewportFraction: 1,
               onPageChanged: (index, reason) {
                 setState(() {

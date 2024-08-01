@@ -1,6 +1,4 @@
-import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
@@ -11,10 +9,8 @@ import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_container_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class LocationPage extends StatelessWidget {
   const LocationPage({super.key});
@@ -107,7 +103,7 @@ class _LocationViewState extends State<LocationView> {
                         onTap: (LatLng latLng) async {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => GoogleMapPage(),
+                              builder: (context) => const GoogleMapPage(),
                             ),
                           );
                         },
@@ -122,21 +118,21 @@ class _LocationViewState extends State<LocationView> {
                         markers: Set<Marker>.of(state.myMarker!),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
-                    AppTitleWidget(
+                    const AppTitleWidget(
                       text: 'Your Location',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CustomContainerWidget(
                       title: 'Home',
                       subTitle: 'Terk laor3 Toul Kork, Phnom Penh',
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         backgroundColor: AppColors.greyColor,
-                        child: const Icon(Icons.home),
+                        child: Icon(Icons.home),
                       ),
                       trialing: Radio(
                         value: 'home',
@@ -147,16 +143,16 @@ class _LocationViewState extends State<LocationView> {
                     CustomContainerWidget(
                       title: 'Office',
                       subTitle: 'Sensok, Phnom Penh',
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         backgroundColor: AppColors.greyColor,
-                        child: const Icon(Icons.work),
+                        child: Icon(Icons.work),
                       ),
                       trialing: Radio(
                         value: 'home',
                         groupValue: 'home',
                         onChanged: (value) {},
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
