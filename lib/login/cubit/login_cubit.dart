@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> sendLoginOtp() async {
     emit(const LoginLoading());
     try {
-      final phoneNumber = '+855 ${numberController.text}';
+      final phoneNumber = '+855${numberController.text}';
        await _loginService.sendOtp(
         phoneNumber: phoneNumber,
       );

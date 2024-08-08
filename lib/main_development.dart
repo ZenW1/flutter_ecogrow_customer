@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_ecogrow_customer/app/view/app.dart';
 import 'package:flutter_ecogrow_customer/bootstrap.dart';

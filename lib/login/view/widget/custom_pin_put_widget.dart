@@ -34,6 +34,9 @@ class CustomPinPutWidget extends StatelessWidget {
 
     return Pinput(
       autofocus: true,
+      length: 6,
+      focusedPinTheme: focusedPinTheme,
+      submittedPinTheme: submittedPinTheme,
       onSubmitted: (String pin) {
         print('submit pin: $pin');
       },
