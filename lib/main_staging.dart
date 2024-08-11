@@ -5,6 +5,7 @@ import 'package:flutter_ecogrow_customer/app/view/app.dart';
 import 'package:flutter_ecogrow_customer/bootstrap.dart';
 import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_language.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:http_client/http_client.dart';
 
 Future<void> main() async {
@@ -12,12 +13,14 @@ Future<void> main() async {
     (sharedPreferences) async {
       final environment = EnvironmentModel.production();
       final dioHttp = DioHttpClient(dio: Dio(), baseUrl: '');
+      final appToken = AppToken(preferences: sharedPreferences);
       final appLanguage = AppLanguage(preferences: sharedPreferences);
 
       return App(
         environment: environment,
         dioHttpClient: dioHttp,
         appLanguage: appLanguage,
+        appToken: appToken,
       );
     },
   );

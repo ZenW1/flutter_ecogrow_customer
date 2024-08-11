@@ -7,24 +7,55 @@ enum LoginStatus {
   failure,
   sendOtp,
   verifyOtp,
+  isNewUser,
   loading,
 }
 
-abstract class LoginState extends Equatable {
+class LoginState extends Equatable {
   const LoginState({
     this.status = LoginStatus.initial,
     this.phoneNumber = '',
     this.isPhoneNumberValid = false,
     this.isSubmitting = false,
     this.isSuccess = false,
+    this.isNewUser = true,
     this.errorMessage = '',
+    this.accessToken = '',
   });
+
+  LoginState copyWith({
+    LoginStatus? status,
+    String? phoneNumber,
+    bool? isPhoneNumberValid,
+    bool? isSubmitting,
+    bool? isSuccess,
+    bool? isNewUser,
+    String? errorMessage,
+    String? accessToken,
+  }) {
+    return LoginState(
+      status: status ?? this.status,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
+      isSuccess: isSuccess ?? this.isSuccess,
+      isNewUser: isNewUser ?? this.isNewUser,
+      errorMessage: errorMessage ?? this.errorMessage,
+      accessToken: accessToken ?? this.accessToken,
+    );
+  }
+
+  factory LoginState.initial() {
+    return LoginState();
+  }
 
   final LoginStatus status;
   final String phoneNumber;
+  final String accessToken;
   final bool isPhoneNumberValid;
   final bool isSubmitting;
   final bool isSuccess;
+  final bool isNewUser;
   final String errorMessage;
 
   @override
@@ -35,45 +66,7 @@ abstract class LoginState extends Equatable {
         isSubmitting,
         isSuccess,
         errorMessage,
+        isNewUser,
+      accessToken,
       ];
-}
-
-class LoginInitial extends LoginState {
-  const LoginInitial() : super(status: LoginStatus.initial);
-}
-
-class LoginLoading extends LoginState {
-  const LoginLoading() : super(status: LoginStatus.loading);
-}
-
-class LoginSubmitting extends LoginState {
-  const LoginSubmitting(String phoneNumber)
-      : super(
-          status: LoginStatus.submitting,
-          phoneNumber: phoneNumber,
-        );
-}
-
-class LoginSendingOtp extends LoginState {
-  const LoginSendingOtp(String phoneNumber)
-      : super(
-          status: LoginStatus.sendOtp,
-          phoneNumber: phoneNumber,
-        );
-}
-
-class LoginVerifyOtp extends LoginState {
-  const LoginVerifyOtp({required this.isNewUser})
-      : super(
-          status: LoginStatus.verifyOtp,
-        );
-  final bool isNewUser;
-}
-
-class LoginFailure extends LoginState {
-  const LoginFailure(String errorMessage)
-      : super(
-          status: LoginStatus.failure,
-          errorMessage: errorMessage,
-        );
 }

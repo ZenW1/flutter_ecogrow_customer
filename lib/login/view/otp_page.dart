@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/authentication/authentication_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
+import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
+import 'package:flutter_ecogrow_customer/main/main.dart';
 import 'package:flutter_ecogrow_customer/register/register.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -78,7 +81,9 @@ class OTPPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.read<LoginCubit>().sendLoginOtp();
+                              context.read<LoginCubit>().sendLoginOtp(
+                                phoneNumber: context.read<LoginCubit>().numberController.text,
+                              );
                             },
                             child: Text(
                               context.l10n.resendOtp,
@@ -91,15 +96,18 @@ class OTPPage extends StatelessWidget {
                       ),
                       BlocConsumer<LoginCubit, LoginState>(
                         listener: (context, state) {
-                          if (state is LoginLoading) {
+                          if (state.status == LoginStatus.loading) {
                             context.loaderOverlay.show();
-                          } else if (state is LoginVerifyOtp) {
+                          } else if (state.status == LoginStatus.verifyOtp) {
                             if (state.isNewUser) {
-                              context.go(RegisterPage.routePath);
-                            } else {
-                              context.go('/main');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => const RegisterPage()),
+                              );
+                            } else if(!state.isNewUser) {
+                               context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken));
                             }
-                          } else if (state is LoginFailure) {
+                            context.loaderOverlay.hide();
+                          } else if (state.status == LoginStatus.failure) {
                             context.loaderOverlay.hide();
                             CustomDialog.showWarningDialog(state.errorMessage);
                           }
@@ -110,7 +118,7 @@ class OTPPage extends StatelessWidget {
                             child: AppButton.roundedFilledButton(
                               context,
                               onTap: () {
-                                context.go(RegisterPage.routePath);
+                                context.read<LoginCubit>().verifyOtp(pinController.text);
                               },
                               text: context.l10n.confirm,
                               color: AppColors.primary,

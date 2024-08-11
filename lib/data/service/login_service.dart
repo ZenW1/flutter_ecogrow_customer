@@ -1,25 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 
 class LoginService {
-  factory LoginService() => _instance;
+  // factory LoginService() => _instance;
+  //
+  // LoginService._internal();
+  //
+  //
+  // static final LoginService _instance = LoginService._internal();
 
-  LoginService._internal();
+  final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
-  static final LoginService _instance = LoginService._internal();
+  Stream<auth.User?> get statusChange => _auth.authStateChanges();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationId = '';
 
-
-  Future<String> sendOtp({
-    required String phoneNumber,
-  }) async {
+  Future<void> sendOtp({required String phoneNumber}) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _auth.signInWithCredential(credential);
+          final user = await _auth.signInWithCredential(credential);
+          print('user ${user.additionalUserInfo}');
+          print('user id : ${user.user!.uid}');
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
@@ -30,34 +34,46 @@ class LoginService {
         },
         codeSent: (String verificationId, int? resendToken) {
           print('codeSent');
-          verificationId = this.verificationId;
+          this.verificationId = verificationId;
+          print('verificaitonID : $verificationId');
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           print('codeAutoRetrievalTimeout');
-          verificationId = this.verificationId;
+          this.verificationId = verificationId;
         },
         timeout: const Duration(seconds: 60),
       );
-      return 'Otp Sent';
-    } catch (e) {
-      return e.toString();
+    } on auth.FirebaseAuthException catch (e) {
+      throw e;
     }
   }
 
-  Future<bool> verifyOtp({
-    required String codeSms,
-  }) async {
+  Future<int> timeOut() async {
+    return Future.delayed(Duration(seconds: 60));
+  }
+
+  Future<bool> verifyOtp({required String codeSms}) async {
     try {
       final userCredential = await _auth.signInWithCredential(
-        PhoneAuthProvider.credential(
-          verificationId: verificationId,
-          smsCode: codeSms,
-        ),
+        PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: codeSms),
       );
       return userCredential.additionalUserInfo!.isNewUser;
-    } catch (e) {
-      return false;
+    } on auth.FirebaseAuthException catch (e) {
+      throw e;
     }
+  }
+
+  Future<String> getAccessToken() async {
+    final user = _auth.currentUser;
+    String token = '';
+    if (user != null) {
+      user.getIdTokenResult().then((value) {
+        {
+          token = value.token!;
+        }
+      });
+    }
+    return token;
   }
 
   Future<void> signOut() async {

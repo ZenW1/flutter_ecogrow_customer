@@ -6,31 +6,56 @@ import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(const LoginInitial());
+  LoginCubit() : super(const LoginState(status: LoginStatus.initial));
   final LoginService _loginService = LoginService();
 
   late TextEditingController numberController = TextEditingController();
 
-  Future<void> sendLoginOtp() async {
-    emit(const LoginLoading());
+  Future<void> sendLoginOtp({required String phoneNumber}) async {
+    emit(
+      state.copyWith(status: LoginStatus.loading),
+    );
     try {
-      final phoneNumber = '+855${numberController.text}';
-       await _loginService.sendOtp(
-        phoneNumber: phoneNumber,
+      await _loginService.sendOtp(
+        phoneNumber: '+855 ${phoneNumber}',
       );
-      emit(LoginSendingOtp(phoneNumber));
+
+      emit(LoginState().copyWith(status: LoginStatus.sendOtp, phoneNumber: phoneNumber));
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
 
   Future<void> verifyOtp(String code) async {
-    emit(const LoginInitial());
+    emit(state.copyWith(status: LoginStatus.loading));
     try {
-      final isNewUser = await _loginService.verifyOtp(codeSms: code);
-      emit(LoginVerifyOtp(isNewUser: isNewUser));
+      final isNewUser = await _loginService.verifyOtp(
+        codeSms: code,
+      );
+      emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser));
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
+  //
+  Future<String> getAccessToken() async {
+    emit(state.copyWith(status: LoginStatus.loading));
+    try {
+      final accessToken = await _loginService.getAccessToken();
+      return accessToken;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> timeOut() async {
+    emit(state.copyWith(status: LoginStatus.loading));
+    try {
+      await _loginService.timeOut();
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: 'Time out'));
+    } catch (e) {
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
+    }
+  }
+
 }

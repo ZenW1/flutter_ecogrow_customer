@@ -4,10 +4,12 @@ import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class LoginPage extends StatelessWidget {
@@ -28,11 +30,19 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        if (state is LoginLoading) {
+    return BlocConsumer<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state.status == LoginStatus.loading) {
           context.loaderOverlay.show();
+        } else if(state.status == LoginStatus.sendOtp) {
+          context.loaderOverlay.hide();
+          GoRouter.of(context).go('/otp');
+        }  else if (state.status == LoginStatus.failure) {
+          context.loaderOverlay.hide();
+          CustomDialog.showWarningDialog(state.errorMessage);
         }
+      },
+      builder: (context, state) {
         return Scaffold(
           body: SafeArea(
             child: Center(
@@ -90,7 +100,7 @@ class LoginView extends StatelessWidget {
                               hintText: context.l10n.phoneNumber,
                               filled: true,
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                if (value == null) {
                                   return context.l10n.enterPhoneNumber;
                                 } else if (value.length < 7) {
                                   return 'Please enter a valid phone number';
@@ -107,13 +117,8 @@ class LoginView extends StatelessWidget {
                                 context,
                                 onTap: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    context.loaderOverlay.show();
-                                    await context.read<LoginCubit>().sendLoginOtp();
-                                    context.loaderOverlay.hide();
-                                    await Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const OTPPage(),
-                                      ),
+                                    await context.read<LoginCubit>().sendLoginOtp(
+                                      phoneNumber: context.read<LoginCubit>().numberController.text,
                                     );
                                   }
                                 },
