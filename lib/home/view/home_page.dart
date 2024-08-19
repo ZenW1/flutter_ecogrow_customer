@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/category/view/category_item_widget.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/product/product.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/custom_show_product_bottom_widget.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/product_vertical_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
@@ -312,7 +313,7 @@ class _HomeViewState extends State<HomeView> {
                             },
                             child: ProductVerticalWidget(
                               onTap: () {
-                                context.go('/product');
+                                GoRouter.of(context).push('/product');
                               },
                               product: productList[index],
                             ),

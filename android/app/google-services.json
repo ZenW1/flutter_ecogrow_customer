@@ -13,7 +13,20 @@
           "package_name": "kh.com.ecogrow.ecommerce.sale"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "642357116011-lcl8nckrpe876942lj6mvtdgl1udarcl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kh.com.ecogrow.ecommerce.sale",
+            "certificate_hash": "77cd02ea740176c9f403e4578374136f3f8dad41"
+          }
+        },
+        {
+          "client_id": "642357116011-ujg2abjmsknctiuerd7vib1hbg7t8478.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBzIyRgm934hMeLrM6Myn-FDPApI6VlaKo"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642357116011-ujg2abjmsknctiuerd7vib1hbg7t8478.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "642357116011-hnrnbld07f5hndt5pih0hnqvtsm5o2o1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kh.com.ecogrow.ecommerce.sale"
+              }
+            }
+          ]
         }
       }
     }

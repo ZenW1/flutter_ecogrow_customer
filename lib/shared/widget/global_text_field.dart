@@ -66,7 +66,7 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
         keyboardType: widget.textInputType,
         controller: widget.controller,
         onEditingComplete: () {
-          // FocusScope.of(context).unfocus();
+          FocusScope.of(context).unfocus();
         },
         focusNode: FocusNode(),
         textDirection: TextDirection.ltr,
@@ -99,6 +99,12 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
             ),
           ),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.greyColor.withOpacity(0.5),
+            ),
+          ),
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
               color: AppColors.greyColor.withOpacity(0.5),

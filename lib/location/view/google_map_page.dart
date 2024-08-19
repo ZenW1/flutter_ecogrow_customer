@@ -6,50 +6,47 @@ import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
-class GoogleMapPage extends StatefulWidget {
+class GoogleMapPage extends StatelessWidget {
   const GoogleMapPage({super.key});
 
   @override
-  State<GoogleMapPage> createState() => _GoogleMapPageState();
-}
-
-class _GoogleMapPageState extends State<GoogleMapPage> {
-  @override
-  void initState() {
-    context.read<LocationCubit>().getCurrentLocation(context);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final bloc = context.read<LocationCubit>();
     return BlocBuilder<LocationCubit, LocationState>(
+      buildWhen: (previous, current) {
+        return previous.myMarker != current.myMarker;
+      },
       builder: (context, state) {
+        if(state is LocationSelector){
+          context.loaderOverlay.show();
+          }
         return Scaffold(
           body: Stack(
             children: [
               GoogleMap(
                 onCameraMoveStarted: () {
-                  print('Camera move started');
+                  bloc.getCurrentLocation(context);
                 },
-                onCameraMove: (CameraPosition cameraPosition) {
-                  context.read<LocationCubit>().getDataWhenCameraMove(
-                        cameraPosition,
-                        state.myMarker!,
-                      );
+                onCameraMove: (CameraPosition cameraPosition)  async{
+                   await bloc.getDataWhenCameraMove(cameraPosition);
                 },
-                onCameraIdle: () {
-                  print('Camera move idle');
-                },
-                onTap: (LatLng latLng) async {
-                  await context.read<LocationCubit>().getOnTapData(latLng);
-                },
+                onCameraIdle: ()  {
+                  bloc.onCameraStoppedMoving();
+                  },
+                // onTap: (LatLng latLng) async {
+                //   await bloc.getOnTapData(latLng);
+                // },
                 initialCameraPosition: CameraPosition(
                   target: state.location!,
                   zoom: 13,
                 ),
-                onMapCreated: context.read<LocationCubit>().controller.complete,
-                markers: Set<Marker>.of(state.myMarker!),
+                onMapCreated: (GoogleMapController controller) {
+                },
+                markers: {
+                  state.myMarker!,
+                },
               ),
               Positioned(
                 top: 50,
@@ -118,7 +115,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       width: 10,
                     ),
                     Text(
-                     state.placemarks != null? context.read<LocationCubit>().getLocationAddress(state.placemarks) : 'No address found',
+                      bloc.state.placemarks!.first.name.toString(),
                       maxLines: 2,
                       softWrap: false,
                       textWidthBasis: TextWidthBasis.longestLine,

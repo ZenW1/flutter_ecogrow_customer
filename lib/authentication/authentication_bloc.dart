@@ -25,7 +25,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   Future<void> onAuthenticating(AuthenticatingEvent event , Emitter<AuthenticationState> emit) async {
     emit(AuthenticationInitial());
     try {
-      await _appToken.saveAccessToken(event.accessToken);
+      if(event.accessToken.isEmpty){
+        await _appToken.saveAccessToken(event.accessToken);
+        emit(Authenticated());
+      }
     } catch (e) {
       emit(AuthenticateFailed(errorMessage: e.toString()));
     }

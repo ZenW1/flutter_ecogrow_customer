@@ -3,27 +3,25 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 
 class LoginService {
-  // factory LoginService() => _instance;
-  //
-  // LoginService._internal();
-  //
-  //
-  // static final LoginService _instance = LoginService._internal();
+  factory LoginService() => _instance;
+
+  LoginService._internal();
+
+  static final LoginService _instance = LoginService._internal();
 
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
-  Stream<auth.User?> get statusChange => _auth.authStateChanges();
+  //
+  // Stream<auth.User?> get statusChange => _auth.authStateChanges();
 
-  String verificationId = '';
+  String? verificationId = '';
 
   Future<void> sendOtp({required String phoneNumber}) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          final user = await _auth.signInWithCredential(credential);
-          print('user ${user.additionalUserInfo}');
-          print('user id : ${user.user!.uid}');
+          await _auth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
@@ -33,8 +31,8 @@ class LoginService {
           }
         },
         codeSent: (String verificationId, int? resendToken) {
-          print('codeSent');
-          this.verificationId = verificationId;
+          print('codeSent : $resendToken');
+          verificationId = this.verificationId!;
           print('verificaitonID : $verificationId');
         },
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -54,11 +52,22 @@ class LoginService {
 
   Future<bool> verifyOtp({required String codeSms}) async {
     try {
+      final phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verificationId!,
+        smsCode: codeSms,
+      );
       final userCredential = await _auth.signInWithCredential(
-        PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: codeSms),
+        PhoneAuthProvider.credential(
+          verificationId: verificationId!,
+          smsCode: codeSms,
+        ),
       );
       return userCredential.additionalUserInfo!.isNewUser;
     } on auth.FirebaseAuthException catch (e) {
+      throw e;
+    } on Exception catch (e) {
+      throw e;
+    } on Error catch (e) {
       throw e;
     }
   }
@@ -67,11 +76,14 @@ class LoginService {
     final user = _auth.currentUser;
     String token = '';
     if (user != null) {
-      user.getIdTokenResult().then((value) {
-        {
-          token = value.token!;
-        }
-      });
+      user.getIdTokenResult().then(
+        (value) {
+          {
+            token = value.token!;
+            print('token : $token');
+          }
+        },
+      );
     }
     return token;
   }

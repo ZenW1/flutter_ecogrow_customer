@@ -22,12 +22,11 @@ class Authenticating extends AuthenticationState {
 }
 
 class Authenticated extends AuthenticationState {
-  final String displayUserName;
 
-  Authenticated({required this.displayUserName});
+  Authenticated();
 
   @override
-  List<Object> get props => [displayUserName];
+  List<Object> get props => [];
 }
 
 class UnAuthenticated extends AuthenticationState {

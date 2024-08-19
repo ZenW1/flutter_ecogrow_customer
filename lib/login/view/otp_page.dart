@@ -100,11 +100,12 @@ class OTPPage extends StatelessWidget {
                             context.loaderOverlay.show();
                           } else if (state.status == LoginStatus.verifyOtp) {
                             if (state.isNewUser) {
-                              Navigator.of(context).push(
+                              Navigator.of(context).push<RegisterPage>(
                                 MaterialPageRoute(builder: (context) => const RegisterPage()),
                               );
                             } else if(!state.isNewUser) {
-                               context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken));
+                               context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken ));
+                               print('This is access token ${state.accessToken}');
                             }
                             context.loaderOverlay.hide();
                           } else if (state.status == LoginStatus.failure) {

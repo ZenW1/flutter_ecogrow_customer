@@ -18,3 +18,8 @@ class AuthenticatingEvent extends AuthenticationEvent {
   @override
   List<Object> get props => [accessToken];
 }
+//
+// class UnAuthenticateEvent extends AuthenticationEvent {
+//   @override
+//   List<Object> get props => [];
+// }

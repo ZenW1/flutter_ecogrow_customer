@@ -32,11 +32,18 @@ class LoginCubit extends Cubit<LoginState> {
       final isNewUser = await _loginService.verifyOtp(
         codeSms: code,
       );
-      emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser));
+      if (isNewUser) {
+        emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser));
+        return;
+      } else if(!isNewUser) {
+        final accessToken =  await getAccessToken();
+        emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser, accessToken: accessToken));
+      }
     } catch (e) {
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
+
   //
   Future<String> getAccessToken() async {
     emit(state.copyWith(status: LoginStatus.loading));
@@ -44,7 +51,7 @@ class LoginCubit extends Cubit<LoginState> {
       final accessToken = await _loginService.getAccessToken();
       return accessToken;
     } catch (e) {
-      throw e;
+      throw Exception('Error from token $e');
     }
   }
 
@@ -57,5 +64,4 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
-
 }

@@ -15,6 +15,7 @@ import 'package:flutter_ecogrow_customer/route/app_router.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/GlobalOverLayWidget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_language.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -80,11 +81,11 @@ class App extends StatelessWidget {
              if(state is AppStarted){
                context.loaderOverlay.show();
              } else if(state is Authenticated){
-               Navigator.of(context).push(
+               Navigator.of(context).push<MainPage>(
                   MaterialPageRoute(builder: (context) => const MainPage()),
                );
              } else if (state is UnAuthenticated){
-               GoRouter.of(context).go('/login');
+                GoRouter.of(context).go('/login');
              }
           },
           child: Sizer(

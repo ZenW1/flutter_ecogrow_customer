@@ -9,10 +9,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationState(const LatLng(11.5621224, 104.9161445), const [], const []));
+  LocationCubit()
+      : super(
+          LocationLoading(
+            const LatLng(11.561462379276703, 104.9137589937964),
+            null,
+            null,
+          ),
+        );
 
   Completer<GoogleMapController> get controller => _controller;
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+
   final Set<Circle> _circle = {
     Circle(
       circleId: const CircleId('voatPhnom'),
@@ -55,28 +63,83 @@ class LocationCubit extends Cubit<LocationState> {
       }
     }
     final position = await Geolocator.getCurrentPosition();
+    // mymartker
+    final myMarker = Marker(
+      markerId: const MarkerId('1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      position: LatLng(position.latitude, position.longitude),
+      infoWindow: const InfoWindow(
+        title: 'this is my new location',
+        snippet: 'This is your location',
+      ),
+    );
     await getPlaceMarkFromCoordinates(position.latitude, position.longitude).then((placeMarks) {
       emit(
         LocationState(
           LatLng(position.latitude, position.longitude),
           placeMarks,
-          state.myMarker,
+          myMarker,
         ),
       );
     });
   }
 
-  Future<void> getOnTapData(LatLng latLng,) async {
-    final myMarker = state.myMarker;
-    myMarker!.add(
-      Marker(
-        markerId: const MarkerId('1'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        position: LatLng(latLng.latitude, latLng.longitude),
-        infoWindow: const InfoWindow(
-          title: 'this is my new location',
-          snippet: 'This is your location',
-        ),
+  //  Future<void> getOnTapData(
+  //    LatLng latLng,
+  //  ) async {
+  // List<Marker> myMarker = [];
+  //    myMarker!.add(
+  //      Marker(
+  //        markerId: const MarkerId('1'),
+  //        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+  //        position: LatLng(latLng.latitude, latLng.longitude),
+  //        infoWindow: const InfoWindow(
+  //          title: 'this is my new location',
+  //          snippet: 'This is your location',
+  //        ),
+  //      ),
+  //    );
+  //    final newCameraPosition = CameraPosition(
+  //      target: LatLng(latLng.latitude, latLng.longitude),
+  //      zoom: 15,
+  //    );
+  //
+  //    await _controller.future.then((controller) {
+  //      controller.animateCamera(
+  //        CameraUpdate.newCameraPosition(newCameraPosition),
+  //      );
+  //    }).then((value) => _controller.isCompleted);
+  //
+  //    await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
+  //      emit(
+  //        LocationState(
+  //          latLng,
+  //          placeMark,
+  //          myMarker,
+  //        ),
+  //      );
+  //    });
+  //  }
+
+  Future<void> onCameraStarted(
+    LatLng latLng,
+  ) async {
+    Marker myMarker = Marker(
+      markerId: const MarkerId('1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      position: LatLng(latLng.latitude, latLng.longitude),
+      infoWindow: const InfoWindow(
+        title: 'this is my new location',
+        snippet: 'This is your location',
+      ),
+    );
+    myMarker = Marker(
+      markerId: const MarkerId('1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      position: LatLng(latLng.latitude, latLng.longitude),
+      infoWindow: const InfoWindow(
+        title: 'this is my new location',
+        snippet: 'This is your location',
       ),
     );
     final newCameraPosition = CameraPosition(
@@ -99,39 +162,71 @@ class LocationCubit extends Cubit<LocationState> {
         ),
       );
     });
-
   }
 
-  Future<void> getDataWhenCameraMove(
-      CameraPosition cameraPosition, List<Marker> myMarker,) async {
-    myMarker.add(
-      Marker(
-        markerId: const MarkerId('1'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        position: LatLng(
-          cameraPosition.target.latitude,
-          cameraPosition.target.longitude,
-        ),
-        infoWindow: const InfoWindow(
-          title: 'this is my new location',
-          snippet: 'This is your location',
-        ),
-      ),
-    );
+  Future<void> onCameraStoppedMoving() async {
+    // await Future.delayed(const Duration(milliseconds: 500));
 
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    await  getPlaceMarkFromCoordinates(cameraPosition.target.latitude, cameraPosition.target.longitude).then((placeMark) {
+    await getPlaceMarkFromCoordinates(state.location!.latitude, state.location!.longitude).then((placeMark) {
       emit(
         LocationState(
-          cameraPosition.target,
+          state.location,
           placeMark,
-          myMarker,
+          state.myMarker,
         ),
       );
     });
   }
 
+  Future<void> getDataWhenCameraMove(
+    CameraPosition cameraPosition,
+  ) async {
+    try {
+      var myMarker = state.myMarker! ;
+      myMarker = Marker(
+        markerId: const MarkerId('1'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        draggable: true,
+        position: LatLng(
+          cameraPosition.target.latitude,
+          cameraPosition.target.longitude,
+        ),
+        onDrag: (value) {
+          emit(
+            LocationState(
+              LatLng(value.latitude, value.longitude),
+              state.placemarks,
+              state.myMarker,
+            ),
+          );
+        },
+        onDragEnd: (value) {
+          emit(
+            LocationState(
+              LatLng(value.latitude, value.longitude),
+              state.placemarks,
+              state.myMarker,
+            ),
+          );
+        },
+        onDragStart: (value) {
+           emit(
+            LocationState(
+              LatLng(value.latitude, value.longitude),
+              state.placemarks,
+              state.myMarker,
+            ),
+          );
+        },
+        infoWindow: const InfoWindow(
+          title: 'this is my new location',
+          snippet: 'This is your location',
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // on Idle Camera
 
@@ -181,16 +276,15 @@ class LocationCubit extends Cubit<LocationState> {
     return placeMarks;
   }
 
-  String getLocationAddress(
-    List<Placemark>? placeMarks,
-  ) {
-    final address = state.placemarks!;
+  String getLocationAddress() {
+    final address = state.placemarks;
 
-    final addresses =
-        '${address.first.name}, ${address.first.subLocality}, ${address.first.locality}';
-    print(addresses);
-    return placeMarks!.isNotEmpty ? addresses : 'No Address';
+    final addresses = '${address!.first.name} ${address.first.subLocality}, ${address.first.locality}';
+    emit(LocationState(state.location, address, state.myMarker));
+    return addresses.isNotEmpty ? addresses : 'No Address';
   }
 
   Future<void> load() async {}
+
+// initState
 }

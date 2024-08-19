@@ -55,7 +55,6 @@ class CustomCacheImageWidget extends StatelessWidget {
           ),
         ),
       ),
-      // default image
       // errorWidget: (context, url, error) => SvgPicture.asset(
       //   'assets/svg/placeholder.svg',
       //   width: 65,

@@ -19,7 +19,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: LoginPage.routePath,
+    initialLocation: MainPage.routePath,
     observers: [
       MyNavigatorObserver(),
     ],
@@ -147,11 +147,14 @@ class AppRouter {
       GoRoute(
         path: ProductPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: const ProductPage(),
+          fullscreenDialog: true,
+          child: Hero(
+              tag: 'product-detail',
+              child: const ProductPage()),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return ScaleTransition(
-              scale: animation,
-              child: child,
+            return FadeTransition(
+              opacity: animation,
+              child:child,
             );
           },
         ),

@@ -26,24 +26,8 @@ class LocationPage extends StatelessWidget {
   }
 }
 
-class LocationView extends StatefulWidget {
+class LocationView extends StatelessWidget {
   const LocationView({super.key});
-
-  @override
-  State<LocationView> createState() => _LocationViewState();
-}
-
-class _LocationViewState extends State<LocationView> {
-  @override
-  void initState() {
-    context.read<LocationCubit>().getCurrentLocation(context);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +86,7 @@ class _LocationViewState extends State<LocationView> {
                         onCameraMove: (CameraPosition cameraPosition) {},
                         onTap: (LatLng latLng) async {
                           Navigator.of(context).push(
-                            MaterialPageRoute(
+                            MaterialPageRoute<GoogleMapPage>(
                               builder: (context) => const GoogleMapPage(),
                             ),
                           );
@@ -114,8 +98,11 @@ class _LocationViewState extends State<LocationView> {
                           ),
                           zoom: 13,
                         ),
+
                         onMapCreated: context.read<LocationCubit>().controller.complete,
-                        markers: Set<Marker>.of(state.myMarker!),
+                        markers: {
+                          state.myMarker!,
+                        },
                       ),
                     ),
                     const SizedBox(

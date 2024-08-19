@@ -176,7 +176,7 @@ class RegisterView extends StatelessWidget {
                       child: AppButton.roundedFilledButton(
                         context,
                         onTap: () {
-                          context.go(MainPage.routePath);
+                          GoRouter.of(context).go(MainPage.routePath);
                         },
                         text: 'REGISTER',
                         color: AppColors.primary,
