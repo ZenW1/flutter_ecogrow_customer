@@ -16,7 +16,7 @@ class ProductListWidget extends StatelessWidget {
       height: 80,
       decoration: CustomConstantWidget.shadowBoxDecorationWidget(),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Row(
           children: [
             CustomCacheImageWidget(
