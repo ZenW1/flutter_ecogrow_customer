@@ -67,8 +67,8 @@ class DioHttpClient implements HttpClient {
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['Accept'] = 'application/json';
     _dio.options.baseUrl = _baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
     _dio.interceptors.add(LoggingInterceptor());
     if (_interceptors != null) {
       _dio.interceptors.addAll(_interceptors!);

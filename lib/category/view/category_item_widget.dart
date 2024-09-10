@@ -22,11 +22,11 @@ class CategoryItemWidget extends StatelessWidget {
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
+          color: AppColors.whiteColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault()),
           border: Border.all(
-            color: AppColors.greyColor,
-            width: 0.15,
+            color: AppColors.lightGreyColor,
+            width: 0.5,
           ),
         ),
         child: Column(

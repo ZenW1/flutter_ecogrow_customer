@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/authentication/authentication_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
-import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
@@ -67,6 +66,16 @@ class OTPPage extends StatelessWidget {
                       Center(
                         child: CustomPinPutWidget(
                           controller: pinController,
+                          onChanged: (value) {
+                            if (value.length == 6) {
+                              context.read<LoginCubit>().verifyOtp(value);
+                            }
+                          },
+                          onSubmitted: (value) {
+                            if (value.length == 6) {
+                              context.read<LoginCubit>().verifyOtp(value);
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -80,11 +89,9 @@ class OTPPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           TextButton(
-                            onPressed: () {
-                              context.read<LoginCubit>().sendLoginOtp(
-                                phoneNumber: context.read<LoginCubit>().numberController.text,
-                              );
-                            },
+                            onPressed: () => context
+                                .read<LoginCubit>()
+                                .sendLoginOtp(phoneNumber: context.read<LoginCubit>().numberController.text),
                             child: Text(
                               context.l10n.resendOtp,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -100,12 +107,15 @@ class OTPPage extends StatelessWidget {
                             context.loaderOverlay.show();
                           } else if (state.status == LoginStatus.verifyOtp) {
                             if (state.isNewUser) {
-                              Navigator.of(context).push<RegisterPage>(
-                                MaterialPageRoute(builder: (context) => const RegisterPage()),
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute<RegisterPage>(builder: (context) => const RegisterPage()),
                               );
-                            } else if(!state.isNewUser) {
-                               context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken ));
-                               print('This is access token ${state.accessToken}');
+                            } else if (!state.isNewUser) {
+                              // context.read<AppToken>().saveToken(state.accessToken);
+                              context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken));
+                              print('This is access token ${state.accessToken}');
+
+                              GoRouter.of(context).pushReplacement(MainPage.routePath);
                             }
                             context.loaderOverlay.hide();
                           } else if (state.status == LoginStatus.failure) {
@@ -118,9 +128,7 @@ class OTPPage extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             child: AppButton.roundedFilledButton(
                               context,
-                              onTap: () {
-                                context.read<LoginCubit>().verifyOtp(pinController.text);
-                              },
+                              onTap: () => context.read<LoginCubit>().verifyOtp(pinController.text),
                               text: context.l10n.confirm,
                               color: AppColors.primary,
                             ),

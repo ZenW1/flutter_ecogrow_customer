@@ -33,13 +33,9 @@ class CartProductWidget extends StatelessWidget {
             child: SizedBox(
               height: 90,
               width: 90,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  Dimensions.paddingSizeDefault(),
-                ),
-                child: CustomCacheImageWidget(
-                  imageUrl: data.productImage,
-                ),
+              child: CustomCacheImageWidget(
+                imageUrl: data.productImage,
+                radius: 10,
               ),
             ),
           ),
@@ -63,10 +59,7 @@ class CartProductWidget extends StatelessWidget {
                           children: [
                             Text(
                               data.productName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(fontWeight: FontWeight.w600),
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
                               width: 30,
@@ -84,8 +77,7 @@ class CartProductWidget extends StatelessWidget {
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   InkWell(
                                     onTap: () {},
@@ -141,11 +133,10 @@ class CartProductWidget extends StatelessWidget {
                         const SizedBox(height: 5),
                         Text(
                           '\$${data.productPrice}',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppColors.redColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: AppColors.redColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ],
                     ),

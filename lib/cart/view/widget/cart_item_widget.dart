@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/cart/view/widget/cart_product_widget.dart';
 import 'package:flutter_ecogrow_customer/data/model/cart_model.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
@@ -12,19 +13,9 @@ class CartItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(
-          Dimensions.paddingSizeDefault(),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: const Offset(0, 1),
-          ),
-        ],
+      decoration: CustomConstantWidget.shadowBoxDecorationWidget(
+        radius: 15,
+        color: AppColors.whiteColor,
       ),
       child: Column(
         children: [

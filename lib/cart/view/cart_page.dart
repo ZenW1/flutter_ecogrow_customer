@@ -73,6 +73,7 @@ class CartView extends StatelessWidget {
         ];
         return Scaffold(
           appBar: AppBar(
+            centerTitle: false,
             title: const Text('My Cart'),
           ),
           body: SingleChildScrollView(
@@ -82,15 +83,6 @@ class CartView extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  CustomRowWidget(
-                    leftWidget: Text(
-                      'Ecogrow Store',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    rightWidget: const Text('3 items'),
-                  ),
                   SizedBox(height: Dimensions.paddingSizeSmall()),
                   ListView.separated(
                     shrinkWrap: true,
