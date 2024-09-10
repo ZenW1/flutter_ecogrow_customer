@@ -174,6 +174,7 @@ flutter gen-l10n --arb-dir="lib/l10n/arb"
 ```
 mason make flutter_bloc_feature --name counter --type bloc --style basic
 
+
 4. Import script for run clean, get and build generate items
 
 flutter clean && flutter packages get && flutter run build_runner build -d

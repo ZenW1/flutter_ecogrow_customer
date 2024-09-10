@@ -6,7 +6,7 @@ class AboutUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const Scaffold(
+    return const Scaffold(
       appBar: AppBarWidget(
         title: 'About Us',
       ),
