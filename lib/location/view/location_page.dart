@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_ecogrow_customer/shared/widget/custom_container_widget.d
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class LocationPage extends StatelessWidget {
   const LocationPage({super.key});
@@ -26,12 +26,34 @@ class LocationPage extends StatelessWidget {
   }
 }
 
-class LocationView extends StatelessWidget {
+class LocationView extends StatefulWidget {
   const LocationView({super.key});
 
   @override
+  State<LocationView> createState() => _LocationViewState();
+}
+
+class _LocationViewState extends State<LocationView> {
+
+  @override
+  void initState() {
+    context.read<LocationCubit>().getPlaceMark();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LocationCubit, LocationState>(
+    return BlocConsumer<LocationCubit, LocationState>(
+      buildWhen: (previous, current) {
+        return previous.location != current.location;
+      },
+      listener: (context,state){
+        if(state.status == LocationStatus.loading){
+          context.loaderOverlay.show();
+        } else if (state.status == LocationStatus.loaded){
+          context.loaderOverlay.hide();
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -75,7 +97,8 @@ class LocationView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Container(
                       height: 250,
-                      decoration: CustomConstantWidget.shadowBoxDecorationWidget(
+                      decoration:
+                          CustomConstantWidget.shadowBoxDecorationWidget(
                         radius: 20,
                       ),
                       width: double.infinity,
@@ -83,7 +106,9 @@ class LocationView extends StatelessWidget {
                         onCameraMoveStarted: () {
                           print('Camera move started');
                         },
-                        onCameraMove: (CameraPosition cameraPosition) {},
+                        onCameraMove: (CameraPosition cameraPosition) {
+
+                        },
                         onTap: (LatLng latLng) async {
                           Navigator.of(context).push(
                             MaterialPageRoute<GoogleMapPage>(
@@ -98,10 +123,16 @@ class LocationView extends StatelessWidget {
                           ),
                           zoom: 13,
                         ),
-
                         onMapCreated: context.read<LocationCubit>().controller.complete,
                         markers: {
-                          state.myMarker!,
+                          Marker(
+                            markerId: const MarkerId('voatPhnom'),
+                            position:  LatLng(state.location!.latitude,state.location!.longitude),
+                            infoWindow: const InfoWindow(
+                              title: 'Voat Phnom',
+                              snippet: 'This is Voat Phnom',
+                            ),
+                          ),
                         },
                       ),
                     ),

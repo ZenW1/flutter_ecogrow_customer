@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,14 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit()
-      : super(
-          LocationLoading(
-            const LatLng(11.561462379276703, 104.9137589937964),
-            null,
-            null,
-          ),
-        );
+  LocationCubit() : super(LocationState(status: LocationStatus.initial));
 
   Completer<GoogleMapController> get controller => _controller;
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
@@ -32,7 +26,7 @@ class LocationCubit extends Cubit<LocationState> {
     ),
   };
 
-  Future<void> getCurrentLocation(BuildContext context) async {
+  Future<Position> getCurrentLocation() async {
     bool isServiceEnabled;
     LocationPermission permission;
     isServiceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -46,23 +40,19 @@ class LocationCubit extends Cubit<LocationState> {
 
       if (permission == LocationPermission.deniedForever) {
         unawaited(
-          showDialog(
-            context: context,
-            builder: (context) => const AlertDialog(
-              title: Text('Location Permission'),
-              content: Text('Please enable location permission in your settings'),
-              actions: [
-                TextButton(
-                  onPressed: Geolocator.openAppSettings,
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          ),
+          CustomDialog.showErrorDialog(
+              'Location permissions are permanently denied, we cannot request permissions., Open Settings, Cancel'),
         );
       }
     }
-    final position = await Geolocator.getCurrentPosition();
+
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  Future<void> getPlaceMark() async{
+    emit(state.copyWith(status: LocationStatus.loading));
+    final position = await getCurrentLocation();
     // mymartker
     final myMarker = Marker(
       markerId: const MarkerId('1'),
@@ -75,64 +65,21 @@ class LocationCubit extends Cubit<LocationState> {
     );
     await getPlaceMarkFromCoordinates(position.latitude, position.longitude).then((placeMarks) {
       emit(
-        LocationState(
-          LatLng(position.latitude, position.longitude),
-          placeMarks,
-          myMarker,
+        state.copyWith(
+          status: LocationStatus.loaded,
+          location: LatLng(position.latitude, position.longitude),
+          placemarks: placeMarks,
+          myMarker: myMarker,
         ),
       );
     });
   }
 
-  //  Future<void> getOnTapData(
-  //    LatLng latLng,
-  //  ) async {
-  // List<Marker> myMarker = [];
-  //    myMarker!.add(
-  //      Marker(
-  //        markerId: const MarkerId('1'),
-  //        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-  //        position: LatLng(latLng.latitude, latLng.longitude),
-  //        infoWindow: const InfoWindow(
-  //          title: 'this is my new location',
-  //          snippet: 'This is your location',
-  //        ),
-  //      ),
-  //    );
-  //    final newCameraPosition = CameraPosition(
-  //      target: LatLng(latLng.latitude, latLng.longitude),
-  //      zoom: 15,
-  //    );
-  //
-  //    await _controller.future.then((controller) {
-  //      controller.animateCamera(
-  //        CameraUpdate.newCameraPosition(newCameraPosition),
-  //      );
-  //    }).then((value) => _controller.isCompleted);
-  //
-  //    await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
-  //      emit(
-  //        LocationState(
-  //          latLng,
-  //          placeMark,
-  //          myMarker,
-  //        ),
-  //      );
-  //    });
-  //  }
-
   Future<void> onCameraStarted(
     LatLng latLng,
   ) async {
-    Marker myMarker = Marker(
-      markerId: const MarkerId('1'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      position: LatLng(latLng.latitude, latLng.longitude),
-      infoWindow: const InfoWindow(
-        title: 'this is my new location',
-        snippet: 'This is your location',
-      ),
-    );
+    emit(state.copyWith(status: LocationStatus.loading));
+    Marker myMarker;
     myMarker = Marker(
       markerId: const MarkerId('1'),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
@@ -155,77 +102,76 @@ class LocationCubit extends Cubit<LocationState> {
 
     await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
       emit(
-        LocationState(
-          latLng,
-          placeMark,
-          myMarker,
+        state.copyWith(
+          status: LocationStatus.loaded,
+          location: latLng,
+          placemarks: placeMark,
+          myMarker: myMarker,
         ),
       );
     });
   }
 
   Future<void> onCameraStoppedMoving() async {
-    // await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     await getPlaceMarkFromCoordinates(state.location!.latitude, state.location!.longitude).then((placeMark) {
       emit(
-        LocationState(
-          state.location,
-          placeMark,
-          state.myMarker,
+        state.copyWith(
+          status: LocationStatus.loaded,
+          location: state.location,
+          placemarks: placeMark,
+          myMarker: state.myMarker,
         ),
       );
     });
   }
 
-  Future<void> getDataWhenCameraMove(
+  Future<Marker> getDataWhenCameraMove(
     CameraPosition cameraPosition,
   ) async {
-    try {
-      var myMarker = state.myMarker! ;
-      myMarker = Marker(
-        markerId: const MarkerId('1'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        draggable: true,
-        position: LatLng(
-          cameraPosition.target.latitude,
-          cameraPosition.target.longitude,
-        ),
-        onDrag: (value) {
-          emit(
-            LocationState(
-              LatLng(value.latitude, value.longitude),
-              state.placemarks,
-              state.myMarker,
-            ),
-          );
-        },
-        onDragEnd: (value) {
-          emit(
-            LocationState(
-              LatLng(value.latitude, value.longitude),
-              state.placemarks,
-              state.myMarker,
-            ),
-          );
-        },
-        onDragStart: (value) {
-           emit(
-            LocationState(
-              LatLng(value.latitude, value.longitude),
-              state.placemarks,
-              state.myMarker,
-            ),
-          );
-        },
-        infoWindow: const InfoWindow(
-          title: 'this is my new location',
-          snippet: 'This is your location',
-        ),
-      );
-    } catch (e) {
-      print(e);
-    }
+    Marker myMarker;
+     myMarker = Marker(
+      markerId: const MarkerId('1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      draggable: true,
+      position: LatLng(
+        cameraPosition.target.latitude,
+        cameraPosition.target.longitude,
+      ),
+      onDrag: (value) {
+        emit(
+          state.copyWith(
+            status: LocationStatus.loaded,
+            location: LatLng(value.latitude, value.longitude),
+            placemarks: state.placemarks,
+          ),
+        );
+      },
+      onDragEnd: (value) {
+        emit(
+          state.copyWith(
+            status: LocationStatus.loaded,
+            location: LatLng(value.latitude, value.longitude),
+            placemarks: state.placemarks,
+          ),
+        );
+      },
+      onDragStart: (value) {
+        emit(
+          state.copyWith(
+            status: LocationStatus.loaded,
+            location: LatLng(value.latitude, value.longitude),
+            placemarks: state.placemarks,
+          ),
+        );
+      },
+      infoWindow: const InfoWindow(
+        title: 'this is my new location',
+        snippet: 'This is your location',
+      ),
+    );
+     return myMarker;
   }
 
   // on Idle Camera
@@ -279,12 +225,57 @@ class LocationCubit extends Cubit<LocationState> {
   String getLocationAddress() {
     final address = state.placemarks;
 
-    final addresses = '${address!.first.name} ${address.first.subLocality}, ${address.first.locality}';
-    emit(LocationState(state.location, address, state.myMarker));
+    final addresses = '${address.first.name} ${address.first.subLocality}, ${address.first.locality}';
+
+    emit(
+      state.copyWith(
+        status: LocationStatus.loaded,
+        placemarks: address,
+        location: state.location,
+      ),
+    );
+
     return addresses.isNotEmpty ? addresses : 'No Address';
   }
 
   Future<void> load() async {}
+
+  Future<void> getOnTapData(
+    LatLng latLng,
+  ) async {
+    List<Marker> myMarker = [];
+    myMarker.add(
+      Marker(
+        markerId: const MarkerId('1'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        position: LatLng(latLng.latitude, latLng.longitude),
+        infoWindow: const InfoWindow(
+          title: 'this is my new location',
+          snippet: 'This is your location',
+        ),
+      ),
+    );
+    final newCameraPosition = CameraPosition(
+      target: LatLng(latLng.latitude, latLng.longitude),
+      zoom: 15,
+    );
+
+    await _controller.future.then((controller) {
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(newCameraPosition),
+      );
+    }).then((value) => _controller.isCompleted);
+
+    // await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
+    //   emit(
+    //     state.copyWith(
+    //       latLng,
+    //       placeMark,
+    //       myMarker,
+    //     ),
+    //   );
+    // });
+  }
 
 // initState
 }

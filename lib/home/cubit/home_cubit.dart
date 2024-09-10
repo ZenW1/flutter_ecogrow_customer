@@ -9,7 +9,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   // int? get currentIndex => state.currentIndex;
   int? get indexCount => data.length > 3 ? 3 : data.length;
-  int? get currentIndex => state.currentIndex! > indexCount! ? indexCount : state.currentIndex;
+  int? get currentIndex =>
+      state.currentIndex! > indexCount! ? indexCount : state.currentIndex;
 
   ScrollController scrollController = ScrollController();
 
@@ -19,14 +20,16 @@ class HomeCubit extends Cubit<HomeState> {
       if (scrollController.position.pixels > indexCount! * 1.0) {
         emit(
           HomeState(
-            currentIndex: currentIndex! + 1 > indexCount! ? indexCount : currentIndex! + 1,
+            currentIndex: currentIndex! + 1 > indexCount!
+                ? indexCount
+                : currentIndex! + 1,
             indexCount: indexCount,
           ),
         );
       } else {
         emit(
           HomeState(
-            currentIndex: currentIndex! -1 <= 0 ? 0 : currentIndex ,
+            currentIndex: currentIndex! - 1 <= 0 ? 0 : currentIndex,
             indexCount: indexCount,
           ),
         );
@@ -36,55 +39,64 @@ class HomeCubit extends Cubit<HomeState> {
 
   List<HomeProductTodayModel> data = [
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '2500',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '2500',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
       title: 'Organic Banana',
       price: '3000',
       weight: '1kg',

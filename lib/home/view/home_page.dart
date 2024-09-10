@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/category/view/category_item_widget.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 import 'package:flutter_ecogrow_customer/product/product.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/custom_show_product_bottom_widget.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/product_vertical_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
@@ -35,8 +36,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
-
   List<ProductModel> productList = [
     ProductModel(
       name: 'ONION',
@@ -71,19 +70,18 @@ class _HomeViewState extends State<HomeView> {
     ),
   ];
 
-  @override
-  void dispose() {
-    context.read<HomeCubit>().scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   context.read<HomeCubit>().scrollController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void didChangeDependencies() {
-    context.read<HomeCubit>().scrollController.initialScrollOffset;
-    context.read<HomeCubit>().controllerListener();
+    // context.read<HomeCubit>().scrollController.initialScrollOffset;
+    // context.read<HomeCubit>().controllerListener();
     super.didChangeDependencies();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +89,8 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, state) {
         return Scaffold(
           body: CustomScrollView(
+            shrinkWrap: true,
+            cacheExtent: 1000,
             slivers: [
               SliverAppBar(
                 expandedHeight: 50,
@@ -111,6 +111,7 @@ class _HomeViewState extends State<HomeView> {
                         SizedBox(width: Dimensions.paddingSizeDefault()),
                         InkWell(
                           onTap: () {
+                            context.read<LocationCubit>().getCurrentLocation();
                             GoRouter.of(context).go('/location');
                           },
                           child: Column(
@@ -131,7 +132,10 @@ class _HomeViewState extends State<HomeView> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed('/cart');
+                            // Navigator.of(context).pushNamed('/cart');
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(builder: (context) => TestAnimation())
+                            // );
                           },
                           child: Icon(
                             Icons.shopping_cart_rounded,
@@ -146,16 +150,18 @@ class _HomeViewState extends State<HomeView> {
               ),
               SliverToBoxAdapter(
                 child: Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: Dimensions.paddingSizeSmall(),
-                    vertical: Dimensions.paddingSizeDefault(),
+                  margin: EdgeInsets.only(
+                    left: Dimensions.paddingSizeSmall(),
+                    right: Dimensions.paddingSizeSmall(),
+                    top: Dimensions.paddingSizeDefault(),
                   ),
                   padding: EdgeInsets.symmetric(
                     horizontal: Dimensions.paddingSizeSmall(),
                     vertical: Dimensions.paddingSizeDefault(),
                   ),
                   decoration: CustomConstantWidget.shadowBoxDecorationWidget(
-                    radius: 20,
+                    radius: 24,
+                    color: AppColors.whiteColor,
                   ),
                   child: Stack(
                     alignment: Alignment.center,
@@ -185,9 +191,8 @@ class _HomeViewState extends State<HomeView> {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                     CustomCacheImageWidget(
-                                      imageUrl:
-                                          data.imageUrl,
+                                    CustomCacheImageWidget(
+                                      imageUrl: data.imageUrl,
                                       width: 110,
                                       height: 90,
                                     ),
@@ -207,9 +212,6 @@ class _HomeViewState extends State<HomeView> {
                                 return const SizedBox(width: 16);
                               },
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
                           ),
                         ],
                       ),
@@ -234,33 +236,30 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: Container(
+                child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: Dimensions.paddingSizeSmall(),
-                    vertical: Dimensions.paddingSizeDefault(),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(height: Dimensions.paddingSizeSmall(),),
                       AppTitleWidget(
                         text: 'Categories',
                         isRow: true,
-                        widget: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'See all',
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        widget: Text(
+                          'See all',
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      // SizedBox(height: Dimensions.paddingSizeDefault()),
                       ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxHeight: 140,
-                          minHeight: 100,
+                          maxHeight: 250,
+                          minHeight: 140,
                         ),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -268,27 +267,48 @@ class _HomeViewState extends State<HomeView> {
                             vertical: Dimensions.paddingSizeSmall(),
                           ),
                           shrinkWrap: true,
-                          itemCount: context.read<CategoryCubit>().categoryList.length,
+                          itemCount: productList.length,
                           itemBuilder: (context, index) {
-                            return CategoryItemWidget(
-                              categoryItemModel: context.read<CategoryCubit>().categoryList[index],
-                              onTap: () {},
+                            return ProductVerticalWidget(
+                              onTap: () {
+                                GoRouter.of(context).push(ProductPage.routePath);
+                              },
+                              product: productList[index],
+                              isPromotion: true,
                             );
                           },
                         ),
                       ),
                       // SizedBox(height: Dimensions.paddingSizeDefault()),
+                      // ConstrainedBox(
+                      //   constraints: const BoxConstraints(
+                      //     maxHeight: 140,
+                      //     minHeight: 100,
+                      //   ),
+                      //   child: ListView.builder(
+                      //     scrollDirection: Axis.horizontal,
+                      //     padding: EdgeInsets.symmetric(
+                      //       vertical: Dimensions.paddingSizeSmall(),
+                      //     ),
+                      //     shrinkWrap: true,
+                      //     itemCount: context.read<CategoryCubit>().categoryList.length,
+                      //     itemBuilder: (context, index) {
+                      //       return CategoryItemWidget(
+                      //         categoryItemModel: context.read<CategoryCubit>().categoryList[index],
+                      //         onTap: () {},
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                      // SizedBox(height: Dimensions.paddingSizeDefault()),
                       AppTitleWidget(
                         text: 'Product',
                         isRow: true,
-                        widget: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'See all',
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        widget: Text(
+                          'See all',
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -301,7 +321,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 0.7,
+                          childAspectRatio: 0.85,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                         ),
@@ -309,13 +329,14 @@ class _HomeViewState extends State<HomeView> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              CustomProductShowButtomSheet.showBottomSheet;
+                              // CustomProductShowButtomSheet.showBottomSheet;
                             },
                             child: ProductVerticalWidget(
                               onTap: () {
-                                GoRouter.of(context).push('/product');
+                                GoRouter.of(context).push(ProductPage.routePath);
                               },
                               product: productList[index],
+                              isPromotion: false,
                             ),
                           );
                         },
