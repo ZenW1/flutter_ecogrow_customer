@@ -52,7 +52,9 @@ class RegisterView extends StatelessWidget {
                         children: [
                           if (state.image == null)
                             InkWell(
-                              onTap: () => context.read<RegisterCubit>().getImage(ImageSource.gallery),
+                              onTap: () => context
+                                  .read<RegisterCubit>()
+                                  .getImage(ImageSource.gallery),
                               child: const CircleAvatar(
                                 radius: 50,
                                 foregroundImage: NetworkImage(
@@ -62,7 +64,9 @@ class RegisterView extends StatelessWidget {
                             )
                           else
                             InkWell(
-                              onTap: () => context.read<RegisterCubit>().getImage(ImageSource.gallery),
+                              onTap: () => context
+                                  .read<RegisterCubit>()
+                                  .getImage(ImageSource.gallery),
                               child: CircleAvatar(
                                 radius: 50,
                                 foregroundImage: FileImage(state.image!),
@@ -106,7 +110,9 @@ class RegisterView extends StatelessWidget {
                     ),
                     GlobalTextField(
                       textInputType: TextInputType.text,
-                      controller: context.read<RegisterCubit>().userNameController,
+                      autoFocus: true,
+                      controller:
+                          context.read<RegisterCubit>().userNameController,
                       hintText: 'Your username',
                     ),
                     const SizedBox(
@@ -147,7 +153,8 @@ class RegisterView extends StatelessWidget {
                           flex: 3,
                           child: GlobalTextField(
                             textInputType: TextInputType.number,
-                            controller: context.read<RegisterCubit>().phoneNumber,
+                            controller:
+                                context.read<RegisterCubit>().phoneNumber,
                             hintText: 'Your phone number',
                           ),
                         ),
@@ -177,6 +184,7 @@ class RegisterView extends StatelessWidget {
                         context,
                         onTap: () {
                           GoRouter.of(context).go(MainPage.routePath);
+                          context.read<RegisterCubit>().convertImageToBase64();
                         },
                         text: 'REGISTER',
                         color: AppColors.primary,
