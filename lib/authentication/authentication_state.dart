@@ -22,9 +22,6 @@ class Authenticating extends AuthenticationState {
 }
 
 class Authenticated extends AuthenticationState {
-
-  Authenticated();
-
   @override
   List<Object> get props => [];
 }

@@ -13,7 +13,7 @@ Future<void> main() async {
       final environment = EnvironmentModel.development();
       final appLanguage = AppLanguage(preferences: sharedPreferences);
       final appToken = AppToken(preferences: sharedPreferences);
-      final dioHttp = DioHttpClient(dio: Dio(), baseUrl: 'https://api.escuelajs.co/api/v1');
+      final dioHttp = DioHttpClient(dio: Dio(), baseUrl: 'https://mocki.io/v1/');
 
       return App(
         environment: environment,

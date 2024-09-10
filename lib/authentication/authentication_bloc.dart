@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 
 part 'authentication_event.dart';
+
 part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -13,21 +14,29 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   final AppToken _appToken;
 
-  Future<void> onAuthenticate(AuthenticationEvent event , Emitter<AuthenticationState> emit) async {
-    final bool hasToken = await _appToken.hasToken();
-    if (hasToken) {
-      emit(AppStarted());
-    } else {
-      emit(UnAuthenticated());
+  Future<void> onAuthenticate(AuthenticationEvent event, Emitter<AuthenticationState> emit) async {
+    emit(AppStarted());
+    try {
+      final hasToken = await _appToken.hasToken();
+      if (hasToken) {
+        emit(Authenticated());
+      } else if (!hasToken) {
+        emit(UnAuthenticated());
+      }
+    } catch (e) {
+      emit(AuthenticateFailed(errorMessage: e.toString()));
     }
-  }
+   }
 
-  Future<void> onAuthenticating(AuthenticatingEvent event , Emitter<AuthenticationState> emit) async {
+   // check when authenticating with otp
+  Future<void> onAuthenticating(AuthenticatingEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationInitial());
     try {
-      if(event.accessToken.isEmpty){
+      if (event.accessToken.isEmpty) {
         await _appToken.saveAccessToken(event.accessToken);
         emit(Authenticated());
+      } else {
+        emit(UnAuthenticated());
       }
     } catch (e) {
       emit(AuthenticateFailed(errorMessage: e.toString()));

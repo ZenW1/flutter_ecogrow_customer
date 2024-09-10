@@ -11,10 +11,9 @@ class LoginService {
 
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
-  //
   // Stream<auth.User?> get statusChange => _auth.authStateChanges();
 
-  String? verificationId = '';
+  late String? _verificationId = '';
 
   Future<void> sendOtp({required String phoneNumber}) async {
     try {
@@ -31,13 +30,10 @@ class LoginService {
           }
         },
         codeSent: (String verificationId, int? resendToken) {
-          print('codeSent : $resendToken');
-          verificationId = this.verificationId!;
-          print('verificaitonID : $verificationId');
+          _verificationId = verificationId;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          print('codeAutoRetrievalTimeout');
-          this.verificationId = verificationId;
+          _verificationId = verificationId;
         },
         timeout: const Duration(seconds: 60),
       );
@@ -52,40 +48,22 @@ class LoginService {
 
   Future<bool> verifyOtp({required String codeSms}) async {
     try {
-      final phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId: verificationId!,
-        smsCode: codeSms,
-      );
       final userCredential = await _auth.signInWithCredential(
         PhoneAuthProvider.credential(
-          verificationId: verificationId!,
+          verificationId: _verificationId!,
           smsCode: codeSms,
         ),
       );
       return userCredential.additionalUserInfo!.isNewUser;
     } on auth.FirebaseAuthException catch (e) {
       throw e;
-    } on Exception catch (e) {
-      throw e;
-    } on Error catch (e) {
-      throw e;
     }
   }
 
   Future<String> getAccessToken() async {
     final user = _auth.currentUser;
-    String token = '';
-    if (user != null) {
-      user.getIdTokenResult().then(
-        (value) {
-          {
-            token = value.token!;
-            print('token : $token');
-          }
-        },
-      );
-    }
-    return token;
+    final token = await user!.getIdToken();
+    return  token!;
   }
 
   Future<void> signOut() async {

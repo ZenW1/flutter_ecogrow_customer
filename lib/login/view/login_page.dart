@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
-import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
@@ -15,7 +14,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  static const String routePath = '/';
+  static const String routePath = '/login';
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +33,10 @@ class LoginView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == LoginStatus.loading) {
           context.loaderOverlay.show();
-        } else if(state.status == LoginStatus.sendOtp) {
+        } else if (state.status == LoginStatus.sendOtp) {
           context.loaderOverlay.hide();
           GoRouter.of(context).go('/otp');
-        }  else if (state.status == LoginStatus.failure) {
+        } else if (state.status == LoginStatus.failure) {
           context.loaderOverlay.hide();
           CustomDialog.showWarningDialog(state.errorMessage);
         }
@@ -60,7 +59,10 @@ class LoginView extends StatelessWidget {
                             Text(
                               'ECOGROW',
                               textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
                                     fontSize: 24,
                                     color: AppColors.primary,
                                   ),
@@ -68,11 +70,6 @@ class LoginView extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            // Text(
-                            //   'Explore our wide range of fresh produce, organic groceries, and eco-friendly good',
-                            //   textAlign: TextAlign.left,
-                            //   style: Theme.of(context).textTheme.bodyMedium,
-                            // ),
                             const SizedBox(
                               height: 60,
                             ),
@@ -96,9 +93,11 @@ class LoginView extends StatelessWidget {
                             ),
                             GlobalTextField(
                               textInputType: TextInputType.number,
-                              controller: context.read<LoginCubit>().numberController,
+                              controller:
+                                  context.read<LoginCubit>().numberController,
                               hintText: context.l10n.phoneNumber,
                               filled: true,
+                              autoFocus: true,
                               validator: (value) {
                                 if (value == null) {
                                   return context.l10n.enterPhoneNumber;
@@ -117,9 +116,13 @@ class LoginView extends StatelessWidget {
                                 context,
                                 onTap: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    await context.read<LoginCubit>().sendLoginOtp(
-                                      phoneNumber: context.read<LoginCubit>().numberController.text,
-                                    );
+                                    await context
+                                        .read<LoginCubit>()
+                                        .sendLoginOtp(
+                                            phoneNumber: context
+                                                .read<LoginCubit>()
+                                                .numberController
+                                                .text);
                                   }
                                 },
                                 text: context.l10n.confirm,

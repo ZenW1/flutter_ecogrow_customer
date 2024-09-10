@@ -20,9 +20,11 @@ class LoginCubit extends Cubit<LoginState> {
         phoneNumber: '+855 ${phoneNumber}',
       );
 
-      emit(LoginState().copyWith(status: LoginStatus.sendOtp, phoneNumber: phoneNumber));
+      emit(LoginState()
+          .copyWith(status: LoginStatus.sendOtp, phoneNumber: phoneNumber));
     } catch (e) {
-      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
+      emit(state.copyWith(
+          status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
 
@@ -32,28 +34,36 @@ class LoginCubit extends Cubit<LoginState> {
       final isNewUser = await _loginService.verifyOtp(
         codeSms: code,
       );
+      final accessToken = await _loginService.getAccessToken();
+
       if (isNewUser) {
-        emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser));
+        print('isNewUser: $isNewUser');
+        print('IsNewUser : $accessToken');
+        emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser,accessToken: accessToken));
         return;
-      } else if(!isNewUser) {
-        final accessToken =  await getAccessToken();
-        emit(state.copyWith(status: LoginStatus.verifyOtp, isNewUser: isNewUser, accessToken: accessToken));
+      } else if (!isNewUser) {
+        print('isNewUser: $isNewUser');
+        print('IsNewUser : $accessToken');
+        emit(
+          state.copyWith(
+            status: LoginStatus.verifyOtp,
+            isNewUser: isNewUser,
+            accessToken: accessToken,
+          ),
+        );
       }
     } catch (e) {
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
-
   //
-  Future<String> getAccessToken() async {
-    emit(state.copyWith(status: LoginStatus.loading));
-    try {
-      final accessToken = await _loginService.getAccessToken();
-      return accessToken;
-    } catch (e) {
-      throw Exception('Error from token $e');
-    }
-  }
+  // Future<String> getAccessToken() async {
+  //   try {
+  //     return accessToken;
+  //   } catch (e) {
+  //     throw Exception('Error from token $e');
+  //   }
+  // }
 
   Future<void> timeOut() async {
     emit(state.copyWith(status: LoginStatus.loading));
@@ -61,6 +71,17 @@ class LoginCubit extends Cubit<LoginState> {
       await _loginService.timeOut();
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: 'Time out'));
     } catch (e) {
+      emit(state.copyWith(
+          status: LoginStatus.failure, errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> signOut() async {
+    emit(state.copyWith(status: LoginStatus.loading));
+    try{
+      await _loginService.signOut();
+      emit(state.copyWith(status: LoginStatus.loginOut));
+    } catch (e){
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }

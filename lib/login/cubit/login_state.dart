@@ -7,6 +7,7 @@ enum LoginStatus {
   failure,
   sendOtp,
   verifyOtp,
+  loginOut,
   isNewUser,
   loading,
 }
@@ -67,6 +68,6 @@ class LoginState extends Equatable {
         isSuccess,
         errorMessage,
         isNewUser,
-      accessToken,
+        accessToken,
       ];
 }
