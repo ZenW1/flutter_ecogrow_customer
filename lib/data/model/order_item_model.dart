@@ -6,11 +6,13 @@ class OrderItemModel {
     required this.dateTime,
     required this.totalPrice,
     required this.qty,
+    required this.orderStatus,
     required this.store,
   });
   final String id;
   final String dateTime;
   final String totalPrice;
   final String qty;
+  final String orderStatus;
   final StoreModel store;
 }

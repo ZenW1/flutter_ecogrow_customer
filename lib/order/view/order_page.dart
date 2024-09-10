@@ -27,16 +27,17 @@ class OrderView extends StatelessWidget {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         return DefaultTabController(
-          length: 3,
+          length: 5,
           child: Scaffold(
             appBar: AppBar(
               title: const Text('My Order'),
               bottom: const TabBar(
-                tabAlignment: TabAlignment.fill,
+                tabAlignment: TabAlignment.center,
                 indicatorColor: AppColors.primary,
                 indicatorWeight: 1,
                 indicatorSize: TabBarIndicatorSize.label,
-                indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
+                isScrollable: true,
+                // indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
                 labelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -44,21 +45,30 @@ class OrderView extends StatelessWidget {
                 unselectedLabelColor: AppColors.greyColor,
                 tabs: [
                   Tab(
+                    text: 'All',
+                  ),
+                  Tab(
                     text: 'Processing',
                   ),
                   Tab(
                     text: 'Pending',
                   ),
                   Tab(
+                    text: 'Cancelled',
+                  ),
+                  Tab(
                     text: 'Completed',
                   ),
+
                 ],
               ),
             ),
             body: const TabBarView(
               children: [
                 OrderStatusView(status: OrderStatus.all),
+                OrderStatusView(status: OrderStatus.processing),
                 OrderStatusView(status: OrderStatus.pending),
+                OrderStatusView(status: OrderStatus.cancelled),
                 OrderStatusView(status: OrderStatus.completed),
               ],
             ),

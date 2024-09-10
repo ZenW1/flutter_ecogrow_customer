@@ -14,6 +14,7 @@ class OrderCubit extends Cubit<OrderState> {
       dateTime: '05 Sep 2023 3:30PM',
       totalPrice: '100',
       qty: '1',
+      orderStatus: 'pending',
       store: StoreModel(
         id: '1',
         storeName: 'Ecogrow Store',
@@ -26,6 +27,7 @@ class OrderCubit extends Cubit<OrderState> {
       id: '1202384755',
       dateTime: ' 05 Sep 2023 3:30PM',
       totalPrice: '200',
+      orderStatus: 'cancelled',
       qty: '2',
       store: StoreModel(
         id: '2',
@@ -40,6 +42,7 @@ class OrderCubit extends Cubit<OrderState> {
       dateTime: '05 Sep 2023 3:30PM',
       totalPrice: '300',
       qty: '3',
+      orderStatus: 'completed',
       store: StoreModel(
         id: '3',
         storeName: 'Ecogrow Store',
@@ -53,6 +56,7 @@ class OrderCubit extends Cubit<OrderState> {
       dateTime: '05 Sep 2023 3:30PM',
       totalPrice: '400',
       qty: '4',
+      orderStatus: 'processing',
       store: StoreModel(
         id: '4',
         storeName: 'Vid Store',
@@ -66,6 +70,7 @@ class OrderCubit extends Cubit<OrderState> {
       dateTime: '05 Sep 2023 3:30PM',
       totalPrice: '500',
       qty: '5',
+      orderStatus: 'pending',
       store: StoreModel(
         id: '5',
         storeName: 'Ecogrow Store',
@@ -75,4 +80,14 @@ class OrderCubit extends Cubit<OrderState> {
       ),
     ),
   ];
+
+  Future<void> getOrderData() async {
+    emit(const OrderLoading());
+    try{
+      await Future.delayed(const Duration(seconds: 1));
+      emit(OrderLoaded(data));
+    } catch (e) {
+      emit(const OrderFailure());
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
+import 'package:flutter_ecogrow_customer/checkout/view/payment_page.dart';
 import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
 import 'package:flutter_ecogrow_customer/product/view/widget/product_sort_list_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_ecogrow_customer/shared/widget/custom_container_widget.d
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/my_separate.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/text_row_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
@@ -140,7 +142,7 @@ class CheckoutView extends StatelessWidget {
                     decoration: CustomConstantWidget.shadowBoxDecorationWidget(
                       radius: 20,
                     ),
-                    child: const Column(
+                    child:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // use khmer currency
@@ -180,8 +182,12 @@ class CheckoutView extends StatelessWidget {
                           height: 11,
                         ),
                         TextRowWidget(
-                          title: 'Total',
+                          title: 'Total Payable',
+                          titleStyle: Theme.of(context).textTheme.titleLarge,
                           subTitle: '៛55000',
+                          subTitleStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.redColor,
+                          ),
                         ),
                       ],
                     ),
@@ -205,7 +211,9 @@ class CheckoutView extends StatelessWidget {
             ),
             child: AppButton.roundedFilledButton(
               context,
-              onTap: () {},
+              onTap: () {
+                GoRouter.of(context).push(PaymentPage.routePath);
+              },
               text: 'Payment',
             ),
           ),

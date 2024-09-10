@@ -11,17 +11,30 @@ class OrderStatusView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        final data = context.read<OrderCubit>().data;
-        return OrderItemWidget(
-          data: data[index],
-        );
+    context.read<OrderCubit>().getOrderData();
+    return BlocBuilder<OrderCubit, OrderState>(
+      builder: (context, state) {
+        if (state is OrderLoaded) {
+          return AnimatedList(
+            itemBuilder: (context, index, animation) {
+              return OrderItemWidget(
+                data: state.data[index],
+                status: status,
+                animation: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: const Offset(0, 0),
+                ).animate(animation),
+                key: Key('$index'),
+              );
+            },
+            initialItemCount: state.data.length,
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
-      separatorBuilder: (context, index) {
-        return const SizedBox();
-      },
-      itemCount: 5,
     );
   }
 }
