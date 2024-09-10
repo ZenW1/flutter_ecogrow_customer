@@ -1,14 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
+import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_item_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
-import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/custom_profile_header_widgt.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -38,8 +39,8 @@ class ProfileView extends StatelessWidget {
               slivers: [
                 SliverPersistentHeader(
                   delegate: CustomerProfileHeader(),
-                  pinned: true,
-                  floating: true,
+                  pinned: false,
+                  floating: false,
                 ),
                 SliverList.list(
                   children: [
@@ -68,38 +69,21 @@ class ProfileView extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
+                    // mainTitleWidget(
+                    //   context,
+                    //   title: context.l10n.wallet,
+                    // ),
+                    // ProfileItemWidget(
+                    //   title: context.l10n.wallet,
+                    //   onTap: () {},
+                    //   icon: Assets.svg.wallet,
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                     mainTitleWidget(
                       context,
-                      title: context.l10n.wallet,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.wallet,
-                      onTap: () {},
-                      icon: Assets.svg.wallet,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    mainTitleWidget(
-                      context,
-                      title: context.l10n.memberShip,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.memberShip,
-                      onTap: () {},
-                      icon: Assets.svg.memberShip,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.storeRegister,
-                      onTap: () {},
-                      icon: Assets.svg.store,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    mainTitleWidget(
-                      context,
-                      title:  context.l10n.setting,
+                      title: context.l10n.setting,
                     ),
                     ProfileItemWidget(
                       title: context.l10n.notification,
@@ -142,6 +126,24 @@ class ProfileView extends StatelessWidget {
                       onTap: () {},
                       icon: Assets.svg.faq,
                     ),
+                    BlocListener<LoginCubit, LoginState>(
+                      listener: (context, state) {
+                        // if (state.status == LoginStatus.loading) {
+                        //   context.loaderOverlay.show();
+                        // } else if (state.status == LoginStatus.loginOut) {
+                        //   _appToken.deleteToken();
+                        //   context.loaderOverlay.hide();
+                        //   AppRouter.router.push(LoginPage.routePath);
+                        // }
+                      },
+                      child: ProfileItemWidget(
+                        title: context.l10n.logout,
+                        onTap: () {
+                          context.read<LoginCubit>().signOut();
+                        },
+                        icon: Assets.svg.signout,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -173,74 +175,5 @@ class ProfileView extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    final shrinkPercentage = shrinkOffset / maxExtent;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircleAvatar(
-            radius: 30,
-            child: CustomCacheImageWidget(
-              imageUrl: 'https://via.placeholder.com/150',
-              width: 80,
-              height: 80,
-              radius: 80,
-            ),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Hi GoatJo'),
-              Text.rich(
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: AppColors.greyColor,
-                    ),
-                const TextSpan(
-                  text: '10 Orders',
-                  children: [
-                    TextSpan(
-                      text: '. 0 wishlist',
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          InkWell(
-            onTap: () {},
-            child: SvgPicture.asset(
-              Assets.svg.edit,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  double get maxExtent => 80;
-
-  @override
-  double get minExtent => 60;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
   }
 }

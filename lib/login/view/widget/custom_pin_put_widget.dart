@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
 class CustomPinPutWidget extends StatelessWidget {
-  const CustomPinPutWidget({required this.controller, super.key});
+  const CustomPinPutWidget({required this.controller, super.key, required this.onChanged, required this.onSubmitted});
 
   final TextEditingController controller;
+  final Function(String) onChanged;
+  final Function(String) onSubmitted;
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -37,14 +39,15 @@ class CustomPinPutWidget extends StatelessWidget {
       length: 6,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
-      onSubmitted: (String pin) {
-        print('submit pin: $pin');
-      },
-      onChanged: (String pin) {
-        print('onChanged pin: $pin');
-      },
+      onSubmitted:onSubmitted,
+      isCursorAnimationEnabled: true,
+      onChanged: onChanged,
+      focusNode: FocusNode(
+        canRequestFocus: true,
+      ),
       preFilledWidget: const Text('-'),
       controller: controller,
+      closeKeyboardWhenCompleted: true,
     );
   }
 }

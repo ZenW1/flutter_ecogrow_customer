@@ -1,11 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CustomCarouselSliderWidget extends StatefulWidget {
   CustomCarouselSliderWidget({
-    required this.newWidget,
+
     super.key,
     this.slides,
     this.autoPlay = true,
@@ -14,7 +13,6 @@ class CustomCarouselSliderWidget extends StatefulWidget {
 
   final List<String>? slides;
   final bool autoPlay;
-  final Widget newWidget;
   BoxFit? boxFit;
 
   @override
@@ -30,18 +28,18 @@ class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget>
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.35,
           child: CarouselSlider.builder(
             // carouselController: carouselController,
             itemCount: widget.slides!.length,
             itemBuilder: (context, index, __) {
               return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+                // margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
                 height: MediaQuery.of(context).size.height * 0.19,
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
+                  // borderRadius: BorderRadius.circular(14),
                   image: DecorationImage(
                     image: NetworkImage(
                       widget.slides![index],
@@ -53,7 +51,7 @@ class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget>
             },
             options: CarouselOptions(
               height: MediaQuery.of(context).size.height * 0.4,
-              autoPlay: true,
+              autoPlay: false,
               viewportFraction: 1,
               onPageChanged: (index, reason) {
                 setState(() {
@@ -64,18 +62,23 @@ class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget>
           ),
         ),
         Positioned(
-          bottom: 20,
-          right: 5,
-          child: AnimatedSmoothIndicator(
-            activeIndex: _current,
-            count: widget.slides!.length,
-            effect: const ExpandingDotsEffect(
-              activeDotColor: AppColors.primary,
-              dotColor: AppColors.primary,
-              dotHeight: 8,
-              dotWidth: 8,
-              expansionFactor: 4,
-              spacing: 5,
+          bottom: 10,
+          right: 20,
+          child: Container(
+            width: 50,
+            height: 25,
+            decoration: BoxDecoration(
+              color: AppColors.blackColor.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Center(
+              child: Text(
+                '${_current} / ${widget.slides!.length}',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: AppColors.whiteColor, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ),

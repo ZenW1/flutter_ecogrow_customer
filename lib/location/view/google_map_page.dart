@@ -8,33 +8,45 @@ import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class GoogleMapPage extends StatelessWidget {
+class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
 
   @override
+  State<GoogleMapPage> createState() => _GoogleMapPageState();
+}
+
+class _GoogleMapPageState extends State<GoogleMapPage> {
+  @override
+  void initState() {
+    context.read<LocationCubit>().getCurrentLocation();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    final bloc = context.read<LocationCubit>();
-    return BlocBuilder<LocationCubit, LocationState>(
-      buildWhen: (previous, current) {
-        return previous.myMarker != current.myMarker;
+    return BlocConsumer<LocationCubit, LocationState>(
+      listener: (context, state) {
+        if (state.status == LocationStatus.loaded) {
+          context.loaderOverlay.hide();
+        }
       },
       builder: (context, state) {
-        if(state is LocationSelector){
-          context.loaderOverlay.show();
-          }
-        return Scaffold(
+        if (state.status == LocationStatus.loading) {
+           context.loaderOverlay.show();
+        }
+       return  Scaffold(
           body: Stack(
             children: [
               GoogleMap(
                 onCameraMoveStarted: () {
-                  bloc.getCurrentLocation(context);
+                  context.read<LocationCubit>().onCameraStarted(state.location!);
                 },
-                onCameraMove: (CameraPosition cameraPosition)  async{
-                   await bloc.getDataWhenCameraMove(cameraPosition);
+                onCameraMove: (CameraPosition cameraPosition) async {
+                  await context.read<LocationCubit>().getDataWhenCameraMove(cameraPosition);
+
                 },
-                onCameraIdle: ()  {
-                  bloc.onCameraStoppedMoving();
-                  },
+                onCameraIdle: () {
+                  context.read<LocationCubit>().onCameraStoppedMoving();
+                },
                 // onTap: (LatLng latLng) async {
                 //   await bloc.getOnTapData(latLng);
                 // },
@@ -43,9 +55,10 @@ class GoogleMapPage extends StatelessWidget {
                   zoom: 13,
                 ),
                 onMapCreated: (GoogleMapController controller) {
+                  context.read<LocationCubit>().controller.complete(controller);
                 },
                 markers: {
-                  state.myMarker!,
+                    state.myMarker!,
                 },
               ),
               Positioned(
@@ -109,13 +122,13 @@ class GoogleMapPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     const Icon(Icons.location_on),
                     const SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      bloc.state.placemarks!.first.name.toString(),
+                    state.status == LocationStatus.loaded
+                        ? Text(
+                      context.read<LocationCubit>().getLocationAddress(),
                       maxLines: 2,
                       softWrap: false,
                       textWidthBasis: TextWidthBasis.longestLine,
@@ -124,15 +137,21 @@ class GoogleMapPage extends StatelessWidget {
                         applyHeightToFirstAscent: false,
                         applyHeightToLastDescent: false,
                       ),
-
-                    ),
+                    )
+                        : const Text('Loading...'),
                     const Spacer(),
                     const Icon(Icons.edit),
                   ],
                 ),
-                const SizedBox(height: 16,),
-                const AppTitleWidget(text: "We're missing your address",),
-                const SizedBox(height: 16,),
+                const SizedBox(
+                  height: 16,
+                ),
+                const AppTitleWidget(
+                  text: "We're missing your address",
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 GlobalTextField(
                   textInputType: TextInputType.text,
                   controller: TextEditingController(),
@@ -140,7 +159,7 @@ class GoogleMapPage extends StatelessWidget {
                 ),
               ],
             ),
-          ) ,
+          ),
           bottomNavigationBar: Container(
             padding: const EdgeInsets.only(
               left: 16,

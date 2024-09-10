@@ -9,12 +9,14 @@ class CustomContainerWidget extends StatelessWidget {
     required this.leading,
     required this.trialing,
     super.key,
+    this.isShowDecoration = true,
   });
 
   final String title;
   final String subTitle;
   final Widget leading;
   final Widget trialing;
+  final bool? isShowDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class CustomContainerWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(
         vertical: 8,
       ),
-      decoration: CustomConstantWidget.shadowBoxDecorationWidget(),
+      decoration: isShowDecoration! ? CustomConstantWidget.shadowBoxDecorationWidget() : BoxDecoration(),
       child: ListTile(
         leading: leading,
         title: Text(

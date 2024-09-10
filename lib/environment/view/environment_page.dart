@@ -22,7 +22,6 @@ class EnvironmentsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EnvironmentCubit, EnvironmentState>(
       builder: (context, state) {
-        // TODO: return correct widget based on the state.
         return const SizedBox();
       },
     );
