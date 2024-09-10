@@ -3,24 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/authentication/authentication_bloc.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
+import 'package:flutter_ecogrow_customer/data/repo/product_repo.dart';
 import 'package:flutter_ecogrow_customer/environment/cubit/environment_cubit.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
-import 'package:flutter_ecogrow_customer/login/view/login_page.dart';
-import 'package:flutter_ecogrow_customer/main/cubit/main_cubit.dart';
+import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/main/main.dart';
+import 'package:flutter_ecogrow_customer/product/cubit/product_cubit.dart';
 import 'package:flutter_ecogrow_customer/profile/language/cubit/language_cubit.dart';
 import 'package:flutter_ecogrow_customer/route/app_router.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/GlobalOverLayWidget.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/global_overlay_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_language.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http_client/http_client.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 class App extends StatelessWidget {
@@ -30,8 +28,7 @@ class App extends StatelessWidget {
     required AppLanguage appLanguage,
     required AppToken appToken,
     super.key,
-  })
-      : _environment = environment,
+  })  : _environment = environment,
         _appLanguage = appLanguage,
         _dioHttpClient = dioHttpClient,
         _appToken = appToken;
@@ -49,12 +46,10 @@ class App extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<EnvironmentCubit>(
-            create: (context) =>
-            EnvironmentCubit()
-              ..load(_environment),
+            create: (context) => EnvironmentCubit()..load(_environment),
           ),
           BlocProvider<AuthenticationBloc>(
-            create: (context) => AuthenticationBloc(_appToken),
+            create: (context) => AuthenticationBloc(_appToken)..add(AppStartedEvent()),
           ),
           BlocProvider<LoginCubit>(
             create: (context) => LoginCubit(),
@@ -63,35 +58,38 @@ class App extends StatelessWidget {
             create: (context) => MainCubit(),
           ),
           BlocProvider<LocationCubit>(
-            create: (context) => LocationCubit(),
+            create: (context) => LocationCubit()..getCurrentLocation(),
           ),
           BlocProvider(
             create: (context) => CategoryCubit(),
           ),
           BlocProvider<LanguageCubit>(
-            create: (context) =>
-            LanguageCubit(
+            create: (context) => LanguageCubit(
               _appLanguage,
-            )
-              ..load(),
+            )..load(),
+          ),
+          BlocProvider(
+            create: (context) => ProductCubit(
+              ProductRepo(dio: _dioHttpClient),
+            ),
           ),
         ],
-        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+        child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
-             if(state is AppStarted){
-               context.loaderOverlay.show();
-             } else if(state is Authenticated){
-               Navigator.of(context).push<MainPage>(
-                  MaterialPageRoute(builder: (context) => const MainPage()),
-               );
-             } else if (state is UnAuthenticated){
-                GoRouter.of(context).go('/login');
-             }
+            // if (state.status == LoginStatus.loading) {
+            //   context.loaderOverlay.show();
+            // } else if (state.status == LoginStatus.loginOut) {
+            //   _appToken.deleteToken();
+            //   context.loaderOverlay.hide();
+            //   AppRouter.router.push(LoginPage.routePath);
+            // }
           },
           child: Sizer(
-            builder: (BuildContext context,
-                Orientation orientation,
-                DeviceType deviceType,) {
+            builder: (
+              BuildContext context,
+              Orientation orientation,
+              DeviceType deviceType,
+            ) {
               return BlocSelector<LanguageCubit, LanguageState, LanguageSelected>(
                 selector: (state) {
                   if (state is LanguageSelected) {

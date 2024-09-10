@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/app/view/app.dart';
 import 'package:flutter_ecogrow_customer/gen/fonts.gen.dart';
 
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -8,7 +9,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       fontFamily: FontFamily.kantumruyPro,
-      appBarTheme: const AppBarTheme(
+      appBarTheme:  AppBarTheme(
         titleTextStyle: TextStyle(
           color: AppColors.blackColor,
           fontSize: 20,
@@ -20,14 +21,15 @@ class AppTheme {
         iconTheme: IconThemeData(
           color: AppColors.primary,
         ),
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.whiteColor,
       ),
       cardTheme: const CardTheme(
-        color: AppColors.backgroundColor,
+        color: AppColors.lightGreyColor,
       ),
       primaryColor: AppColors.primary,
       highlightColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.backgroundColor,
+      // backgroundColor: AppColors.whiteColor,
       textTheme: const TextTheme(
         displayLarge: TextStyle(
           fontSize: 20,
@@ -116,7 +118,6 @@ class AppTheme {
         secondary: AppColors.secondaryColor,
         onSecondary: AppColors.secondaryColor,
         surface: AppColors.backgroundColor,
-        onSurface: AppColors.backgroundColor,
         error: Colors.red,
         onError: Colors.red,
         background: AppColors.backgroundColor,

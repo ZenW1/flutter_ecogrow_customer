@@ -24,9 +24,10 @@ class AppTitleWidget extends StatelessWidget {
       children: [
         Text(
           text,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 color: fontColor ?? AppColors.blackColor,
-                fontWeight: fontWeight ?? FontWeight.w500,
+                fontWeight: fontWeight ?? FontWeight.w600,
+
               ),
         ),
         if (isRow == true) widget ?? Container() else Container(),

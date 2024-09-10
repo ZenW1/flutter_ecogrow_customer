@@ -50,11 +50,20 @@ class AppToken {
 
   Future<bool> hasToken() async {
     try {
-      final accessToken = await getAccessToken();
-      return accessToken.isNotEmpty;
+      final accessToken = await _preferences.getString(AppConstant.accessToken);
+      final refreshToken = await _preferences.getString(AppConstant.refreshToken);
+      return accessToken != null;
     } catch (e) {
       return false;
     }
   }
 
+  Future<void> deleteToken() async {
+    try{
+      await _preferences.remove(AppConstant.accessToken);
+      await _preferences.remove(AppConstant.refreshToken);
+    }catch (e) {
+      return ;
+    }
+  }
 }

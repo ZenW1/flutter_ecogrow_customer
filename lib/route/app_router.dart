@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/cart/cart.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
+import 'package:flutter_ecogrow_customer/checkout/view/payment_page.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
@@ -13,19 +14,34 @@ import 'package:flutter_ecogrow_customer/profile/language/language.dart';
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/register/view/register_page.dart';
 import 'package:flutter_ecogrow_customer/route/go_router_observable.dart';
+import 'package:flutter_ecogrow_customer/splash/splash.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: MainPage.routePath,
+    initialLocation: SplashPage.routePath,
+    initialExtra: {'environment': 'production'},
     observers: [
       MyNavigatorObserver(),
     ],
     routes: [
       GoRoute(
+        path: SplashPage.routePath,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const SplashPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
         path: LoginPage.routePath,
+        name: 'login',
         pageBuilder: (context, state) => CustomTransitionPage(
           child: const LoginPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -147,14 +163,14 @@ class AppRouter {
       GoRoute(
         path: ProductPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
-          fullscreenDialog: true,
-          child: Hero(
-              tag: 'product-detail',
-              child: const ProductPage()),
+          child: const ProductPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child:child,
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
             );
           },
         ),
@@ -163,6 +179,19 @@ class AppRouter {
         path: CheckoutPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
           child: const CheckoutPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        path: PaymentPage.routePath,
+        name: 'payment',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const PaymentPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return ScaleTransition(
               scale: animation,
