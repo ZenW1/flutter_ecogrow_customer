@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/app/view/app.dart';
 import 'package:flutter_ecogrow_customer/gen/fonts.gen.dart';
 
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -9,7 +8,11 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       fontFamily: FontFamily.kantumruyPro,
-      appBarTheme:  AppBarTheme(
+      // color transparency when on tap inkwell
+      splashColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      shadowColor: Colors.transparent,
+      appBarTheme: AppBarTheme(
         titleTextStyle: TextStyle(
           color: AppColors.blackColor,
           fontSize: 20,
@@ -23,11 +26,11 @@ class AppTheme {
         ),
         backgroundColor: AppColors.whiteColor,
       ),
-      cardTheme: const CardTheme(
-        color: AppColors.lightGreyColor,
+      cardTheme: CardTheme(
+        color: AppColors.lightGreyColor.withOpacity(0.5),
       ),
       primaryColor: AppColors.primary,
-      highlightColor: AppColors.primary,
+      highlightColor: Colors.transparent,
       scaffoldBackgroundColor: AppColors.backgroundColor,
       // backgroundColor: AppColors.whiteColor,
       textTheme: const TextTheme(
@@ -80,9 +83,9 @@ class AppTheme {
           backgroundColor: MaterialStateProperty.all<Color>(
             AppColors.backgroundColor,
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(
-            AppColors.backgroundColor,
-          ),
+          // foregroundColor: MaterialStateProperty.all<Color>(
+          //   AppColors.backgroundColor,
+          // ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -102,9 +105,9 @@ class AppTheme {
           backgroundColor: MaterialStateProperty.all<Color>(
             AppColors.primary,
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(
-            AppColors.backgroundColor,
-          ),
+          // foregroundColor: MaterialStateProperty.all<Color>(
+          //   AppColors.backgroundColor,
+          // ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -114,7 +117,7 @@ class AppTheme {
       ),
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: AppColors.primary,
-        onPrimary: AppColors.primary,
+        onPrimary: AppColors.whiteColor,
         secondary: AppColors.secondaryColor,
         onSecondary: AppColors.secondaryColor,
         surface: AppColors.backgroundColor,
@@ -123,6 +126,13 @@ class AppTheme {
         background: AppColors.backgroundColor,
         onBackground: AppColors.backgroundColor,
         brightness: Brightness.light,
+      ),
+    ).copyWith(
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
+          TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+        },
       ),
     );
   }

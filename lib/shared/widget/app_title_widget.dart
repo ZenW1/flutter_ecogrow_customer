@@ -27,7 +27,6 @@ class AppTitleWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 color: fontColor ?? AppColors.blackColor,
                 fontWeight: fontWeight ?? FontWeight.w600,
-
               ),
         ),
         if (isRow == true) widget ?? Container() else Container(),

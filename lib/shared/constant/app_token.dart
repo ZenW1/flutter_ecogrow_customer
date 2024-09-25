@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,12 +12,20 @@ class AppToken {
 
   final SharedPreferences _preferences;
 
+  // stream
+  Stream<User?> get user => FirebaseAuth.instance.authStateChanges();
+
+
   Future<void> saveAccessToken(String message) async {
     try {
       await _preferences.setString(AppConstant.accessToken, message);
     } catch (e) {
       rethrow;
     }
+  }
+
+  String accessToken() {
+    return _preferences.getString(AppConstant.accessToken) ?? '';
   }
 
   Future<String> getAccessToken() async {
@@ -51,7 +63,8 @@ class AppToken {
   Future<bool> hasToken() async {
     try {
       final accessToken = await _preferences.getString(AppConstant.accessToken);
-      final refreshToken = await _preferences.getString(AppConstant.refreshToken);
+      final refreshToken =
+          await _preferences.getString(AppConstant.refreshToken);
       return accessToken != null;
     } catch (e) {
       return false;
@@ -59,11 +72,52 @@ class AppToken {
   }
 
   Future<void> deleteToken() async {
-    try{
-      await _preferences.remove(AppConstant.accessToken);
-      await _preferences.remove(AppConstant.refreshToken);
-    }catch (e) {
-      return ;
+    try {
+       Future.wait(
+        [
+          _preferences.remove(AppConstant.accessToken),
+          _preferences.remove(AppConstant.refreshToken),
+          _preferences.remove(AppConstant.user),
+        ],
+       );
+    } catch (e) {
+      rethrow;
     }
+  }
+
+  Future<void> setUser(UserModel user) async {
+    try {
+      await _preferences.setString(AppConstant.user, jsonEncode(user.toJson()));
+    } catch (e) {
+       e.toString();
+    }
+  }
+
+  UserModel getUser()  {
+      final response = _preferences.getString(AppConstant.user);
+      if (response == null) {
+        return UserModel();
+      }
+      return UserModel.fromJson(jsonDecode(response) as Map<String, dynamic>);
+  }
+
+  Future<void> deleteUser() async {
+    try {
+      await _preferences.remove(AppConstant.user);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> setUid(String uid) async {
+    try {
+      await _preferences.setString('___uid___', uid);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  String getUid() {
+    return _preferences.getString('___uid___') ?? '';
   }
 }
