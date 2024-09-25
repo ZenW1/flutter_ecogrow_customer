@@ -6,14 +6,17 @@ enum Level { verbose, debug, info, warning, error, wtf, nothing }
 class AppPrettyLogger extends LogPrinter {
   final logger = Logger(
     printer: PrettyPrinter(
-      methodCount: 5,
+      methodCount: 0,
+      errorMethodCount: 5,
       levelColors: {
         Logger.level: AnsiColor.fg(AnsiColor.grey(0)),
       },
-      lineLength: 120,
+      levelEmojis: {
+        Logger.level: '📝',
+      },
+      lineLength: 100,
       colors: true,
       printEmojis: true,
-
     ),
   );
 
@@ -21,5 +24,5 @@ class AppPrettyLogger extends LogPrinter {
   List<String> log(LogEvent event) {
     logger.d(event.message);
     return [];
-   }
+  }
 }

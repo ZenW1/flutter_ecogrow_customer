@@ -13,7 +13,7 @@ enum LoginStatus {
 }
 
 class LoginState extends Equatable {
-  const LoginState({
+  LoginState({
     this.status = LoginStatus.initial,
     this.phoneNumber = '',
     this.isPhoneNumberValid = false,
@@ -22,6 +22,7 @@ class LoginState extends Equatable {
     this.isNewUser = true,
     this.errorMessage = '',
     this.accessToken = '',
+    required this.userInfo,
   });
 
   LoginState copyWith({
@@ -33,6 +34,7 @@ class LoginState extends Equatable {
     bool? isNewUser,
     String? errorMessage,
     String? accessToken,
+    UserInfoModel? userInfo,
   }) {
     return LoginState(
       status: status ?? this.status,
@@ -43,12 +45,13 @@ class LoginState extends Equatable {
       isNewUser: isNewUser ?? this.isNewUser,
       errorMessage: errorMessage ?? this.errorMessage,
       accessToken: accessToken ?? this.accessToken,
+      userInfo: userInfo ?? this.userInfo,
     );
   }
 
-  factory LoginState.initial() {
-    return LoginState();
-  }
+  // factory LoginState.initial() {
+  //   return LoginState();
+  // }
 
   final LoginStatus status;
   final String phoneNumber;
@@ -58,6 +61,7 @@ class LoginState extends Equatable {
   final bool isSuccess;
   final bool isNewUser;
   final String errorMessage;
+  final UserInfoModel userInfo;
 
   @override
   List<Object> get props => [
@@ -69,5 +73,6 @@ class LoginState extends Equatable {
         errorMessage,
         isNewUser,
         accessToken,
+        userInfo,
       ];
 }

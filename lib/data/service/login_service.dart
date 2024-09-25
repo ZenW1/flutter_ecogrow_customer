@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 
 class LoginService {
@@ -16,6 +19,12 @@ class LoginService {
   late String? _verificationId = '';
 
   Future<void> sendOtp({required String phoneNumber}) async {
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = phoneNumber.substring(1);
+    } else {
+      phoneNumber = phoneNumber;
+    }
+
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -46,7 +55,7 @@ class LoginService {
     return Future.delayed(Duration(seconds: 60));
   }
 
-  Future<bool> verifyOtp({required String codeSms}) async {
+  Future<String> verifyOtp({required String codeSms}) async {
     try {
       final userCredential = await _auth.signInWithCredential(
         PhoneAuthProvider.credential(
@@ -54,17 +63,38 @@ class LoginService {
           smsCode: codeSms,
         ),
       );
-      return userCredential.additionalUserInfo!.isNewUser;
+      final user = await userCredential.user!.getIdToken();
+
+
+      log('user: $user');
+      log('user: $user');
+      log('user: $user');
+      log('user: $user');
+
+      return userCredential.user!.uid;
     } on auth.FirebaseAuthException catch (e) {
       throw e;
     }
   }
 
-  Future<String> getAccessToken() async {
+  Future<String> getAccessToken({bool forceReFresh = false}) async {
     final user = _auth.currentUser;
     final token = await user!.getIdToken();
-    return  token!;
+    return token!;
   }
+
+  String getUid() {
+    final user = _auth.currentUser;
+
+    log('user uid : ${user!.uid}');
+    return user!.uid;
+  }
+
+  // Future<String> getRefreshToken({bool forceRefresh = false}) async {
+  //   final user = _auth.currentUser;
+  //   final token = await user!.getIdToken(forceRefresh);
+  //   return token!;
+  // }
 
   Future<void> signOut() async {
     await _auth.signOut();
