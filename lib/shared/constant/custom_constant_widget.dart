@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
 extension CustomConstantWidget on Widget {
-  static BoxDecoration shadowBoxDecorationWidget({double? radius,Color? color}) {
+  static BoxDecoration shadowBoxDecorationWidget(
+      {double? radius, Color? color}) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(radius ?? 10),
       color: color ?? AppColors.backgroundColor,
@@ -20,12 +21,11 @@ extension CustomConstantWidget on Widget {
 }
 
 extension AutoFocusNode on FocusNode {
-
-  static void requestFocusNode(BuildContext context,FocusNode focusNode){
-     return  FocusScope.of(context).requestFocus(focusNode);
+  static void requestFocusNode(BuildContext context, FocusNode focusNode) {
+    return FocusScope.of(context).requestFocus(focusNode);
   }
 
-  static void unFocusNode(BuildContext context){
-     FocusScope.of(context).unfocus();
+  static void unFocusNode(BuildContext context) {
+    FocusScope.of(context).unfocus();
   }
 }

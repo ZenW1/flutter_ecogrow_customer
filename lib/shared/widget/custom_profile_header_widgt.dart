@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
+import 'package:flutter_ecogrow_customer/profile/view/profile_edit_page.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
+
+  CustomerProfileHeader(this.userModel);
+  final UserModel userModel;
   @override
   Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent,
-      ) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final shrinkPercentage = shrinkOffset / maxExtent;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -18,10 +24,10 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircleAvatar(
+           CircleAvatar(
             radius: 30,
             child: CustomCacheImageWidget(
-              imageUrl: 'https://via.placeholder.com/150',
+              imageUrl: userModel.image!,
               width: 80,
               height: 80,
               radius: 80,
@@ -34,11 +40,11 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Hi GoatJo'),
+               Text('${userModel.firstName} ${userModel.lastName}'),
               Text.rich(
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: AppColors.greyColor,
-                ),
+                      color: AppColors.greyColor,
+                    ),
                 const TextSpan(
                   text: '10 Orders',
                   children: [
@@ -52,7 +58,9 @@ class CustomerProfileHeader extends SliverPersistentHeaderDelegate {
           ),
           const Spacer(),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(ProfileEditPage.routePath);
+            },
             child: SvgPicture.asset(
               Assets.svg.edit,
             ),

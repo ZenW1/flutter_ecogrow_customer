@@ -4,7 +4,6 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
 class CustomCarouselSliderWidget extends StatefulWidget {
   CustomCarouselSliderWidget({
-
     super.key,
     this.slides,
     this.autoPlay = true,
@@ -16,10 +15,12 @@ class CustomCarouselSliderWidget extends StatefulWidget {
   BoxFit? boxFit;
 
   @override
-  _CustomCarouselSliderWidgetState createState() => _CustomCarouselSliderWidgetState();
+  _CustomCarouselSliderWidgetState createState() =>
+      _CustomCarouselSliderWidgetState();
 }
 
-class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget> {
+class _CustomCarouselSliderWidgetState
+    extends State<CustomCarouselSliderWidget> {
   int _current = 0;
 
   @override
@@ -74,10 +75,8 @@ class _CustomCarouselSliderWidgetState extends State<CustomCarouselSliderWidget>
             child: Center(
               child: Text(
                 '${_current} / ${widget.slides!.length}',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: AppColors.whiteColor, fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: AppColors.whiteColor, fontWeight: FontWeight.w600),
               ),
             ),
           ),

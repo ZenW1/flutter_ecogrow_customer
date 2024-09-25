@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
 class DescriptionExpansionWidget extends StatelessWidget {
-  const DescriptionExpansionWidget({super.key, required this.title, required this.description});
+  const DescriptionExpansionWidget(
+      {super.key, required this.title, required this.description});
 
   final String title;
   final String description;
@@ -15,12 +16,12 @@ class DescriptionExpansionWidget extends StatelessWidget {
       collapsedTextColor: AppColors.blackColor,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
             description,
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: AppColors.greyColor,
-            ),
+                  color: AppColors.greyColor,
+                ),
           ),
         ),
       ],

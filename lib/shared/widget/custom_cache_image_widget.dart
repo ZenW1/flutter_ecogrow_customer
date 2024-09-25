@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomCacheImageWidget extends StatelessWidget {
   const CustomCacheImageWidget({
@@ -29,29 +30,24 @@ class CustomCacheImageWidget extends StatelessWidget {
           child: Container(),
         ),
       ),
-      imageBuilder: (context, imageProvider) => InkWell(
-        onTap: onTap ??
-            () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => PhotoViewWidget(
-              //       image: imageUrl,
-              //     ),
-              //   ),
-              // );
-            },
-        child: Container(
-          width: width ?? 55,
-          height: height ?? 65,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              radius ?? Dimensions.paddingSizeSmall(),
-            ),
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.contain,
-            ),
+      errorWidget: (context,url,error) {
+        return Center(
+          child: SvgPicture.asset(
+            'assets/svg/placeholder.svg',
+            width: width ?? 100,
+            height: height ?? 100,
+            fit: BoxFit.cover,
+          ),
+        );
+      },
+      imageBuilder: (context, imageProvider) => Container(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+             imageUrl,
+            width: width,
+            height: height,
+            fit: BoxFit.contain,
           ),
         ),
       ),

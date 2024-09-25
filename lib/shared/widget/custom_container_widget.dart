@@ -24,7 +24,9 @@ class CustomContainerWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(
         vertical: 8,
       ),
-      decoration: isShowDecoration! ? CustomConstantWidget.shadowBoxDecorationWidget() : BoxDecoration(),
+      decoration: isShowDecoration!
+          ? CustomConstantWidget.shadowBoxDecorationWidget()
+          : BoxDecoration(),
       child: ListTile(
         leading: leading,
         title: Text(

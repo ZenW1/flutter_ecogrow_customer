@@ -46,14 +46,16 @@ extension AppButton on BuildContext {
     required VoidCallback onTap,
     required String text,
     double? width,
+    double? height,
+    double? radius,
     Color? color,
     Color? textColor,
   }) {
     return Container(
       width: width,
-      height: 40,
+      height: height ?? 55,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: ElevatedButton(
         onPressed: onTap,
@@ -63,7 +65,7 @@ extension AppButton on BuildContext {
               color: color ?? Colors.transparent,
               width: 2,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(radius ?? 25),
           ),
           shadowColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,

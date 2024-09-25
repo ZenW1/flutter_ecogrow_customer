@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/data/model/product_list_response_model.dart';
+import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
@@ -6,7 +9,9 @@ import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dar
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 
 extension CustomProductShowButtomSheet on BuildContext {
-  static Future<void> showBottomSheet(BuildContext context) async {
+  static Future<void> showBottomSheet(BuildContext context,{
+    required ProductListModel data,
+  }) async {
     return showModalBottomSheet(
       barrierColor: Colors.black.withOpacity(0.5),
       backgroundColor: Colors.transparent,
@@ -32,12 +37,11 @@ extension CustomProductShowButtomSheet on BuildContext {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
+                           SizedBox(
                             width: 130,
                             height: 110,
                             child: CustomCacheImageWidget(
-                              imageUrl:
-                                  'https://image.oppo.com/content/dam/oppo/common/mkt/v2-2/a79-5g-en/listpage/a79-5g-427_600-green.png.thumb.webp',
+                              imageUrl: data.primaryImage!,
                             ),
                           ),
                           Column(
@@ -46,8 +50,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Laneige Lip Sleeping Mask\n EX - Grapefruit (20g)',
+                                   Text(
+                                    data.name!,
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -56,8 +60,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
                                   ),
-                                  const Text(
-                                    'Grape Flavor',
+                                   Text(
+                                    data.name!,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: AppColors.greyColor,
@@ -68,8 +72,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   ),
                                 ],
                               ),
-                              const Text(
-                                r'$299',
+                               Text(
+                                '៛${data.price!}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -120,7 +124,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       children: [
-                        const AppTitleWidget(
+                        AppTitleWidget(
                           text: 'Total Price',
                           fontColor: Colors.black,
                           isRow: true,
@@ -134,7 +138,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: AppButton.roundedFilledButton(
@@ -148,6 +152,7 @@ extension CustomProductShowButtomSheet on BuildContext {
                                 backgroundColor: Colors.black,
                               ),
                             ),
+                            SizedBox(width: 16,),
                             Expanded(
                               child: AppButton.roundedFilledButton(
                                 context,
