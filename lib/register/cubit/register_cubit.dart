@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -6,24 +7,69 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
+import 'package:flutter_ecogrow_customer/data/repo/authentication_repo.dart';
+import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit() : super(const RegisterInitial());
+  RegisterCubit(this._authenticationRepo, this._appToken) : super(RegisterInitial());
+
+  AuthenticationRepo _authenticationRepo;
+  AppToken _appToken;
+  final LoginService _loginService = LoginService();
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
 
-  Future<void> getImage(ImageSource source) async {
+  // File? image;
+  // String? base64Image;
+
+  Future<void> registerUser({
+    required String firstName,
+    required String lastName,
+    required String gender,
+    required String phoneNumber,
+    required String dob,
+    required String image,
+  }) async {
+      emit(RegisterInitial());
+      final data = await _authenticationRepo.registerUser(
+        firstName: firstName,
+        lastName: lastName,
+        uid: '${_appToken.getUid()}',
+        phoneNumber: phoneNumber,
+        image: image,
+        gender: gender,
+        dob: dob,
+      );
+
+      log('data: ${data.data!.toJson()}');
+
+      print('uid ${_appToken.getUid()}');
+
+      Future.wait([
+        _appToken.saveAccessToken(await _loginService.getAccessToken()),
+        _appToken.setUser(data.data!),
+      ]);
+
+      emit(RegisterLoaded(data, data.message!));
+
+  }
+
+  Future<void> getImageAndConvertToBase64(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(
         source: source,
-        imageQuality: 40,
+        imageQuality: 5,
       );
+
       if (image == null) return;
       final imageTemp = File(image.path);
 
@@ -33,7 +79,10 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (!validImage) {
         await CustomDialog.showErrorDialog('Invalid image format');
       }
-      emit(RegisterState(imageTemp, ''));
+
+      emit(RegisterState(
+        imageTemp,
+      ));
     } on PlatformException catch (e) {
       await CustomDialog.showErrorDialog(e.message);
     } catch (e) {
@@ -41,75 +90,5 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  // conver image to base64
-
-  Future<void> convertImageToBase64() async {
-    try {
-      final image = state.image;
-      if (image == null) return;
-      final bytes = await image.readAsBytes();
-      final base64Image = base64Encode(bytes);
-      emit(RegisterState(image, base64Image));
-      print(base64Image);
-      print(base64Image);
-      print(base64Image);
-      print(base64Image);
-      print(base64Image);
-      emit(RegisterState(image, base64Image));
-    } catch (e) {
-      await CustomDialog.showErrorDialog(e.toString());
-    }
-  }
-  //
-  // Future<List<dynamic>> _resolveBase64ImagesIntoFile(List<dynamic> images) async {
-  //   List<dynamic> resolves = [];
-  //
-  //   for (var img in images) {
-  //     if (img.fileBytes != null) {
-  //       var imageFile =
-  //       await writeImageFileFromBase64(base64Image: img.fileBytes, fileName: img.fileName);
-  //       resolves.add(imageFile);
-  //     } else {
-  //       resolves.add(img);
-  //     }
-  //   }
-  //
-  //   return resolves;
-  // }
-  //
-  // static Future<File?> writeImageFileFromBase64(
-  //     {required String base64Image, String? fileName}) async {
-  //   final decodedBytes = base64Decode(base64Image);
-  //
-  //   final directory = await ApplicationDocumentsDirectory();
-  //   final path = directory.path;
-  //
-  //   var file = File(fileName != null
-  //       ? "$path/${fileName.replaceAll(RegExp(r"[/\\\s]"), "")}"
-  //       : "$path/img_${DateTime.now().millisecond}.jpg");
-  //
-  //   return file.writeAsBytes(decodedBytes);
-  // }
-
-// Widget displayProfileWidget() {
-  //   return state.image == null
-  //       ? InkWell(
-  //           onTap: () {
-  //             getImage(ImageSource.gallery);
-  //           },
-  //           child: const CircleAvatar(
-  //             radius: 50,
-  //             foregroundImage: NetworkImage(
-  //               'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-  //             ),
-  //           ),
-  //         )
-  //       : InkWell(
-  //           onTap: () => getImage(ImageSource.gallery),
-  //           child: CircleAvatar(
-  //             radius: 50,
-  //             foregroundImage: FileImage(state.image!),
-  //           ),
-  //         );
-  // }
+//
 }
