@@ -11,5 +11,4 @@ class StoreModel {
   final String storeImage;
   final String storeCategory;
   final String totalOrder;
-
 }

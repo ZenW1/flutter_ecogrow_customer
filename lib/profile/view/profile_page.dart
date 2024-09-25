@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_item_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_profile_header_widgt.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +20,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(),
+      create: (_) => ProfileCubit(
+        context.read<AppToken>()
+      ),
       child: const ProfileView(),
     );
   }
@@ -37,10 +39,18 @@ class ProfileView extends StatelessWidget {
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
+               state is ProfileLoadSuccess ?
                 SliverPersistentHeader(
-                  delegate: CustomerProfileHeader(),
+                  delegate: CustomerProfileHeader(
+                    state.data,
+                  ),
                   pinned: false,
                   floating: false,
+                ) : SliverToBoxAdapter(
+                  child: Container(
+                    height: 200,
+                    color: AppColors.primary,
+                  ),
                 ),
                 SliverList.list(
                   children: [
