@@ -9,22 +9,14 @@ enum LocationStatus {
 
 class LocationState extends Equatable {
   LocationState({
-    this.message = '',
-    this.location = const LatLng(11.5689, 104.8903),
-    this.placemarks = const [],
-    this.myMarker = const  Marker(
-      markerId:  MarkerId('1'),
-      position: LatLng(11.5689, 104.8903),
-      infoWindow: const InfoWindow(
-        title: 'this is my new location',
-        snippet: 'This is your location',
-      ),
-    ),
+    this.message,
+    this.location,
+    this.placemarks,
+    this.myMarker,
     this.status = LocationStatus.initial,
   });
 
   factory LocationState.initial() {
-    // wat phnom
     return LocationState(
       location: const LatLng(11.5689, 104.8903),
     );
@@ -46,10 +38,10 @@ class LocationState extends Equatable {
     );
   }
 
-  final String message;
+  final String? message;
   final LatLng? location;
-  final List<Placemark> placemarks;
-  final LocationStatus status;
+  final List<Placemark>? placemarks;
+  final LocationStatus? status;
   final Marker? myMarker;
 
   @override

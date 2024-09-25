@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
+import 'package:flutter_ecogrow_customer/location/cubit/current_address/current_address_bloc.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
@@ -16,51 +16,80 @@ class GoogleMapPage extends StatefulWidget {
 }
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
+  String placeMark = '';
+
   @override
   void initState() {
-    context.read<LocationCubit>().getCurrentLocation();
+    context.read<CurrentAddressBloc>()..add(CurrentAddressInit());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationCubit, LocationState>(
-      listener: (context, state) {
-        if (state.status == LocationStatus.loaded) {
+    return BlocConsumer<CurrentAddressBloc, CurrentAddressState>(
+      listener: (context, state) async {
+        if (state is CurrentAddressLoaded) {
+          placeMark = await context
+              .read<CurrentAddressBloc>()
+              .getCurrentAddressLocation(
+                  lat: state.position.latitude, lng: state.position.longitude);
           context.loaderOverlay.hide();
+        } else if (state is CurrentLatLng) {
+          context.loaderOverlay.hide();
+        } else {
+          context.loaderOverlay.show();
         }
       },
       builder: (context, state) {
-        if (state.status == LocationStatus.loading) {
-           context.loaderOverlay.show();
+        if (state is CurrentAddressInitial) {
+          context.loaderOverlay.show();
         }
-       return  Scaffold(
+        return Scaffold(
           body: Stack(
             children: [
-              GoogleMap(
-                onCameraMoveStarted: () {
-                  context.read<LocationCubit>().onCameraStarted(state.location!);
-                },
-                onCameraMove: (CameraPosition cameraPosition) async {
-                  await context.read<LocationCubit>().getDataWhenCameraMove(cameraPosition);
-
-                },
-                onCameraIdle: () {
-                  context.read<LocationCubit>().onCameraStoppedMoving();
-                },
-                // onTap: (LatLng latLng) async {
-                //   await bloc.getOnTapData(latLng);
-                // },
-                initialCameraPosition: CameraPosition(
-                  target: state.location!,
-                  zoom: 13,
+              if (state is CurrentAddressLoaded)
+                GoogleMap(
+                  onCameraMoveStarted: () async {
+                    await context.read<CurrentAddressBloc>()
+                      ..add(CurrentLocationChangeEvent(
+                          state.position.latitude, state.position.longitude));
+                  },
+                  onCameraMove: (CameraPosition cameraPosition) async {
+                    await context.read<CurrentAddressBloc>()
+                      ..add(OnMoveCameraEvent(cameraPosition));
+                  },
+                  onCameraIdle: () async {
+                    await context.read<CurrentAddressBloc>()
+                      ..add(OnCameraStoppedEvent(
+                          state.position, state.placeMarks));
+                  },
+                  // onTap: (LatLng latLng) async {
+                  //   await bloc.getOnTapData(latLng);
+                  // },
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                        state.position.latitude, state.position.longitude),
+                    zoom: 13,
+                  ),
+                  onMapCreated: (GoogleMapController controller) async {
+                    await state.controller;
+                  },
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId('1'),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueRed),
+                      position: LatLng(
+                          state.position.latitude, state.position.longitude),
+                      infoWindow: const InfoWindow(
+                        title: 'this is my new location',
+                        snippet: 'This is your location',
+                      ),
+                      onDrag: (LatLng) {},
+                    ),
+                  },
                 ),
-                onMapCreated: (GoogleMapController controller) {
-                  context.read<LocationCubit>().controller.complete(controller);
-                },
-                markers: {
-                    state.myMarker!,
-                },
-              ),
+              // else SizedBix(),
               Positioned(
                 top: 50,
                 left: 30,
@@ -126,19 +155,17 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     const SizedBox(
                       width: 10,
                     ),
-                    state.status == LocationStatus.loaded
-                        ? Text(
-                      context.read<LocationCubit>().getLocationAddress(),
-                      maxLines: 2,
-                      softWrap: false,
-                      textWidthBasis: TextWidthBasis.longestLine,
-                      style: Theme.of(context).textTheme.titleLarge,
-                      textHeightBehavior: const TextHeightBehavior(
-                        applyHeightToFirstAscent: false,
-                        applyHeightToLastDescent: false,
+                    if (state is CurrentAddressLoaded)
+                      Text(
+                        '${state.placeMarks!.first.name} ${state.placeMarks!.first.subLocality}, ${state.placeMarks!.first.locality}',
+                        softWrap: false,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textHeightBehavior: const TextHeightBehavior(
+                          applyHeightToFirstAscent: false,
+                          applyHeightToLastDescent: false,
+                        ),
                       ),
-                    )
-                        : const Text('Loading...'),
                     const Spacer(),
                     const Icon(Icons.edit),
                   ],

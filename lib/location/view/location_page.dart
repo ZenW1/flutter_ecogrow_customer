@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/data/model/address_model.dart';
+import 'package:flutter_ecogrow_customer/location/cubit/address/address_cubit.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
 import 'package:flutter_ecogrow_customer/location/view/google_map_page.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
@@ -34,23 +36,29 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-
   @override
   void initState() {
-    context.read<LocationCubit>().getPlaceMark();
+    fetchData();
+    context.read<AddressCubit>().init();
     super.initState();
+  }
+
+  void fetchData() {
+    Future.wait(
+      [
+        context.read<AddressCubit>().init(),
+        context.read<LocationCubit>().getPlaceMark(),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationCubit, LocationState>(
-      buildWhen: (previous, current) {
-        return previous.location != current.location;
-      },
-      listener: (context,state){
-        if(state.status == LocationStatus.loading){
+    return BlocConsumer<AddressCubit, AddressState>(
+      listener: (context, state) {
+        if (state is AddressInitial) {
           context.loaderOverlay.show();
-        } else if (state.status == LocationStatus.loaded){
+        } else if (state is AddressLoaded) {
           context.loaderOverlay.hide();
         }
       },
@@ -95,82 +103,71 @@ class _LocationViewState extends State<LocationView> {
                       hintText: 'Enter your address',
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      height: 250,
-                      decoration:
-                          CustomConstantWidget.shadowBoxDecorationWidget(
-                        radius: 20,
-                      ),
-                      width: double.infinity,
-                      child: GoogleMap(
-                        onCameraMoveStarted: () {
-                          print('Camera move started');
-                        },
-                        onCameraMove: (CameraPosition cameraPosition) {
-
-                        },
-                        onTap: (LatLng latLng) async {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<GoogleMapPage>(
-                              builder: (context) => const GoogleMapPage(),
-                            ),
-                          );
-                        },
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                            state.location!.latitude,
-                            state.location!.longitude,
-                          ),
-                          zoom: 13,
-                        ),
-                        onMapCreated: context.read<LocationCubit>().controller.complete,
-                        markers: {
-                          Marker(
-                            markerId: const MarkerId('voatPhnom'),
-                            position:  LatLng(state.location!.latitude,state.location!.longitude),
-                            infoWindow: const InfoWindow(
-                              title: 'Voat Phnom',
-                              snippet: 'This is Voat Phnom',
-                            ),
-                          ),
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const AppTitleWidget(
-                      text: 'Your Location',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomContainerWidget(
-                      title: 'Home',
-                      subTitle: 'Terk laor3 Toul Kork, Phnom Penh',
-                      leading: const CircleAvatar(
-                        backgroundColor: AppColors.greyColor,
-                        child: Icon(Icons.home),
-                      ),
-                      trialing: Radio(
-                        value: 'home',
-                        groupValue: 'home',
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    CustomContainerWidget(
-                      title: 'Office',
-                      subTitle: 'Sensok, Phnom Penh',
-                      leading: const CircleAvatar(
-                        backgroundColor: AppColors.greyColor,
-                        child: Icon(Icons.work),
-                      ),
-                      trialing: Radio(
-                        value: 'home',
-                        groupValue: 'home',
-                        onChanged: (value) {},
-                      ),
-                    ),
+                    state is AddressLoaded
+                        ? Column(
+                            children: [
+                              Container(
+                                height: 250,
+                                decoration: CustomConstantWidget
+                                    .shadowBoxDecorationWidget(
+                                  radius: 20,
+                                ),
+                                width: double.infinity,
+                                child: GoogleMap(
+                                  onCameraMoveStarted: () {
+                                    print('Camera move started');
+                                  },
+                                  onCameraMove:
+                                      (CameraPosition cameraPosition) {},
+                                  onTap: (LatLng latLng) async {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute<GoogleMapPage>(
+                                        builder: (context) =>
+                                            const GoogleMapPage(),
+                                      ),
+                                    );
+                                  },
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(
+                                      state.data.data!.first.lat!.toDouble(),
+                                      state.data.data!.first.lng!.toDouble(),
+                                    ),
+                                    zoom: 13,
+                                  ),
+                                  onMapCreated: context
+                                      .read<LocationCubit>()
+                                      .controller
+                                      .complete,
+                                  markers: {
+                                    Marker(
+                                      markerId: const MarkerId('voatPhnom'),
+                                      position: LatLng(
+                                        state.data.data!.first.lat!.toDouble(),
+                                        state.data.data!.first.lng!.toDouble(),
+                                      ),
+                                      infoWindow: const InfoWindow(
+                                        title: 'Voat Phnom',
+                                        snippet: 'This is Voat Phnom',
+                                      ),
+                                    ),
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              const AppTitleWidget(
+                                text: 'Your Location',
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              getSavedLocation(data: state.data),
+                            ],
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          )
                   ],
                 ),
               ),
@@ -190,6 +187,28 @@ class _LocationViewState extends State<LocationView> {
                 GoRouter.of(context).pushReplacement('/main');
               },
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getSavedLocation({required AddressModel data}) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: data.data!.length,
+      itemBuilder: (context, index) {
+        return CustomContainerWidget(
+          title: data.data![index].title!,
+          subTitle: data.data![index].subTitle!,
+          leading: const CircleAvatar(
+            backgroundColor: AppColors.greyColor,
+            child: Icon(Icons.home),
+          ),
+          trialing: Radio(
+            value: 'home',
+            groupValue: 'home',
+            onChanged: (value) {},
           ),
         );
       },
