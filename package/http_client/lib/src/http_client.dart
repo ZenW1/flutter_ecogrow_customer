@@ -1,15 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
+
 
 import 'package:dio/dio.dart' hide ProgressCallback;
+import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
+import 'package:http_client/http_client.dart';
 import 'package:http_client/src/interceptors/logger_interceptor.dart';
-
-import 'exceptions/request_cancelled_exception.dart';
-import 'exceptions/request_failed_exception.dart';
-import 'exceptions/request_forbidden_exception.dart';
-import 'exceptions/request_method_not_allowed_exception.dart';
-import 'exceptions/request_not_found_exception.dart';
-import 'exceptions/request_timeout_exception.dart';
-import 'exceptions/request_unauthorized_exception.dart';
+import 'package:http_client/src/interceptors/refresh_firebase_token.dart';
 
 typedef ProgressCallback = void Function(int count, int total);
 
@@ -60,23 +59,45 @@ class DioHttpClient implements HttpClient {
   DioHttpClient({
     required Dio dio,
     required String baseUrl,
+    required AppToken appToken,
     List<Interceptor>? interceptors,
   })  : _dio = dio,
         _baseUrl = baseUrl,
+        _appToken = appToken,
         _interceptors = interceptors {
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['Accept'] = 'application/json';
+    _dio.options.headers['Authorization'] = '${_appToken.accessToken}';
     _dio.options.baseUrl = _baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
+
     _dio.interceptors.add(LoggingInterceptor());
+    _dio.interceptors.add(
+      RefreshFirebaseToken(
+        appToken,
+        url: _baseUrl,
+        tokenType: TokenType.FIREBASE,
+        responseTokenKey: AppConstant.accessToken,
+        onRequestSuccess: (dynamic) {
+          log('onRequestSuccess');
+        },
+      ),
+    );
     if (_interceptors != null) {
       _dio.interceptors.addAll(_interceptors!);
     }
   }
 
+  Future<String> getAccessToken() async {
+     final  token = await _appToken.getAccessToken();
+    return token;
+  }
+
   final Dio _dio;
   final String _baseUrl;
+  final AppToken _appToken;
+
   // add for add more interceptor
   final List<Interceptor>? _interceptors;
 
@@ -254,7 +275,7 @@ class DioHttpClient implements HttpClient {
       switch (e.response!.statusCode) {
         case 400:
           return BadRequestException(
-            data['data']['message'] as String? ?? 'Request Failed',
+            data['message'] as String? ?? 'Request Failed',
           );
         case 401:
           return RequestUnauthorizedException(
