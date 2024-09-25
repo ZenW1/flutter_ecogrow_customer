@@ -1,2 +1,2 @@
-export './cubit/cart_cubit.dart';
+export './bloc/cart_bloc.dart';
 export './view/view.dart';
