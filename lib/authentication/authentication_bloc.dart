@@ -6,7 +6,8 @@ part 'authentication_event.dart';
 
 part 'authentication_state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc(this._appToken) : super(AuthenticationInitial()) {
     on<AuthenticationEvent>(onAuthenticate);
     on<AuthenticatingEvent>(onAuthenticating);
@@ -14,7 +15,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   final AppToken _appToken;
 
-  Future<void> onAuthenticate(AuthenticationEvent event, Emitter<AuthenticationState> emit) async {
+  Future<void> onAuthenticate(
+      AuthenticationEvent event, Emitter<AuthenticationState> emit) async {
     emit(AppStarted());
     try {
       final hasToken = await _appToken.hasToken();
@@ -26,18 +28,15 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     } catch (e) {
       emit(AuthenticateFailed(errorMessage: e.toString()));
     }
-   }
+  }
 
-   // check when authenticating with otp
-  Future<void> onAuthenticating(AuthenticatingEvent event, Emitter<AuthenticationState> emit) async {
+  // check when authenticating with otp
+  Future<void> onAuthenticating(
+      AuthenticatingEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationInitial());
     try {
-      if (event.accessToken.isEmpty) {
-        await _appToken.saveAccessToken(event.accessToken);
-        emit(Authenticated());
-      } else {
-        emit(UnAuthenticated());
-      }
+      await _appToken.saveAccessToken(event.accessToken);
+      emit(Authenticated());
     } catch (e) {
       emit(AuthenticateFailed(errorMessage: e.toString()));
     }

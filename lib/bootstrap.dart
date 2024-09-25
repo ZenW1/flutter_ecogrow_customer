@@ -21,7 +21,9 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     // log('onError(${bloc.runtimeType}, $error, $stackTrace)');
-    AppPrettyLogger().logger.e('onError(${bloc.runtimeType}, $error,$stackTrace)');
+    AppPrettyLogger()
+        .logger
+        .e('onError(${bloc.runtimeType}, $error,$stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 }
@@ -33,8 +35,8 @@ typedef AppBuilder = Future<Widget> Function(
 Future<void> bootstrap(AppBuilder builder) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-       options: DefaultFirebaseOptions.currentPlatform,
-      );
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };

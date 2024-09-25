@@ -6,3 +6,4 @@ linter:
     avoid_dynamic_calls: false
     always_use_package_imports: false
     constant_identifier_names: false
+

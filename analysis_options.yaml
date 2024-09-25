@@ -1,25 +1,18 @@
 include: package:very_good_analysis/analysis_options.5.1.0.yaml
 linter:
   rules:
-    public_member_api_docs: false
-    avoid_types_as_parameter_names: true
+#    public_member_api_docs: false
 #    prefer_single_quotes: true
-#    prefer_double_quotes: true
     prefer_const_constructors: true
+    avoid_annotating_with_dynamic: false
     import_of_legacy_library_into_null_safe:
     lines_longer_than_80_chars : true
     type_init_formals: false
-    always_declare_return_types: false
-
-
-#    avoid_annotating_with_dynamic: false
+#    always_declare_return_types: false
+#    avoid_types_on_closure_parameters: false
+    avoid_null_checks_in_equality_operators: true
+    always_specify_types: false
     avoid_dynamic_calls: false
-    # avoid strong type in model
-    avoid_types_on_closure_parameters: false
-
-analyzer:
-    exclude:
-      -  lib/data/model/
 
 
 
