@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
 import 'package:flutter_ecogrow_customer/checkout/view/payment_page.dart';
 import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/product_sort_list_widget.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_sort_list_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_bar_widget.dart';
@@ -142,7 +142,7 @@ class CheckoutView extends StatelessWidget {
                     decoration: CustomConstantWidget.shadowBoxDecorationWidget(
                       radius: 20,
                     ),
-                    child:  Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // use khmer currency
@@ -185,9 +185,10 @@ class CheckoutView extends StatelessWidget {
                           title: 'Total Payable',
                           titleStyle: Theme.of(context).textTheme.titleLarge,
                           subTitle: '៛55000',
-                          subTitleStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: AppColors.redColor,
-                          ),
+                          subTitleStyle:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: AppColors.redColor,
+                                  ),
                         ),
                       ],
                     ),
