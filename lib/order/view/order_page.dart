@@ -59,7 +59,6 @@ class OrderView extends StatelessWidget {
                   Tab(
                     text: 'Completed',
                   ),
-
                 ],
               ),
             ),

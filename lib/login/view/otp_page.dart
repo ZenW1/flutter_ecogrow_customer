@@ -5,7 +5,6 @@ import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 import 'package:flutter_ecogrow_customer/login/view/widget/custom_pin_put_widget.dart';
-import 'package:flutter_ecogrow_customer/main/main.dart';
 import 'package:flutter_ecogrow_customer/register/register.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -106,20 +105,21 @@ class OTPPage extends StatelessWidget {
                           if (state.status == LoginStatus.loading) {
                             context.loaderOverlay.show();
                           } else if (state.status == LoginStatus.verifyOtp) {
-                            if (state.isNewUser) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute<RegisterPage>(builder: (context) => const RegisterPage()),
-                              );
-                            } else if (!state.isNewUser) {
-                              // context.read<AppToken>().saveToken(state.accessToken);
-                              context.read<AuthenticationBloc>().add(AuthenticatingEvent(accessToken: state.accessToken));
-                              print('This is access token ${state.accessToken}');
-
-                              GoRouter.of(context).pushReplacement(MainPage.routePath);
-                            }
                             context.loaderOverlay.hide();
+                            context.read<AuthenticationBloc>()..add(AuthenticatingEvent(accessToken: state.accessToken));
+                            context.read<LoginCubit>().login();
+                          } else if (state.status == LoginStatus.success) {
+                            context.loaderOverlay.hide();
+                            if (!state.isNewUser) {
+                              context.loaderOverlay.hide();
+                              GoRouter.of(context).go(RegisterPage.routePath);
+                            } else {
+                              context.loaderOverlay.hide();
+                              GoRouter.of(context).go('/main');
+                            }
                           } else if (state.status == LoginStatus.failure) {
                             context.loaderOverlay.hide();
+                            GoRouter.of(context).go('/register');
                             CustomDialog.showWarningDialog(state.errorMessage);
                           }
                         },

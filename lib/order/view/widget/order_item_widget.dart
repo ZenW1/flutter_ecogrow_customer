@@ -24,20 +24,21 @@ class OrderItemWidget extends StatefulWidget {
   State<OrderItemWidget> createState() => _OrderItemWidgetState();
 }
 
-class _OrderItemWidgetState extends State<OrderItemWidget> with SingleTickerProviderStateMixin {
-
+class _OrderItemWidgetState extends State<OrderItemWidget>
+    with SingleTickerProviderStateMixin {
   double opacity = 0.1;
   AnimationController? animationController;
 
   @override
   void initState() {
-    animationController = AnimationController(vsync: this,duration: Duration(milliseconds: 500));
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant OrderItemWidget oldWidget) {
-    if(oldWidget.data != widget.data){
+    if (oldWidget.data != widget.data) {
       animationController!.forward();
     }
     super.didUpdateWidget(oldWidget);
@@ -47,7 +48,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> with SingleTickerProv
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animationController!,
-      builder: (context,child){
+      builder: (context, child) {
         return Container(
           margin: const EdgeInsets.symmetric(
             horizontal: 10,
@@ -62,8 +63,8 @@ class _OrderItemWidgetState extends State<OrderItemWidget> with SingleTickerProv
                 leftWidget: Text(
                   '#${widget.data.id}',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 rightWidget: Text(widget.data.dateTime),
               ),
@@ -85,9 +86,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> with SingleTickerProv
                       TextSpan(
                         text: r'$' + widget.data.totalPrice,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: AppColors.blackColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                              color: AppColors.blackColor,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
@@ -96,16 +97,21 @@ class _OrderItemWidgetState extends State<OrderItemWidget> with SingleTickerProv
               const SizedBox(
                 height: 5,
               ),
-               StoreItemWidget(
-                 data: widget.data.store,
-                 trailingWidget: AppButton.roundedSidedButton(
-                   context,
-                   onTap: () {},
-                   text: ValidatorExtension.orderStatusValidator(widget.status),
-                   textColor: ValidatorExtension.orderStatusValidatorColor(widget.status),
-                   color: ValidatorExtension.orderStatusValidatorColor(widget.status),
-                 ),
-               ),
+              StoreItemWidget(
+                data: widget.data.store,
+                trailingWidget: AppButton.roundedSidedButton(
+                  context,
+                  onTap: () {},
+                  radius: 12,
+                  height: 45,
+                  width: MediaQuery.sizeOf(context).height * 0.1,
+                  text: ValidatorExtension.orderStatusValidator(widget.status),
+                  textColor: ValidatorExtension.orderStatusValidatorColor(
+                      widget.status),
+                  color: ValidatorExtension.orderStatusValidatorColor(
+                      widget.status),
+                ),
+              ),
             ],
           ),
         );

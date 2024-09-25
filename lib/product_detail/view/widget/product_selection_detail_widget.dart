@@ -37,9 +37,10 @@ class ProductSelectionDetailWidget extends StatelessWidget {
                         shadowColor: Colors.transparent,
                         label: Text(
                           '10 KG',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: AppColors.primary,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: AppColors.primary,
+                                  ),
                         ),
                         onSelected: (value) {},
                       );

@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final productDetailResponseModel = productDetailResponseModelFromJson(jsonString);
-
-import 'dart:convert';
-
-ProductDetailResponseModel productDetailResponseModelFromJson(String str) => ProductDetailResponseModel.fromJson(json.decode(str));
-
-String productDetailResponseModelToJson(ProductDetailResponseModel data) => json.encode(data.toJson());
 
 class ProductDetailResponseModel {
   int? status;
@@ -19,17 +10,20 @@ class ProductDetailResponseModel {
     this.data,
   });
 
-  factory ProductDetailResponseModel.fromJson(Map<String, dynamic> json) => ProductDetailResponseModel(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory ProductDetailResponseModel.fromJson(Map<String, dynamic> json) =>
+      ProductDetailResponseModel(
+        status: json['status'],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : Data.fromJson(json["data"] as Map<String, dynamic>),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -88,60 +82,70 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    locationId: json["location_id"],
-    phoneNumber: json["phone_number"],
-    sellerId: json["seller_id"],
-    id: json["id"],
-    productName: json["product_name"],
-    price: json["price"],
-    qty: json["qty"],
-    categoryId: json["category_id"],
-    unitTypeId: json["unit_type_id"],
-    statusId: json["status_id"],
-    pricingType: json["pricing_type"],
-    createdBy: json["created_by"],
-    approvedBy: json["approved_by"],
-    description: json["description"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    requestedAt: json["requested_at"],
-    categoryName: json["category_name"],
-    storeName: json["store_name"],
-    sellerImage: json["seller_image"],
-    statusName: json["status_name"],
-    sellerName: json["seller_name"],
-    locationName: json["location_name"],
-    productImage: json["product_image"] == null ? [] : List<ProductImage>.from(json["product_image"]!.map((x) => ProductImage.fromJson(x))),
-    productVariation: json["product_variation"] == null ? [] : List<ProductVariation>.from(json["product_variation"]!.map((x) => ProductVariation.fromJson(x))),
-  );
+        locationId: json["location_id"] as int,
+        phoneNumber: json["phone_number"],
+        sellerId: json["seller_id"],
+        id: json["id"],
+        productName: json["product_name"],
+        price: json["price"],
+        qty: json["qty"],
+        categoryId: json["category_id"],
+        unitTypeId: json["unit_type_id"],
+        statusId: json["status_id"],
+        pricingType: json["pricing_type"],
+        createdBy: json["created_by"],
+        approvedBy: json["approved_by"],
+        description: json["description"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        requestedAt: json["requested_at"],
+        categoryName: json["category_name"],
+        storeName: json["store_name"],
+        sellerImage: json["seller_image"],
+        statusName: json["status_name"],
+        sellerName: json["seller_name"],
+        locationName: json["location_name"],
+        productImage: json["product_image"] == null
+            ? []
+            : List<ProductImage>.from(
+                json["product_image"]!.map((x) => ProductImage.fromJson(x))),
+        productVariation: json["product_variation"] == null
+            ? []
+            : List<ProductVariation>.from(json["product_variation"]!
+                .map((x) => ProductVariation.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "location_id": locationId,
-    "phone_number": phoneNumber,
-    "seller_id": sellerId,
-    "id": id,
-    "product_name": productName,
-    "price": price,
-    "qty": qty,
-    "category_id": categoryId,
-    "unit_type_id": unitTypeId,
-    "status_id": statusId,
-    "pricing_type": pricingType,
-    "created_by": createdBy,
-    "approved_by": approvedBy,
-    "description": description,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "requested_at": requestedAt,
-    "category_name": categoryName,
-    "store_name": storeName,
-    "seller_image": sellerImage,
-    "status_name": statusName,
-    "seller_name": sellerName,
-    "location_name": locationName,
-    "product_image": productImage == null ? [] : List<dynamic>.from(productImage!.map((x) => x.toJson())),
-    "product_variation": productVariation == null ? [] : List<dynamic>.from(productVariation!.map((x) => x.toJson())),
-  };
+        "location_id": locationId,
+        "phone_number": phoneNumber,
+        "seller_id": sellerId,
+        "id": id,
+        "product_name": productName,
+        "price": price,
+        "qty": qty,
+        "category_id": categoryId,
+        "unit_type_id": unitTypeId,
+        "status_id": statusId,
+        "pricing_type": pricingType,
+        "created_by": createdBy,
+        "approved_by": approvedBy,
+        "description": description,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "requested_at": requestedAt,
+        "category_name": categoryName,
+        "store_name": storeName,
+        "seller_image": sellerImage,
+        "status_name": statusName,
+        "seller_name": sellerName,
+        "location_name": locationName,
+        "product_image": productImage == null
+            ? []
+            : List<dynamic>.from(productImage!.map((x) => x.toJson())),
+        "product_variation": productVariation == null
+            ? []
+            : List<dynamic>.from(productVariation!.map((x) => x.toJson())),
+      };
 }
 
 class ProductImage {
@@ -162,22 +166,22 @@ class ProductImage {
   });
 
   factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
-    id: json["id"],
-    productId: json["product_id"],
-    image: json["image"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    productImage: json["product_image"],
-  );
+        id: json["id"],
+        productId: json["product_id"],
+        image: json["image"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        productImage: json["product_image"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "image": image,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "product_image": productImage,
-  };
+        "id": id,
+        "product_id": productId,
+        "image": image,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "product_image": productImage,
+      };
 }
 
 class ProductVariation {
@@ -201,25 +205,26 @@ class ProductVariation {
     this.unitTypeName,
   });
 
-  factory ProductVariation.fromJson(Map<String, dynamic> json) => ProductVariation(
-    id: json["id"],
-    productId: json["product_id"],
-    unitTypeId: json["unit_type_id"],
-    price: json["price"],
-    qty: json["qty"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    unitTypeName: json["unit_type_name"],
-  );
+  factory ProductVariation.fromJson(Map<String, dynamic> json) =>
+      ProductVariation(
+        id: json["id"],
+        productId: json["product_id"],
+        unitTypeId: json["unit_type_id"],
+        price: json["price"],
+        qty: json["qty"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        unitTypeName: json["unit_type_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "product_id": productId,
-    "unit_type_id": unitTypeId,
-    "price": price,
-    "qty": qty,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "unit_type_name": unitTypeName,
-  };
+        "id": id,
+        "product_id": productId,
+        "unit_type_id": unitTypeId,
+        "price": price,
+        "qty": qty,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "unit_type_name": unitTypeName,
+      };
 }

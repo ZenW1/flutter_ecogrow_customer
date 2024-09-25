@@ -6,12 +6,14 @@ class OrderState extends Equatable {
   @override
   List<Object> get props => [];
 }
+
 class OrderLoading extends OrderState {
   const OrderLoading();
 
   @override
   List<Object> get props => [];
 }
+
 class OrderLoaded extends OrderState {
   OrderLoaded(this.data);
 

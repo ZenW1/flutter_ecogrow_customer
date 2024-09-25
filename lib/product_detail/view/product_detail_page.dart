@@ -1,42 +1,36 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/data/repo/product_repo.dart';
 import 'package:flutter_ecogrow_customer/main/main.dart';
+import 'package:flutter_ecogrow_customer/product_detail/cubit/product_detail_cubit.dart';
 
-import 'package:flutter_ecogrow_customer/product/product.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/description_expansion_widget.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/image_carousel_slider.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/product_price_detail_widget.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/product_selection_detail_widget.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/description_expansion_widget.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/image_carousel_slider.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_price_detail_widget.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_selection_detail_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 import 'package:go_router/go_router.dart';
 
-class ProductPage extends StatelessWidget {
-  const ProductPage({super.key});
+class ProductDetailPage extends StatelessWidget {
+  const ProductDetailPage({super.key});
 
-  static const String routePath = '/product';
+  static const String routePath = '/product_detail';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: AppColors.backgroundColor, body: ProductView());
+    return BlocProvider(
+      create: (_) => ProductDetailCubit(
+        context.read<ProductRepo>(),
+      ),
+      child: const ProductDetailView(),
+    );
   }
 }
 
-class ProductView extends StatefulWidget {
-  const ProductView({super.key});
-
-  @override
-  State<ProductView> createState() => _ProductViewState();
-}
-
-class _ProductViewState extends State<ProductView> {
-  @override
-  void initState() {
-    context.read<ProductCubit>().getProductDetail();
-    super.initState();
-  }
+class ProductDetailView extends StatelessWidget {
+  const ProductDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +110,12 @@ class _ProductViewState extends State<ProductView> {
                   DescriptionExpansionWidget(
                     title: 'Description ',
                     description:
-                    'Welcome to dinoclaire.my shop!We provide the best service and the best beauty products.Wholesale please.Wholesale please. ',
+                        'Welcome to dinoclaire.my shop!We provide the best service and the best beauty products.Wholesale please.Wholesale please. ',
                   ),
                   DescriptionExpansionWidget(
                     title: 'Shipping & Returns',
                     description:
-                    'Welcome to dinoclaire.my shop!We provide the best service and the best beauty products.Wholesale please.Wholesale please. ',
+                        'Welcome to dinoclaire.my shop!We provide the best service and the best beauty products.Wholesale please.Wholesale please. ',
                   ),
                   SizedBox(
                     height: 8,
@@ -136,22 +130,27 @@ class _ProductViewState extends State<ProductView> {
             height: 8,
           ),
         ),
-
-        SliverToBoxAdapter(
-          child: ListTile(
-            tileColor: AppColors.whiteColor,
-            leading: CustomCacheImageWidget(
-              imageUrl:
-              'https://as1.ftcdn.net/v2/jpg/01/65/88/42/1000_F_165884283_tkufVlDgGu6CTj8mzWsEe3AS9Elw03ek.jpg',
-            ),
-            title: Text('David Store',
-             style: Theme.of(context).textTheme.titleLarge,
-            ),
-            subtitle: Text('ហាងលក់ទំនើប',
-             style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ),
-        ),
+        // SliverToBoxAdapter(
+        //   child: SizedBox(
+        //     height: 50,
+        //     width: double.infinity,
+        //     child: ListTile(
+        //       tileColor: AppColors.whiteColor,
+        //       leading: CustomCacheImageWidget(
+        //         imageUrl:
+        //             'https://as1.ftcdn.net/v2/jpg/01/65/88/42/1000_F_165884283_tkufVlDgGu6CTj8mzWsEe3AS9Elw03ek.jpg',
+        //       ),
+        //       title: Text(
+        //         'David Store',
+        //         style: Theme.of(context).textTheme.titleLarge,
+        //       ),
+        //       subtitle: Text(
+        //         'ហាងលក់ទំនើប',
+        //         style: Theme.of(context).textTheme.bodySmall,
+        //       ),
+        //     ),
+        //   ),
+        // ),
         const SliverToBoxAdapter(
           child: SizedBox(
             height: 50,

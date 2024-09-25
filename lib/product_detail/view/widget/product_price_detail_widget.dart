@@ -33,7 +33,8 @@ class ProductPriceDetailWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            category,            style: Theme.of(context).textTheme.titleMedium,
+            category,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           Row(
@@ -46,8 +47,8 @@ class ProductPriceDetailWidget extends StatelessWidget {
                     TextSpan(
                       text: condition,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context).primaryColor,
-                      ),
+                            color: Theme.of(context).primaryColor,
+                          ),
                     ),
                   ],
                 ),
@@ -67,21 +68,21 @@ class ProductPriceDetailWidget extends StatelessWidget {
               Text(
                 '៛${priceAfterDiscount}',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: AppColors.redColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
+                      color: AppColors.redColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
               ),
               const SizedBox(width: 16),
               Text(
                 '៛${price}',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  decoration: TextDecoration.lineThrough,
-                  decorationColor: Colors.grey.shade600,
-                  decorationThickness: 2,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.bold,
-                ),
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: Colors.grey.shade600,
+                      decorationThickness: 2,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(width: 16),
               Container(
@@ -96,8 +97,8 @@ class ProductPriceDetailWidget extends StatelessWidget {
                 child: Text(
                   '${discount}% OFF',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.white,
-                  ),
+                        color: Colors.white,
+                      ),
                 ),
               ),
             ],

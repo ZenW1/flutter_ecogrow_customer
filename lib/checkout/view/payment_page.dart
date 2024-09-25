@@ -82,9 +82,10 @@ class PaymentPage extends StatelessWidget {
                     title: 'Total Payable',
                     titleStyle: Theme.of(context).textTheme.titleLarge,
                     subTitle: '៛55000',
-                    subTitleStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.redColor,
-                        ),
+                    subTitleStyle:
+                        Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: AppColors.redColor,
+                            ),
                   ),
                 ],
               ),
@@ -101,13 +102,16 @@ class PaymentPage extends StatelessWidget {
               decoration: CustomConstantWidget.shadowBoxDecorationWidget(),
               child: Column(
                 children: [
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   AppTitleWidget(text: 'Online Payment'),
                   CustomContainerWidget(
                     title: 'ABA KHQR ',
                     subTitle: 'Scan to pay with ABA',
                     leading: CustomCacheImageWidget(
-                      imageUrl: 'https://yt3.googleusercontent.com/ytc/AIdro_ljV-vXKHv8x9yHY_Z6RuI9jutIh6f8D0O1oYIY43fJiNo=s900-c-k-c0x00ffffff-no-rj',
+                      imageUrl:
+                          'https://yt3.googleusercontent.com/ytc/AIdro_ljV-vXKHv8x9yHY_Z6RuI9jutIh6f8D0O1oYIY43fJiNo=s900-c-k-c0x00ffffff-no-rj',
                       width: 50,
                       height: 50,
                     ),
@@ -116,15 +120,18 @@ class PaymentPage extends StatelessWidget {
                       groupValue: 'aba',
                       onChanged: (value) {},
                     ),
-                     isShowDecoration: false,
+                    isShowDecoration: false,
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   AppTitleWidget(text: 'Manual Payment'),
                   CustomContainerWidget(
                     title: 'Cash Payment ',
                     subTitle: 'Pay with cash',
                     leading: CustomCacheImageWidget(
-                      imageUrl: 'https://static.vecteezy.com/system/resources/previews/012/184/580/original/cash-payment-outline-color-icon-vector.jpg',
+                      imageUrl:
+                          'https://static.vecteezy.com/system/resources/previews/012/184/580/original/cash-payment-outline-color-icon-vector.jpg',
                       width: 50,
                       height: 50,
                     ),
@@ -148,7 +155,8 @@ class PaymentPage extends StatelessWidget {
           right: 16,
           bottom: 32,
         ),
-        child: AppButton.roundedFilledButton(context, onTap: (){}, text: 'Pay Now'),
+        child: AppButton.roundedFilledButton(context,
+            onTap: () {}, text: 'Pay Now'),
       ),
     );
   }
