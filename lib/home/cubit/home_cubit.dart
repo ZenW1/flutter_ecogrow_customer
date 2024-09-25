@@ -41,29 +41,29 @@ class HomeCubit extends Cubit<HomeState> {
     const HomeProductTodayModel(
       imageUrl:
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
-      title: 'Organic Banana',
+      title: 'ត្រកូន',
       price: '2500',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
       imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
-      title: 'Organic Banana',
+          'https://qiksmartsg.com/cdn/shop/products/Screenshot2021-09-15at7.04.41PM.png?v=1631704019',
+      title: 'ស្លឹកតើយ',
       price: '2500',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
       imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
-      title: 'Organic Banana',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZe0atpWl7sCJxAX4Qrqwed6OF4zHdg--CRA&s',
+      title: 'វ៉ាន់ស៊ុយ',
       price: '3000',
       weight: '1kg',
     ),
     const HomeProductTodayModel(
       imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMqIGSN5hLJaS_Dao06-7GOob_y7-UghRFsQ&s',
-      title: 'Organic Banana',
-      price: '3000',
+          'https://tokke.kesspay.io/cache/large/product_detail/47829/cc80cad2ceed1472e726b35890e201ba15e7d4ab.jpg',
+      title: 'សណ្ដែកកួរ',
+      price: '500',
       weight: '1kg',
     ),
     const HomeProductTodayModel(

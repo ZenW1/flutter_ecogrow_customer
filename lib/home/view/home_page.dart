@@ -1,18 +1,21 @@
-import 'package:flutter/cupertino.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/category/category.dart';
-import 'package:flutter_ecogrow_customer/category/view/category_item_widget.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
 import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 import 'package:flutter_ecogrow_customer/product/product.dart';
-import 'package:flutter_ecogrow_customer/product/view/widget/product_vertical_widget.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_vertical_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/validator_extension.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/test_animation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../product_detail/product_detail.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -37,36 +40,36 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   List<ProductModel> productList = [
+    // translate to khmer
     ProductModel(
-      name: 'ONION',
+      name: 'ខ្ទឹមបារាំង',
       imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIxB4TqKd66zyoFXx9QiHPP_bsfzq6xLPHA&s',
-      condition: 'Fresh',
-      price: '1.5',
+      condition: 'ស្រស់',
+      price: '6000',
     ),
     ProductModel(
-      name: 'POTATO',
+      name: 'ប៉េងប៉ោះ',
       imageUrl: 'https://m.media-amazon.com/images/I/313dtY-LOEL._AC_UF1000,1000_QL80_.jpg',
-      condition: 'Fresh',
-      price: '1.5',
+      condition: 'ស្រស់',
+      price: '4000',
     ),
     ProductModel(
-      name: 'TOMATO',
-      imageUrl:
-          'https://m.economictimes.com/thumb/msid-95423731,width-1200,height-900,resizemode-4,imgsize-56196/tomatoes-canva.jpg',
-      condition: 'Fresh',
-      price: '1.5',
-    ),
-    ProductModel(
-      name: 'CUCUMBER',
+      name: 'ត្រសក់',
       imageUrl: 'https://www.fervalle.com/wp-content/uploads/2022/07/580b57fcd9996e24bc43c216-1024x869.png',
-      condition: 'Fresh',
-      price: '1.5',
+      condition: 'ស្រស់',
+      price: '1500',
     ),
     ProductModel(
-      name: 'CARROT',
+      name: 'ផ្លែបឺរ',
       imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOvY2J8wtwxZDor81a79R1_9e93VaIEfNGOg&s',
+      condition: 'ស្រស់',
+      price: '7000',
+    ),
+    ProductModel(
+      name: 'ការ៉ុត',
+      imageUrl: 'https://bcfresh.ca/wp-content/uploads/2021/11/Carrots.jpg',
       condition: 'Fresh',
-      price: '1.5',
+      price: '4500',
     ),
   ];
 
@@ -95,6 +98,7 @@ class _HomeViewState extends State<HomeView> {
               SliverAppBar(
                 expandedHeight: 50,
                 floating: true,
+                backgroundColor: AppColors.whiteColor,
                 pinned: true,
                 flexibleSpace: SafeArea(
                   child: Container(
@@ -105,7 +109,6 @@ class _HomeViewState extends State<HomeView> {
                       children: [
                         Icon(
                           Icons.filter_list,
-                          color: AppColors.primary,
                           size: Dimensions.iconSizeLarge(),
                         ),
                         SizedBox(width: Dimensions.paddingSizeDefault()),
@@ -133,9 +136,7 @@ class _HomeViewState extends State<HomeView> {
                         GestureDetector(
                           onTap: () {
                             // Navigator.of(context).pushNamed('/cart');
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(builder: (context) => TestAnimation())
-                            // );
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => TestAnimation()));
                           },
                           child: Icon(
                             Icons.shopping_cart_rounded,
@@ -178,7 +179,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                           SizedBox(
-                            height: 140,
+                            height: 150,
                             child: ListView.separated(
                               shrinkWrap: true,
                               controller: context.read<HomeCubit>().scrollController,
@@ -205,6 +206,16 @@ class _HomeViewState extends State<HomeView> {
                                             color: AppColors.greyColor,
                                           ),
                                     ),
+                                    Text(
+                                      data.title,
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    )
                                   ],
                                 );
                               },
@@ -215,136 +226,130 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ],
                       ),
-                      // Positioned(
-                      //   bottom: 0,
-                      //   right: 150,
-                      //   child: AnimatedSmoothIndicator(
-                      //     activeIndex: state.currentIndex!,
-                      //     count:  state.indexCount!,
-                      //     effect: const ExpandingDotsEffect(
-                      //       activeDotColor: AppColors.primary,
-                      //       dotColor: AppColors.primary,
-                      //       dotHeight: 8,
-                      //       dotWidth: 8,
-                      //       expansionFactor: 4,
-                      //       spacing: 5,
-                      //     ),
-                      //   ),
-                      // ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 150,
+                        child: AnimatedSmoothIndicator(
+                          activeIndex: state.currentIndex!,
+                          count: 3,
+                          effect: const ExpandingDotsEffect(
+                            activeDotColor: AppColors.primary,
+                            dotColor: AppColors.primary,
+                            dotHeight: 8,
+                            dotWidth: 8,
+                            expansionFactor: 4,
+                            spacing: 5,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Dimensions.paddingSizeSmall(),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: Dimensions.paddingSizeSmall(),),
-                      AppTitleWidget(
-                        text: 'Categories',
-                        isRow: true,
-                        widget: Text(
-                          'See all',
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxHeight: 250,
-                          minHeight: 140,
-                        ),
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(
-                            vertical: Dimensions.paddingSizeSmall(),
-                          ),
-                          shrinkWrap: true,
-                          itemCount: productList.length,
-                          itemBuilder: (context, index) {
-                            return ProductVerticalWidget(
-                              onTap: () {
-                                GoRouter.of(context).push(ProductPage.routePath);
-                              },
-                              product: productList[index],
-                              isPromotion: true,
-                            );
-                          },
-                        ),
-                      ),
-                      // SizedBox(height: Dimensions.paddingSizeDefault()),
-                      // ConstrainedBox(
-                      //   constraints: const BoxConstraints(
-                      //     maxHeight: 140,
-                      //     minHeight: 100,
-                      //   ),
-                      //   child: ListView.builder(
-                      //     scrollDirection: Axis.horizontal,
-                      //     padding: EdgeInsets.symmetric(
-                      //       vertical: Dimensions.paddingSizeSmall(),
-                      //     ),
-                      //     shrinkWrap: true,
-                      //     itemCount: context.read<CategoryCubit>().categoryList.length,
-                      //     itemBuilder: (context, index) {
-                      //       return CategoryItemWidget(
-                      //         categoryItemModel: context.read<CategoryCubit>().categoryList[index],
-                      //         onTap: () {},
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                      // SizedBox(height: Dimensions.paddingSizeDefault()),
-                      AppTitleWidget(
-                        text: 'Product',
-                        isRow: true,
-                        widget: Text(
-                          'See all',
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: Dimensions.paddingSizeDefault()),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.symmetric(
-                          vertical: Dimensions.paddingSizeSmall(),
-                        ),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.85,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5,
-                        ),
-                        itemCount: productList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              // CustomProductShowButtomSheet.showBottomSheet;
-                            },
-                            child: ProductVerticalWidget(
-                              onTap: () {
-                                GoRouter.of(context).push(ProductPage.routePath);
-                              },
-                              product: productList[index],
-                              isPromotion: false,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                child: Container(
+                    margin: EdgeInsets.all(Dimensions.paddingSizeSmall()),
+                    child: ProductPage()),
               ),
+              // SliverToBoxAdapter(
+              //   child: Padding(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: Dimensions.paddingSizeSmall(),
+              //     ),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       children: [
+              //         SizedBox(
+              //           height: Dimensions.paddingSizeSmall(),
+              //         ),
+              //         AppTitleWidget(
+              //           text: 'ផលិតផលបញ្ចុះតម្លៃ',
+              //           isRow: true,
+              //           widget: Text(
+              //             'See all',
+              //             style:
+              //                 Theme.of(context).textTheme.titleMedium!.copyWith(
+              //                       color: AppColors.primary,
+              //                       fontWeight: FontWeight.w500,
+              //                     ),
+              //           ),
+              //         ),
+              //         ConstrainedBox(
+              //           constraints: const BoxConstraints(
+              //             maxHeight: 250,
+              //             minHeight: 140,
+              //           ),
+              //           child: ListView.builder(
+              //             scrollDirection: Axis.horizontal,
+              //             padding: EdgeInsets.symmetric(
+              //               vertical: Dimensions.paddingSizeSmall(),
+              //             ),
+              //             shrinkWrap: true,
+              //             itemCount: productList.length,
+              //             itemBuilder: (context, index) {
+              //               return OpenContainer(
+              //                 transitionType:
+              //                     ContainerTransitionType.fadeThrough,
+              //                 tappable: true,
+              //                 transitionDuration: Duration(milliseconds: 450),
+              //                 openColor: Colors.white,
+              //                 closedColor: Colors.white,
+              //                 closedElevation: 0,
+              //                 openElevation: 0,
+              //                 openShape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(16),
+              //                 ),
+              //                 middleColor: Colors.white,
+              //                 closedShape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(16),
+              //                 ),
+              //                 openBuilder: (context, __) {
+              //                   return ProductDetailPage();
+              //                 },
+              //                 closedBuilder: (BuildContext context,
+              //                     VoidCallback openContainer) {
+              //                   return ProductVerticalWidget(
+              //                     onTap: () {
+              //                       openContainer();
+              //                     },
+              //                     product: productList[index],
+              //                     isPromotion: true,
+              //                   );
+              //                 },
+              //               );
+              //             },
+              //           ),
+              //         ),
+              //         // SizedBox(height: Dimensions.paddingSizeDefault()),
+              //         // ConstrainedBox(
+              //         //   constraints: const BoxConstraints(
+              //         //     maxHeight: 140,
+              //         //     minHeight: 100,
+              //         //   ),
+              //         //   child: ListView.builder(
+              //         //     scrollDirection: Axis.horizontal,
+              //         //     padding: EdgeInsets.symmetric(
+              //         //       vertical: Dimensions.paddingSizeSmall(),
+              //         //     ),
+              //         //     shrinkWrap: true,
+              //         //     itemCount: context.read<CategoryCubit>().categoryList.length,
+              //         //     itemBuilder: (context, index) {
+              //         //       return CategoryItemWidget(
+              //         //         categoryItemModel: context.read<CategoryCubit>().categoryList[index],
+              //         //         onTap: () {},
+              //         //       );
+              //         //     },
+              //         //   ),
+              //         // ),
+              //         // SizedBox(height: Dimensions.paddingSizeDefault()),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );

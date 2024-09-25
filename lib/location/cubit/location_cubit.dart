@@ -13,7 +13,8 @@ class LocationCubit extends Cubit<LocationState> {
   LocationCubit() : super(LocationState(status: LocationStatus.initial));
 
   Completer<GoogleMapController> get controller => _controller;
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   final Set<Circle> _circle = {
     Circle(
@@ -46,11 +47,12 @@ class LocationCubit extends Cubit<LocationState> {
       }
     }
 
-    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
-  Future<void> getPlaceMark() async{
+  Future<void> getPlaceMark() async {
     emit(state.copyWith(status: LocationStatus.loading));
     final position = await getCurrentLocation();
     // mymartker
@@ -63,7 +65,8 @@ class LocationCubit extends Cubit<LocationState> {
         snippet: 'This is your location',
       ),
     );
-    await getPlaceMarkFromCoordinates(position.latitude, position.longitude).then((placeMarks) {
+    await getPlaceMarkFromCoordinates(position.latitude, position.longitude)
+        .then((placeMarks) {
       emit(
         state.copyWith(
           status: LocationStatus.loaded,
@@ -100,7 +103,8 @@ class LocationCubit extends Cubit<LocationState> {
       );
     }).then((value) => _controller.isCompleted);
 
-    await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude).then((placeMark) {
+    await getPlaceMarkFromCoordinates(latLng.latitude, latLng.longitude)
+        .then((placeMark) {
       emit(
         state.copyWith(
           status: LocationStatus.loaded,
@@ -115,7 +119,9 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> onCameraStoppedMoving() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    await getPlaceMarkFromCoordinates(state.location!.latitude, state.location!.longitude).then((placeMark) {
+    await getPlaceMarkFromCoordinates(
+            state.location!.latitude, state.location!.longitude)
+        .then((placeMark) {
       emit(
         state.copyWith(
           status: LocationStatus.loaded,
@@ -131,7 +137,7 @@ class LocationCubit extends Cubit<LocationState> {
     CameraPosition cameraPosition,
   ) async {
     Marker myMarker;
-     myMarker = Marker(
+    myMarker = Marker(
       markerId: const MarkerId('1'),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       draggable: true,
@@ -171,7 +177,7 @@ class LocationCubit extends Cubit<LocationState> {
         snippet: 'This is your location',
       ),
     );
-     return myMarker;
+    return myMarker;
   }
 
   // on Idle Camera
@@ -225,7 +231,13 @@ class LocationCubit extends Cubit<LocationState> {
   String getLocationAddress() {
     final address = state.placemarks;
 
-    final addresses = '${address.first.name} ${address.first.subLocality}, ${address.first.locality}';
+    final addresses =
+        '${address!.first.name} ${address.first.subLocality}, ${address.first.locality}';
+
+    // translate the address to the user language
+    // final addresses = '${address.first.name} ${address.first.subLocality}, ${address.first.locality}';
+    //  translate the address
+    //  final addresses = '${address.first.name} ${address.first.subLocality}, ${address.first.locality}';
 
     emit(
       state.copyWith(
