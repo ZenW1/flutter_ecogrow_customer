@@ -10,6 +10,7 @@ extension AppButton on BuildContext {
     required VoidCallback onTap,
     required String text,
     double? width,
+    double? height,
     Gradient? gradient,
     Color? backgroundColor,
     Color? color,
@@ -17,7 +18,7 @@ extension AppButton on BuildContext {
   }) {
     return Container(
       width: width,
-      height: 55,
+      height: height ?? 55,
       decoration: BoxDecoration(
         gradient: gradient,
         color: backgroundColor ?? AppColors.primary,
@@ -89,7 +90,7 @@ extension AppButton on BuildContext {
         if (GoRouter.of(context).canPop()) {
           GoRouter.of(context).pop();
         } else {
-          GoRouter.of(context).go('/');
+          Navigator.of(context).pop();
         }
       },
       child: Container(

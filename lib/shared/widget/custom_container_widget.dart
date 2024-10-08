@@ -27,21 +27,23 @@ class CustomContainerWidget extends StatelessWidget {
       decoration: isShowDecoration!
           ? CustomConstantWidget.shadowBoxDecorationWidget()
           : BoxDecoration(),
-      child: ListTile(
-        leading: leading,
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.blackColor,
-              ),
+      child: Center(
+        child: ListTile(
+          leading: leading,
+          title: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.blackColor,
+                ),
+          ),
+          subtitle: Text(
+            subTitle,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.greyColor,
+                ),
+          ),
+          trailing: trialing,
         ),
-        subtitle: Text(
-          subTitle,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.greyColor,
-              ),
-        ),
-        trailing: trialing,
       ),
     );
   }

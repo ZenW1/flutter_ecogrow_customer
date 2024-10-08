@@ -4,7 +4,7 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: "^3.3.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -54,25 +54,30 @@ dependencies:
   google_maps_flutter: ^2.3.1
   geolocator: ^12.0.0
   geocoding: ^3.0.0
-  permission_handler: ^11.3.1
+  permission_handler: ^11.0.0
   carousel_slider: ^4.2.1
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.3.0
   smooth_page_indicator: ^1.2.0+3
   logger: ^2.4.0
-  animations: ^2.0.11
-  animated_flip_counter: ^0.3.4
+  animations: ^2.0.8
+  animated_flip_counter: ^0.3.0
   flutter_lints: ^4.0.0
-  skeletonizer: ^1.4.2
+  skeletonizer: ^1.4.0
   dartz: ^0.10.1
+  json_annotation: ^4.9.0
+  path_provider: ^2.1.4
+  flutter_slidable: ^3.1.1
 
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+#  flutter_test:
+#    sdk: flutter
   mocktail: ^1.0.3
   very_good_analysis: ^5.1.0
   bloc_test: ^9.1.7
+  json_serializable: ^6.8.0
   build_runner: ^2.4.9
+  hive_generator: ^2.0.1
 
 flutter_native_splash:
   # Background color of splash screen

@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
-
 
 import 'package:dio/dio.dart' hide ProgressCallback;
-import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:http_client/http_client.dart';
@@ -60,37 +57,31 @@ class DioHttpClient implements HttpClient {
     required Dio dio,
     required String baseUrl,
     required AppToken appToken,
-    List<Interceptor>? interceptors,
   })  : _dio = dio,
         _baseUrl = baseUrl,
-        _appToken = appToken,
-        _interceptors = interceptors {
+        _appToken = appToken {
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['Accept'] = 'application/json';
-    _dio.options.headers['Authorization'] = '${_appToken.accessToken}';
+    _dio.options.headers['Authorization'] = '${appToken.getAccessToken()}';
     _dio.options.baseUrl = _baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 60);
-    _dio.options.receiveTimeout = const Duration(seconds: 60);
-
     _dio.interceptors.add(LoggingInterceptor());
+    _dio.options.connectTimeout = const Duration(seconds: 10);
+    _dio.options.receiveTimeout = const Duration(seconds: 10);
     _dio.interceptors.add(
       RefreshFirebaseToken(
-        appToken,
+        appToken: appToken!,
         url: _baseUrl,
         tokenType: TokenType.FIREBASE,
         responseTokenKey: AppConstant.accessToken,
-        onRequestSuccess: (dynamic) {
-          log('onRequestSuccess');
+        onRequestSuccess: (dynamic) async {
+          await appToken.saveAccessToken(dynamic! as String);
         },
       ),
     );
-    if (_interceptors != null) {
-      _dio.interceptors.addAll(_interceptors!);
-    }
   }
 
   Future<String> getAccessToken() async {
-     final  token = await _appToken.getAccessToken();
+    final token = await _appToken.getAccessToken();
     return token;
   }
 
@@ -99,7 +90,7 @@ class DioHttpClient implements HttpClient {
   final AppToken _appToken;
 
   // add for add more interceptor
-  final List<Interceptor>? _interceptors;
+  // final List<Interceptor>? _interceptors;
 
   @override
   Future<Map<String, dynamic>> get(

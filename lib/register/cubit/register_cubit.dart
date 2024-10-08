@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -7,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/authentication_repo.dart';
 import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
@@ -17,7 +16,8 @@ import 'package:image_picker/image_picker.dart';
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit(this._authenticationRepo, this._appToken) : super(RegisterInitial());
+  RegisterCubit(this._authenticationRepo, this._appToken)
+      : super(RegisterInitial());
 
   AuthenticationRepo _authenticationRepo;
   AppToken _appToken;
@@ -39,35 +39,40 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String dob,
     required String image,
   }) async {
-      emit(RegisterInitial());
-      final data = await _authenticationRepo.registerUser(
-        firstName: firstName,
-        lastName: lastName,
-        uid: '${_appToken.getUid()}',
-        phoneNumber: phoneNumber,
-        image: image,
-        gender: gender,
-        dob: dob,
-      );
+    emit(RegisterInitial());
+    final data = await _authenticationRepo.registerUser(
+      firstName: firstName,
+      lastName: lastName,
+      uid: '${_appToken.getUid()}',
+      phoneNumber: phoneNumber,
+      image: image,
+      gender: gender,
+      dob: dob,
+    );
 
-      log('data: ${data.data!.toJson()}');
+    log('data: ${data.data!.toJson()}');
 
-      print('uid ${_appToken.getUid()}');
+    print('uid ${_appToken.getUid()}');
 
-      Future.wait([
-        _appToken.saveAccessToken(await _loginService.getAccessToken()),
-        _appToken.setUser(data.data!),
-      ]);
+    final token = await _loginService.getAccessToken();
 
-      emit(RegisterLoaded(data, data.message!));
+    Future.wait([
+      _appToken.saveAccessToken(token),
+      _appToken.setUser(data.data!),
+    ]);
 
+    emit(RegisterLoaded(data, data.message!));
   }
 
   Future<void> getImageAndConvertToBase64(ImageSource source) async {
     try {
+      // file only 1052kb
+
       final image = await ImagePicker().pickImage(
         source: source,
         imageQuality: 5,
+        maxWidth: 500,
+        maxHeight: 500,
       );
 
       if (image == null) return;

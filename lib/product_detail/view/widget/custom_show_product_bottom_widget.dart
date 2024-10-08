@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/data/model/product_list_response_model.dart';
-import 'package:flutter_ecogrow_customer/home/home.dart';
-import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
+import 'package:flutter_ecogrow_customer/data/model/product_detail_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
@@ -9,8 +7,9 @@ import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dar
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
 
 extension CustomProductShowButtomSheet on BuildContext {
-  static Future<void> showBottomSheet(BuildContext context,{
-    required ProductListModel data,
+  static Future<void> showBottomSheet(
+    BuildContext context, {
+    required ProductDetailResponseModel data,
   }) async {
     return showModalBottomSheet(
       barrierColor: Colors.black.withOpacity(0.5),
@@ -37,11 +36,11 @@ extension CustomProductShowButtomSheet on BuildContext {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           SizedBox(
+                          SizedBox(
                             width: 130,
                             height: 110,
                             child: CustomCacheImageWidget(
-                              imageUrl: data.primaryImage!,
+                              imageUrl: data.productImage!.first.image!,
                             ),
                           ),
                           Column(
@@ -50,8 +49,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text(
-                                    data.name!,
+                                  Text(
+                                    data.productName!,
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -60,8 +59,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   SizedBox(
                                     height: Dimensions.paddingSizeExtraSmall(),
                                   ),
-                                   Text(
-                                    data.name!,
+                                  Text(
+                                    data.productName!,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: AppColors.greyColor,
@@ -72,8 +71,8 @@ extension CustomProductShowButtomSheet on BuildContext {
                                   ),
                                 ],
                               ),
-                               Text(
-                                '៛${data.price!}',
+                              Text(
+                                '៛${data.productVariation!.first.price}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -152,7 +151,9 @@ extension CustomProductShowButtomSheet on BuildContext {
                                 backgroundColor: Colors.black,
                               ),
                             ),
-                            SizedBox(width: 16,),
+                            SizedBox(
+                              width: 16,
+                            ),
                             Expanded(
                               child: AppButton.roundedFilledButton(
                                 context,

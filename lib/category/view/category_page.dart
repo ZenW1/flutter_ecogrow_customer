@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/category/view/category_item_widget.dart';
+import 'package:flutter_ecogrow_customer/search/search.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -37,14 +38,17 @@ class CategoryView extends StatelessWidget {
             child: Column(
               children: [
                 InkWell(
-                  onTap: (){},
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SearchPage()));
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: AppColors.primary,
                       ),
                       borderRadius: BorderRadius.circular(24),
-                      color: AppColors.lightGreyColor.withOpacity(0.2),
+                      color: AppColors.whiteColor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +81,8 @@ class CategoryView extends StatelessWidget {
                   itemCount: context.read<CategoryCubit>().categoryList.length,
                   itemBuilder: (context, index) {
                     return CategoryItemWidget(
-                      categoryItemModel: context.read<CategoryCubit>().categoryList[index],
+                      categoryItemModel:
+                          context.read<CategoryCubit>().categoryList[index],
                       onTap: () {},
                     );
                   },

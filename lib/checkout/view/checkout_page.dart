@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/checkout/checkout.dart';
 import 'package:flutter_ecogrow_customer/checkout/view/payment_page.dart';
-import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
-import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_sort_list_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_bar_widget.dart';
@@ -113,23 +111,23 @@ class CheckoutView extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: context.read<CheckoutCubit>().data.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final data = context.read<CheckoutCubit>().data[index];
-                      return ProductListWidget(
-                        product: ProductModel(
-                          name: data.name,
-                          price: data.price,
-                          imageUrl: data.imageUrl,
-                          weight: data.weight,
-                          quantity: data.quantity,
-                        ),
-                      );
-                    },
-                  ),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: context.read<CheckoutCubit>().data.length,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   itemBuilder: (context, index) {
+                  //     final data = context.read<CheckoutCubit>().data[index];
+                  //     return ProductListWidget(
+                  //       product: ProductDummyModel(
+                  //         name: data.name,
+                  //         price: data.price,
+                  //         imageUrl: data.imageUrl,
+                  //         weight: data.weight,
+                  //         quantity: data.quantity,
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   const MySeparator(),
                   const SizedBox(
                     height: 16,

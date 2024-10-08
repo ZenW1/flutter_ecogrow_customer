@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
@@ -7,9 +8,19 @@ import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit(this._appToken) : super(const ProfileState());
+  ProfileCubit(this._appToken) : super(const ProfileLoading());
 
-  AppToken _appToken;
+  final AppToken _appToken;
+
+  Future<void> fetchUserInfo() async {
+    // emit(const ProfileLoading());
+    try {
+      final response = await _appToken.getUser();
+      emit(ProfileLoadSuccess(response));
+    } catch (e) {
+      emit(ProfileFailure(e.toString()));
+    }
+  }
 
   List<Map<String, dynamic>> get profileItems => [
         {
@@ -70,13 +81,8 @@ class ProfileCubit extends Cubit<ProfileState> {
         }
       ];
 
-  Future<void> fetchUserInfo() async {
-    try {
-      emit(const ProfileLoading());
-      final response = await _appToken.getUser();
-      emit(ProfileLoadSuccess(response, 'Profile Fetch Succesful'));
-    } catch (e) {
-      emit(ProfileFailure(e.toString()));
-    }
-  }
+  // @override
+  // Future<void> close() {
+  //   return super.close();
+  // }
 }

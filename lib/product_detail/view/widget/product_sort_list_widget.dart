@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/data/model/product_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
@@ -20,7 +20,7 @@ class ProductListWidget extends StatelessWidget {
         child: Row(
           children: [
             CustomCacheImageWidget(
-              imageUrl: product.imageUrl,
+              imageUrl: product.image!,
               width: 60,
               height: 60,
             ),
@@ -32,14 +32,14 @@ class ProductListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  product.name,
+                  product.productName!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  product.weight.toString(),
+                  product.unitTypeName.toString(),
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.greyColor,
                       ),
@@ -48,7 +48,7 @@ class ProductListWidget extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'x ${product.quantity}',
+                  'x ${product.qty}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],

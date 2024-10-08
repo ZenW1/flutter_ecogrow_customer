@@ -84,7 +84,6 @@ class OrderCubit extends Cubit<OrderState> {
   Future<void> getOrderData() async {
     emit(const OrderLoading());
     try {
-      await Future.delayed(const Duration(seconds: 1));
       emit(OrderLoaded(data));
     } catch (e) {
       emit(const OrderFailure());

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomCacheImageWidget extends StatelessWidget {
@@ -13,7 +12,7 @@ class CustomCacheImageWidget extends StatelessWidget {
     this.radius,
   });
 
-  final String imageUrl;
+  final String? imageUrl;
   final VoidCallback? onTap;
   final double? width;
   final double? height;
@@ -22,7 +21,7 @@ class CustomCacheImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: imageUrl!,
       progressIndicatorBuilder: (context, url, downloadProgress) => Center(
         child: AnimatedOpacity(
           opacity: 0.4,
@@ -30,7 +29,7 @@ class CustomCacheImageWidget extends StatelessWidget {
           child: Container(),
         ),
       ),
-      errorWidget: (context,url,error) {
+      errorWidget: (context, url, error) {
         return Center(
           child: SvgPicture.asset(
             'assets/svg/placeholder.svg',
@@ -43,11 +42,15 @@ class CustomCacheImageWidget extends StatelessWidget {
       imageBuilder: (context, imageProvider) => Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-             imageUrl,
-            width: width,
-            height: height,
-            fit: BoxFit.contain,
+          child: Container(
+            width: width ?? 100,
+            height: height ?? 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
         ),
       ),

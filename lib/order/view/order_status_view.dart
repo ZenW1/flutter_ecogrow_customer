@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/order/cubit/order_cubit.dart';
 import 'package:flutter_ecogrow_customer/order/view/widget/order_item_widget.dart';
+import 'package:flutter_ecogrow_customer/order_detail/view/order_detail_page.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 
 class OrderStatusView extends StatelessWidget {
@@ -17,14 +18,24 @@ class OrderStatusView extends StatelessWidget {
         if (state is OrderLoaded) {
           return AnimatedList(
             itemBuilder: (context, index, animation) {
-              return OrderItemWidget(
-                data: state.data[index],
-                status: status,
-                animation: Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: const Offset(0, 0),
-                ).animate(animation),
-                key: Key('$index'),
+              return InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrderDetailPage(
+                      ),
+                    ),
+                  );
+                },
+                child: OrderItemWidget(
+                  data: state.data[index],
+                  status: status,
+                  animation: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: const Offset(0, 0),
+                  ).animate(animation),
+                  key: Key('$index'),
+                ),
               );
             },
             initialItemCount: state.data.length,

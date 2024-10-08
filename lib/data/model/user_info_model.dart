@@ -2,74 +2,54 @@
 //
 //     final userInfoModel = userInfoModelFromJson(jsonString);
 
+import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
-UserInfoModel userInfoModelFromJson(String str) =>
-    UserInfoModel.fromJson(json.decode(str));
+part 'user_info_model.g.dart';
 
-String userInfoModelToJson(UserInfoModel data) => json.encode(data.toJson());
 
+@JsonSerializable()
 class UserInfoModel {
+  @JsonKey(name: "status")
   final int? status;
+  @JsonKey(name: "message")
   final String? message;
+  @JsonKey(name: "isRegister")
   final bool? isRegister;
-  final UserModel? data;
+  @JsonKey(name: "customer_profile")
+  final UserModel? customerProfile;
 
   UserInfoModel({
     this.status,
     this.message,
     this.isRegister,
-    this.data,
+    this.customerProfile,
   });
 
-  factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
-        status: json["status"],
-        message: json["message"],
-        isRegister: json["isRegister"],
-        data: json["data"] == null ? null : UserModel.fromJson(json["data"]),
-      );
+  factory UserInfoModel.fromJson(Map<String, dynamic> json) => _$UserInfoModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "isRegister": isRegister,
-        "data": data?.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$UserInfoModelToJson(this);
 }
 
-class RegisterUserModel {
-  final int? status;
-  final String? message;
-  final UserModel? data;
-
-  RegisterUserModel({
-    this.status,
-    this.message,
-    this.data,
-  });
-
-  factory RegisterUserModel.fromJson(Map<String, dynamic> json) => RegisterUserModel(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : UserModel.fromJson(json["data"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
-}
-
+@JsonSerializable()
 class UserModel {
+  @JsonKey(name: "id")
   final int? id;
+  @JsonKey(name: "first_name")
   final String? firstName;
+  @JsonKey(name: "last_name")
   final String? lastName;
+  @JsonKey(name: "gender")
   final String? gender;
+  @JsonKey(name: "image")
   final String? image;
+  @JsonKey(name: "dob")
   final DateTime? dob;
+  @JsonKey(name: "created_at")
   final String? createdAt;
+  @JsonKey(name: "updated_at")
   final String? updatedAt;
+  @JsonKey(name: "phone_number")
   final String? phoneNumber;
 
   UserModel({
@@ -84,27 +64,7 @@ class UserModel {
     this.phoneNumber,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        gender: json["gender"],
-        image: json["image"],
-        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        phoneNumber: json["phone_number"],
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "first_name": firstName,
-        "last_name": lastName,
-        "gender": gender,
-        "image": image,
-        "dob": "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "phone_number": phoneNumber,
-      };
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

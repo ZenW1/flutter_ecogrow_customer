@@ -15,7 +15,10 @@ import 'package:flutter_ecogrow_customer/location/cubit/current_address/current_
 import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
 import 'package:flutter_ecogrow_customer/main/main.dart';
+import 'package:flutter_ecogrow_customer/product/bloc/product_bloc.dart';
 import 'package:flutter_ecogrow_customer/product_detail/cubit/product_detail_cubit.dart';
+import 'package:flutter_ecogrow_customer/product_detail/cubit/product_selection/product_selection_cubit.dart';
+import 'package:flutter_ecogrow_customer/profile/cubit/profile_cubit.dart';
 import 'package:flutter_ecogrow_customer/profile/cubit/profile_edit/profile_edit_bloc.dart';
 import 'package:flutter_ecogrow_customer/profile/language/cubit/language_cubit.dart';
 import 'package:flutter_ecogrow_customer/register/cubit/register_cubit.dart';
@@ -37,12 +40,14 @@ class App extends StatelessWidget {
     required AppToken appToken,
     required ProductRepo productRepo,
     required CartRepo cartRepo,
+    required AuthenticationRepo authenticationRepo,
     super.key,
   })  : _environment = environment,
         _appLanguage = appLanguage,
         _dioHttpClient = dioHttpClient,
         _appToken = appToken,
         _cartRepo = cartRepo,
+        _authenticationRepo = authenticationRepo,
         _productRepo = productRepo;
   final EnvironmentModel _environment;
   final DioHttpClient _dioHttpClient;
@@ -50,6 +55,7 @@ class App extends StatelessWidget {
   final AppToken _appToken;
   final ProductRepo _productRepo;
   final CartRepo _cartRepo;
+  final AuthenticationRepo _authenticationRepo;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: _productRepo),
         RepositoryProvider.value(value: _appToken),
         RepositoryProvider.value(value: _cartRepo),
+        RepositoryProvider.value(value: _authenticationRepo),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -110,17 +117,32 @@ class App extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (context) => ProductBloc(context.read<ProductRepo>()),
+          ),
+          BlocProvider(
             create: (context) => AddressCubit(
               AddressRepo(dio: _dioHttpClient),
             ),
-          )
+          ),
+          BlocProvider(
+            create: (context) => ProductSelectionCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CartBloc(
+              _cartRepo,
+            )..add(CartFetchEvent()),
+          ),
+          BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(
+              _appToken,
+            ),
+          ),
         ],
         child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state.status == LoginStatus.loading) {
               context.loaderOverlay.show();
             } else if (state.status == LoginStatus.loginOut) {
-              _appToken.deleteToken();
               context.loaderOverlay.hide();
               AppRouter.router.push(LoginPage.routePath);
             }

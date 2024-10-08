@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/authentication_repo.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
@@ -28,12 +30,14 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
   late TextEditingController phoneController = TextEditingController();
   late TextEditingController addressController = TextEditingController();
   late TextEditingController dobController = TextEditingController();
+  late String imageUrl = '';
   late File? imageFile = File('');
   late String? base64Image;
 
-  Future<void> _onEditProfile(ProfileOnEditEvent event, Emitter<ProfileEditState> emit) async {
+  Future<void> _onEditProfile(
+      ProfileOnEditEvent event, Emitter<ProfileEditState> emit) async {
     emit(ProfileEditLoading());
-    await _authenticationRepo.editProfile(userData: event.userData).then((value) {
+    await _authenticationRepo.editProfile(userData: event.userData,old_image: '').then((value) {
       emit(
         ProfileEditLoadSuccess(
           value,
@@ -45,9 +49,11 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
     });
   }
 
-  Future<void> _onUploadImage(ProfileEditUploadImageEvent event, Emitter<ProfileEditState> emit) async {
+  Future<void> _onUploadImage(
+      ProfileEditUploadImageEvent event, Emitter<ProfileEditState> emit) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: event.source, imageQuality: 40);
+      final pickedFile =
+          await ImagePicker().pickImage(source: event.source, imageQuality: 40);
       if (pickedFile == null) return;
       final imageTemp = File(pickedFile.path);
 

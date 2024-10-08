@@ -9,7 +9,7 @@ final class CartInitial extends CartState {
   List<Object> get props => [];
 }
 
-class CartLoaded extends CartState{
+class CartLoaded extends CartState {
   final CartListResponseModel data;
   CartLoaded({required this.data});
 
@@ -34,3 +34,10 @@ class CartIncrease extends CartState {
   List<Object> get props => [count];
 }
 
+class CartSuccess extends CartState {
+  final String message;
+  CartSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

@@ -47,10 +47,8 @@ extension SizedBoxSpace on num {
 }
 
 extension symmetricPaddingExtension on Widget {
-  Widget symmetricPadding(double w ,double h) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: w, vertical: h),
-    child: this,
-  );
+  Widget symmetricPadding(double w, double h) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: w, vertical: h),
+        child: this,
+      );
 }
-
-

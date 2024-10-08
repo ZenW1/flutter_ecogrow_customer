@@ -10,7 +10,7 @@ extension CustomConstantWidget on Widget {
       color: color ?? AppColors.backgroundColor,
       boxShadow: [
         BoxShadow(
-          color: AppColors.shadowColor,
+          color: AppColors.primary.withOpacity(0.1),
           spreadRadius: 0,
           blurRadius: 2,
           offset: const Offset(1, 1),

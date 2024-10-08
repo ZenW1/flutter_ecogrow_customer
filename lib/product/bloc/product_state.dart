@@ -13,7 +13,7 @@ class ProductInitial extends ProductState {
 }
 
 class ProductLoaded extends ProductState {
-  final ProductListResponseModel data;
+  final ProductResponseModel data;
   ProductLoaded({required this.data});
 
   @override

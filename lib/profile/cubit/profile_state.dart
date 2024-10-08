@@ -7,19 +7,14 @@ class ProfileState extends Equatable {
   List<Object> get props => [];
 }
 
-class ProfileInitial extends ProfileState {
-  const ProfileInitial();
-}
-
 class ProfileLoading extends ProfileState {
   const ProfileLoading();
 }
 
 class ProfileLoadSuccess extends ProfileState {
   final UserModel data;
-  final String message ;
 
-  ProfileLoadSuccess(this.data,this.message);
+  ProfileLoadSuccess(this.data);
 
   @override
   List<Object> get props => [data];

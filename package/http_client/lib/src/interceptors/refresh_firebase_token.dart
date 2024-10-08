@@ -1,20 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
-
-
-
-
 enum RefreshMethod { GET, POST }
 
 enum TokenType { NONE, BEARER, BASIC, FIREBASE }
 
 class RefreshFirebaseToken<T> extends QueuedInterceptor {
-  RefreshFirebaseToken(this.appToken, {
+  RefreshFirebaseToken( {
     required this.url,
     this.requestHeaders,
+    this.appToken,
     required this.onRequestSuccess,
-    this.method = RefreshMethod.GET,
+    this.method = RefreshMethod.POST,
     required this.responseTokenKey,
     this.tokenType = TokenType.BEARER,
     this.expiration = const Duration(minutes: 60),
@@ -25,17 +22,17 @@ class RefreshFirebaseToken<T> extends QueuedInterceptor {
   final TokenType tokenType;
   final RefreshMethod method;
   final String responseTokenKey;
-  final AppToken appToken;
+  final AppToken? appToken;
   final Map<String, dynamic>? requestHeaders;
   final void Function(T dynamic) onRequestSuccess;
 
   @override
   Future<void> onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
+      RequestOptions options,
+      RequestInterceptorHandler handler,
+      ) async {
 
-    final accessToken = await  appToken.getAccessToken();
+    final accessToken = await  appToken!.getAccessToken();
     try {
       // check if expiration is equal or less than 30 minutes
       if (expiration.inMinutes <= 60) {

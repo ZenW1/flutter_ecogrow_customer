@@ -1,9 +1,7 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_ecogrow_customer/data/model/cart_model.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
+import 'package:flutter_ecogrow_customer/data/model/cart_list_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
@@ -11,9 +9,17 @@ import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget
 import 'package:flutter_ecogrow_customer/shared/widget/custom_icon_widget.dart';
 
 class CartProductWidget extends StatefulWidget {
-  const CartProductWidget({required this.data, super.key, required this.value, required this.index, required this.onChanged, required this.onIncrease, required this.onDecrease, required this.quantityValue});
+  const CartProductWidget(
+      {required this.data,
+      super.key,
+      required this.value,
+      required this.index,
+      required this.onChanged,
+      required this.onIncrease,
+      required this.onDecrease,
+      required this.quantityValue});
 
-  final CartItemModel data;
+  final CartProductModel data;
 
   final List<bool> value;
   final int index;
@@ -78,21 +84,25 @@ class _CartProductWidgetState extends State<CartProductWidget> {
                         children: [
                           Text(
                             '\$${widget.data.price!}',
-                            style:
-                                Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                      color: AppColors.redColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: AppColors.redColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
-                          SizedBox(width: 6,),
+                          SizedBox(
+                            width: 6,
+                          ),
                           Text(
                             '\$${widget.data.discount!}',
                             style:
-                            Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: AppColors.greyColor,
-                              fontWeight: FontWeight.w500,
-                              decoration: TextDecoration.lineThrough,
-                            ),
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: AppColors.greyColor,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
                           ),
                         ],
                       ),
@@ -128,7 +138,7 @@ class _CartProductWidgetState extends State<CartProductWidget> {
           Positioned(
             right: 12,
             bottom: 12,
-            child:                           Row(
+            child: Row(
               children: [
                 CustomCircleIcon(
                     radius: 15,

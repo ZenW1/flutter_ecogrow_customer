@@ -2,16 +2,16 @@ part of 'register_cubit.dart';
 
 enum RegisterStatus { initial, loading, success, failed, uploadImage }
 
-
 class RegisterState extends Equatable {
-  const RegisterState(this.image,);
+  const RegisterState(
+    this.image,
+  );
 
   final File? image;
 
   @override
   List<Object> get props => [image!];
 }
-
 
 class RegisterInitial extends RegisterState {
   const RegisterInitial() : super(null);

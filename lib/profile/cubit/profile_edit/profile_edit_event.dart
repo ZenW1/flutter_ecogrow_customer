@@ -14,7 +14,7 @@ class ProfileOnEditEvent extends ProfileEditEvent {
 }
 
 class ProfileEditUploadImageEvent extends ProfileEditEvent {
-  const ProfileEditUploadImageEvent( this.source);
+  const ProfileEditUploadImageEvent(this.source);
 
   final ImageSource source;
 

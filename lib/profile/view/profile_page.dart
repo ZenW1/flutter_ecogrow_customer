@@ -7,7 +7,6 @@ import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
 
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_item_widget.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/app_token.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_profile_header_widgt.dart';
 import 'package:go_router/go_router.dart';
@@ -19,148 +18,150 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ProfileCubit(
-        context.read<AppToken>()
-      ),
-      child: const ProfileView(),
-    );
+    return ProfileView();
   }
 }
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
 
   @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    context.read<ProfileCubit>().fetchUserInfo();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-               state is ProfileLoadSuccess ?
-                SliverPersistentHeader(
-                  delegate: CustomerProfileHeader(
-                    state.data,
+    return Scaffold(
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<ProfileCubit>().fetchUserInfo();
+          },
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: CustomProfileHeader(),
+              ),
+              SliverList.list(
+                children: [
+                  ProfileItemWidget(
+                    title: context.l10n.myOrder,
+                    onTap: () {},
+                    icon: Assets.svg.myOrder,
                   ),
-                  pinned: false,
-                  floating: false,
-                ) : SliverToBoxAdapter(
-                  child: Container(
-                    height: 200,
-                    color: AppColors.primary,
+                  ProfileItemWidget(
+                    title: context.l10n.promotion,
+                    onTap: () {},
+                    icon: Assets.svg.privacy,
                   ),
-                ),
-                SliverList.list(
-                  children: [
-                    ProfileItemWidget(
-                      title: context.l10n.myOrder,
-                      onTap: () {},
-                      icon: Assets.svg.myOrder,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.promotion,
-                      onTap: () {},
-                      icon: Assets.svg.privacy,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.wishlist,
-                      onTap: () {},
-                      icon: Assets.svg.wishlist,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.deliveryAddress,
+                  ProfileItemWidget(
+                    title: context.l10n.wishlist,
+                    onTap: () {},
+                    icon: Assets.svg.wishlist,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.deliveryAddress,
+                    onTap: () {
+                      context.push(LocationPage.routePath);
+                    },
+                    icon: Assets.svg.deliveryAddress,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // mainTitleWidget(
+                  //   context,
+                  //   title: context.l10n.wallet,
+                  // ),
+                  // ProfileItemWidget(
+                  //   title: context.l10n.wallet,
+                  //   onTap: () {},
+                  //   icon: Assets.svg.wallet,
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  mainTitleWidget(
+                    context,
+                    title: context.l10n.setting,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.notification,
+                    onTap: () {},
+                    icon: Assets.svg.notification,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.language,
+                    onTap: () {
+                      GoRouter.of(context).push('/language');
+                    },
+                    icon: Assets.svg.language,
+                  ),
+                  mainTitleWidget(
+                    context,
+                    title: context.l10n.support,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.aboutUs,
+                    onTap: () {},
+                    icon: Assets.svg.aboutUs,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.privacyPolicy,
+                    onTap: () {
+                      GoRouter.of(context).push('/privacy');
+                    },
+                    icon: Assets.svg.privacy,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.termCondition,
+                    onTap: () {
+                      GoRouter.of(context).push('/term-condition');
+                    },
+                    icon: Assets.svg.termCondition,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.helpCenter,
+                    onTap: () {},
+                    icon: Assets.svg.helpCenter,
+                  ),
+                  ProfileItemWidget(
+                    title: context.l10n.faq,
+                    onTap: () {},
+                    icon: Assets.svg.faq,
+                  ),
+                  BlocListener<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      // if (state.status == LoginStatus.loading) {
+                      //   context.loaderOverlay.show();
+                      // } else if (state.status == LoginStatus.loginOut) {
+                      //   _appToken.deleteToken();
+                      //   context.loaderOverlay.hide();
+                      //   AppRouter.router.push(LoginPage.routePath);
+                      // }
+                    },
+                    child: ProfileItemWidget(
+                      title: context.l10n.logout,
                       onTap: () {
-                        context.push(LocationPage.routePath);
+                        context.read<LoginCubit>().signOut();
                       },
-                      icon: Assets.svg.deliveryAddress,
+                      icon: Assets.svg.signout,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // mainTitleWidget(
-                    //   context,
-                    //   title: context.l10n.wallet,
-                    // ),
-                    // ProfileItemWidget(
-                    //   title: context.l10n.wallet,
-                    //   onTap: () {},
-                    //   icon: Assets.svg.wallet,
-                    // ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    mainTitleWidget(
-                      context,
-                      title: context.l10n.setting,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.notification,
-                      onTap: () {},
-                      icon: Assets.svg.notification,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.language,
-                      onTap: () {
-                        GoRouter.of(context).push('/language');
-                      },
-                      icon: Assets.svg.language,
-                    ),
-                    mainTitleWidget(
-                      context,
-                      title: context.l10n.support,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.aboutUs,
-                      onTap: () {},
-                      icon: Assets.svg.aboutUs,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.privacyPolicy,
-                      onTap: () {},
-                      icon: Assets.svg.privacy,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.termCondition,
-                      onTap: () {},
-                      icon: Assets.svg.termCondition,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.helpCenter,
-                      onTap: () {},
-                      icon: Assets.svg.helpCenter,
-                    ),
-                    ProfileItemWidget(
-                      title: context.l10n.faq,
-                      onTap: () {},
-                      icon: Assets.svg.faq,
-                    ),
-                    BlocListener<LoginCubit, LoginState>(
-                      listener: (context, state) {
-                        // if (state.status == LoginStatus.loading) {
-                        //   context.loaderOverlay.show();
-                        // } else if (state.status == LoginStatus.loginOut) {
-                        //   _appToken.deleteToken();
-                        //   context.loaderOverlay.hide();
-                        //   AppRouter.router.push(LoginPage.routePath);
-                        // }
-                      },
-                      child: ProfileItemWidget(
-                        title: context.l10n.logout,
-                        onTap: () {
-                          context.read<LoginCubit>().signOut();
-                        },
-                        icon: Assets.svg.signout,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -186,4 +187,7 @@ class ProfileView extends StatelessWidget {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

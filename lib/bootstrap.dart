@@ -4,8 +4,11 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_ecogrow_customer/data/model/cart_list_response_model.dart';
+import 'package:flutter_ecogrow_customer/data/service/local_storage_service.dart';
 import 'package:flutter_ecogrow_customer/firebase_options.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/logger.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -34,6 +37,11 @@ typedef AppBuilder = Future<Widget> Function(
 
 Future<void> bootstrap(AppBuilder builder) async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocalStorageService.initialize();
+  Hive.registerAdapter<CartListResponseModel>(CartListResponseModelAdapter());
+  Hive.registerAdapter<CartModel>(CartModelAdapter());
+  Hive.registerAdapter<CartProductModel>(CartProductModelAdapter());
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

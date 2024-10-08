@@ -1,13 +1,28 @@
 part of 'product_detail_cubit.dart';
 
 class ProductDetailState extends Equatable {
-  const ProductDetailState();
-
+  ProductDetailState();
+  bool isSelectedOption = false;
+  int priceAfterSelection = 0;
+  int quantity = 1;
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isSelectedOption, priceAfterSelection];
 }
 
-class ProductInitial extends ProductDetailState {
+extension ProductDetailStateCopyWith on ProductDetailState {
+  ProductDetailState copyWith({
+    bool? isSelectedOption,
+    int? priceAfterSelection,
+    int? quantity,
+  }) {
+    return ProductDetailState()
+      ..isSelectedOption = isSelectedOption ?? this.isSelectedOption
+      ..priceAfterSelection = priceAfterSelection ?? this.priceAfterSelection
+      ..quantity = quantity ?? this.quantity;
+  }
+}
+
+class ProductDetailLoading extends ProductDetailState {
   @override
   List<Object> get props => [];
 }

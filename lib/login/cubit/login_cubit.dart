@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/authentication_repo.dart';
 import 'package:flutter_ecogrow_customer/data/service/login_service.dart';
@@ -28,40 +31,41 @@ class LoginCubit extends Cubit<LoginState> {
       );
       emit(state.copyWith(status: LoginStatus.sendOtp, phoneNumber: phoneNumber));
     } catch (e) {
-      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
+      emit(state.copyWith(
+          status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
 
   Future<void> login() async {
     emit(state.copyWith(status: LoginStatus.loading));
+
     try {
-      final accessToken = await _loginService.getAccessToken();
-      final response = await _authenticationRepo.login(token: accessToken);
+
+      final response = await _authenticationRepo.login();
+
       Future.wait(
         [
-          _appToken.saveAccessToken(accessToken),
-          _appToken.setUser(response.data!),
+          _appToken.setUser(response.customerProfile!),
+
         ],
       );
-      emit(state.copyWith(status: LoginStatus.success, userInfo: response));
+      emit(state.copyWith(status: LoginStatus.success, userInfo: response,isRegister: response.isRegister!,errorMessage: response.message!));
     } catch (e) {
-      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
+       // await _appToken.deleteToken();
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: state.errorMessage));
     }
   }
 
   Future<void> verifyOtp(String code) async {
     emit(state.copyWith(status: LoginStatus.loading));
     try {
-
-     final uid = await _loginService.verifyOtp(
+      final uid = await _loginService.verifyOtp(
         codeSms: code,
       );
 
-     print('uid: $uid');
+      print('uid: $uid');
 
-      Future.wait([
-        _appToken.setUid(uid)
-      ]);
+      Future.wait([_appToken.setUid(uid)]);
 
       emit(
         state.copyWith(
@@ -95,4 +99,5 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
+
 }

@@ -8,7 +8,7 @@ enum LoginStatus {
   sendOtp,
   verifyOtp,
   loginOut,
-  isNewUser,
+  isRegister,
   loading,
 }
 
@@ -19,7 +19,7 @@ class LoginState extends Equatable {
     this.isPhoneNumberValid = false,
     this.isSubmitting = false,
     this.isSuccess = false,
-    this.isNewUser = true,
+    this.isRegister = false,
     this.errorMessage = '',
     this.accessToken = '',
     required this.userInfo,
@@ -31,7 +31,7 @@ class LoginState extends Equatable {
     bool? isPhoneNumberValid,
     bool? isSubmitting,
     bool? isSuccess,
-    bool? isNewUser,
+    bool? isRegister,
     String? errorMessage,
     String? accessToken,
     UserInfoModel? userInfo,
@@ -42,7 +42,7 @@ class LoginState extends Equatable {
       isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
-      isNewUser: isNewUser ?? this.isNewUser,
+      isRegister: isRegister ?? this.isRegister,
       errorMessage: errorMessage ?? this.errorMessage,
       accessToken: accessToken ?? this.accessToken,
       userInfo: userInfo ?? this.userInfo,
@@ -59,7 +59,7 @@ class LoginState extends Equatable {
   final bool isPhoneNumberValid;
   final bool isSubmitting;
   final bool isSuccess;
-  final bool isNewUser;
+  final bool isRegister;
   final String errorMessage;
   final UserInfoModel userInfo;
 
@@ -71,7 +71,7 @@ class LoginState extends Equatable {
         isSubmitting,
         isSuccess,
         errorMessage,
-        isNewUser,
+        isRegister,
         accessToken,
         userInfo,
       ];

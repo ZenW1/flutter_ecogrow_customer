@@ -1,87 +1,64 @@
-class AddressModel {
-  final List<Datum>? data;
+// To parse this JSON data, do
+//
+//     final addressResponseModel = addressResponseModelFromJson(jsonString);
 
-  AddressModel({
-    this.data,
+import 'package:json_annotation/json_annotation.dart';
+
+part 'address_model.g.dart';
+
+@JsonSerializable()
+class AddressResponseModel {
+  @JsonKey(name: "status")
+  final int? status;
+  @JsonKey(name: "message")
+  final String? message;
+  @JsonKey(name: "address")
+  final List<Address>? address;
+
+  AddressResponseModel({
+    this.status,
+    this.message,
+    this.address,
   });
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
-        data: json["data"] == null
-            ? []
-            : List<Datum>.from(
-                json["data"]!.map(
-                  (x) => Datum.fromJson(x),
-                ),
-              ),
-      );
+  factory AddressResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$AddressResponseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() => _$AddressResponseModelToJson(this);
 }
 
-class Datum {
+@JsonSerializable()
+class Address {
+  @JsonKey(name: "id")
   final int? id;
-  final String? name;
-  final String? firstname;
-  final String? lastname;
-  final String? mobile;
+  @JsonKey(name: "customer_id")
+  final int? customerId;
+  @JsonKey(name: "latitude")
+  final String? latitude;
+  @JsonKey(name: "longitude")
+  final String? longitude;
+  @JsonKey(name: "address")
+  final String? address;
+  @JsonKey(name: "title")
   final String? title;
-  final String? subTitle;
+  @JsonKey(name: "is_default")
+  final int? isDefault;
+  @JsonKey(name: "description")
   final String? description;
-  final String? email;
-  final String? address1;
-  final double? lat;
-  final double? lng;
-  final bool? datumDefault;
 
-  Datum({
+  Address({
     this.id,
-    this.name,
-    this.firstname,
-    this.lastname,
-    this.mobile,
+    this.customerId,
+    this.latitude,
+    this.longitude,
+    this.address,
     this.title,
-    this.subTitle,
+    this.isDefault,
     this.description,
-    this.email,
-    this.address1,
-    this.lat,
-    this.lng,
-    this.datumDefault,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["id"] ,
-        name: json["name"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        mobile: json["mobile"],
-        title: json["title"],
-        subTitle: json["subTitle"],
-        description: json["description"],
-        email: json["email"],
-        address1: json["address_1"],
-        lat: json["lat"]?.toDouble(),
-        lng: json["lng"]?.toDouble(),
-        datumDefault: json["default"],
-      );
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "firstname": firstname,
-        "lastname": lastname,
-        "mobile": mobile,
-        "title": title,
-        "subTitle": subTitle,
-        "description": description,
-        "email": email,
-        "address_1": address1,
-        "lat": lat,
-        "lng": lng,
-        "default": datumDefault,
-      };
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

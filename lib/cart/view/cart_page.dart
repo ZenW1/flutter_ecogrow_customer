@@ -4,7 +4,6 @@ import 'package:flutter_ecogrow_customer/cart/bloc/cart_bloc.dart';
 
 import 'package:flutter_ecogrow_customer/cart/cart.dart';
 import 'package:flutter_ecogrow_customer/cart/view/widget/cart_item_widget.dart';
-import 'package:flutter_ecogrow_customer/data/model/cart_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/cart_repo.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 
@@ -33,37 +32,43 @@ class CartView extends StatelessWidget {
         title: const Text('My Cart'),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: Dimensions.paddingSizeExtraSmall(),
-          ),
-          child: Column(
-            children: [
-              SizedBox(height: Dimensions.paddingSizeSmall()),
-              BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) {
-                  if (state is CartLoaded) {
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.data.items!.length,
-                      itemBuilder: (context, index) {
-                        return CartItemWidget(
-                          data: state.data.items![index],
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: Dimensions.paddingSizeSmall());
-                      },
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ],
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<CartBloc>().add(CartFetchEvent());
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeExtraSmall(),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: Dimensions.paddingSizeSmall()),
+                BlocBuilder<CartBloc, CartState>(
+                  builder: (context, state) {
+                    if (state is CartLoaded) {
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.data.items!.length,
+                        itemBuilder: (context, index) {
+                          return CartItemWidget(
+                            data: state.data.items![index],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                              height: Dimensions.paddingSizeSmall());
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

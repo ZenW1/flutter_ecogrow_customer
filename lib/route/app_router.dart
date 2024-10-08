@@ -12,7 +12,10 @@ import 'package:flutter_ecogrow_customer/order/order.dart';
 import 'package:flutter_ecogrow_customer/product_detail/view/product_detail_page.dart';
 import 'package:flutter_ecogrow_customer/profile/language/language.dart';
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
+import 'package:flutter_ecogrow_customer/profile/view/privacy_policy_page.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_edit_page.dart';
+import 'package:flutter_ecogrow_customer/profile/view/support_page.dart';
+import 'package:flutter_ecogrow_customer/profile/view/term_condition_page.dart';
 import 'package:flutter_ecogrow_customer/register/view/register_page.dart';
 import 'package:flutter_ecogrow_customer/route/go_router_observable.dart';
 import 'package:flutter_ecogrow_customer/splash/splash.dart';
@@ -152,7 +155,7 @@ class AppRouter {
       GoRoute(
         path: ProfileEditPage.routePath,
         name: 'profile_edit',
-        builder: (context, state) => const ProfileEditPage(imageUrl: ''),
+        builder: (context, state) =>  ProfileEditPage(imageUrl: ''),
       ),
       GoRoute(
         path: LanguagePage.routePath,
@@ -210,6 +213,21 @@ class AppRouter {
         path: LocationPage.routePath,
         name: 'location',
         builder: (context, state) => const LocationPage(),
+      ),
+      GoRoute(
+        path: SupportPage.routePath,
+        name: 'support',
+        builder: (context, state) => const SupportPage(),
+      ),
+      GoRoute(
+        path: PrivacyPolicyPage.routePath,
+        name: 'privacy',
+        builder: (context, state) => const PrivacyPolicyPage(),
+      ),
+      GoRoute(
+        path: TermConditionPage.routePath,
+        name: 'term-condition',
+        builder: (context, state) => const TermConditionPage(),
       ),
     ],
   );

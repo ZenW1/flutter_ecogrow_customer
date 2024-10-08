@@ -12,10 +12,17 @@ final class AddressInitial extends AddressState {
 class AddressLoaded extends AddressState {
   AddressLoaded({required this.data});
 
-  final AddressModel data;
+  final AddressResponseModel data;
 
   @override
   List<Object> get props => [data];
+}
+
+class AddressDelete extends AddressState {
+  final String message;
+  AddressDelete({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class AddressFailed extends AddressState {

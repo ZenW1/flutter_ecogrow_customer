@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/main/main.dart';
 
 import 'package:flutter_ecogrow_customer/register/register.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
@@ -69,8 +68,10 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           if (state.image == null)
                             InkWell(
-                              onTap: () =>
-                                  context.read<RegisterCubit>().getImageAndConvertToBase64(ImageSource.gallery),
+                              onTap: () => context
+                                  .read<RegisterCubit>()
+                                  .getImageAndConvertToBase64(
+                                      ImageSource.gallery),
                               child: const CircleAvatar(
                                 radius: 50,
                                 foregroundImage: NetworkImage(
@@ -80,8 +81,10 @@ class _RegisterViewState extends State<RegisterView> {
                             )
                           else
                             InkWell(
-                              onTap: () =>
-                                  context.read<RegisterCubit>().getImageAndConvertToBase64(ImageSource.gallery),
+                              onTap: () => context
+                                  .read<RegisterCubit>()
+                                  .getImageAndConvertToBase64(
+                                      ImageSource.gallery),
                               child: CircleAvatar(
                                 radius: 50,
                                 foregroundImage: FileImage(
@@ -128,7 +131,8 @@ class _RegisterViewState extends State<RegisterView> {
                     GlobalTextField(
                       textInputType: TextInputType.text,
                       autoFocus: true,
-                      controller: context.read<RegisterCubit>().userNameController,
+                      controller:
+                          context.read<RegisterCubit>().userNameController,
                       hintText: 'Your username',
                     ),
                     const SizedBox(
@@ -200,7 +204,7 @@ class _RegisterViewState extends State<RegisterView> {
                       child: AppButton.roundedFilledButton(
                         context,
                         onTap: () async {
-                          await context.read<RegisterCubit>().registerUser(
+                          context.read<RegisterCubit>().registerUser(
                                 firstName: context.read<RegisterCubit>().userNameController.text,
                                 lastName: context.read<RegisterCubit>().userNameController.text,
                                 gender: 'M',

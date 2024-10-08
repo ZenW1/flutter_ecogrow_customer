@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:http_client/http_client.dart';
@@ -11,11 +12,16 @@ class AuthenticationRepo {
 
   final DioHttpClient _dio;
 
-  Future<UserInfoModel> login({required String token}) async {
+  Future<UserInfoModel> login() async {
     try {
-      final response = await _dio.post(AppApi.login,  headers: {
-        'Authorization': '${token}',
-      });
+      final response = await _dio.post(AppApi.login,
+        headers: {
+          'Authorization': '${await _dio.getAccessToken()}',
+        },
+      );
+
+      log('login response : $response');
+
       return UserInfoModel.fromJson(response);
     } catch (e) {
       throw Exception(e);
@@ -24,16 +30,18 @@ class AuthenticationRepo {
 
   Future<UserInfoModel> editProfile({
     required UserInfoModel userData,
+    required String old_image,
   }) async {
     try {
       final body = {
-        'first_name': userData.data!.firstName,
-        'last_name': userData.data!.lastName,
-        'gender': userData.data!.gender,
-        'dob': userData.data!.dob,
-        'uid': userData.data!.id,
-        'phone_number': userData.data!.phoneNumber,
-        'image': userData.data!.image,
+        'first_name': userData.customerProfile!.firstName,
+        'last_name': userData.customerProfile!.lastName,
+        'gender': userData.customerProfile!.gender,
+        'dob': userData.customerProfile!.dob,
+        'uid': userData.customerProfile!.id,
+        'phone_number': userData.customerProfile!.phoneNumber,
+        'new_image': userData.customerProfile!.image,
+        'old_image' : old_image,
       };
       final response = await _dio.post(AppApi.updateProfile, body: body);
       return UserInfoModel.fromJson(response);

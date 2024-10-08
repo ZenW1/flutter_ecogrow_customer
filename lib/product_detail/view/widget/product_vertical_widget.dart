@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/data/model/product_list_response_model.dart';
-import 'package:flutter_ecogrow_customer/home/view/home_page.dart';
-import 'package:flutter_ecogrow_customer/product_detail/view/widget/custom_show_product_bottom_widget.dart';
+import 'package:flutter_ecogrow_customer/data/model/product_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -17,7 +15,7 @@ class ProductVerticalWidget extends StatelessWidget {
     super.key,
   });
 
-  final ProductListModel product;
+  final ProductModel product;
   final VoidCallback onTap;
   bool? isPromotion = false;
 
@@ -28,8 +26,7 @@ class ProductVerticalWidget extends StatelessWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        decoration: CustomConstantWidget.shadowBoxDecorationWidget(
-            radius: 15, color: AppColors.whiteColor),
+        decoration: CustomConstantWidget.shadowBoxDecorationWidget(radius: 15, color: AppColors.whiteColor),
         child: Stack(
           children: [
             Container(
@@ -45,7 +42,7 @@ class ProductVerticalWidget extends StatelessWidget {
                   CustomCacheImageWidget(
                     width: 150,
                     height: 80,
-                    imageUrl: product.primaryImage!,
+                    imageUrl: product.image!,
                   ),
                   SizedBox(
                     height: Dimensions.paddingSizeDefault(),
@@ -54,8 +51,9 @@ class ProductVerticalWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        product.name!,
+                        product.productName!,
                         maxLines: 2,
+                        softWrap: true,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -104,10 +102,7 @@ class ProductVerticalWidget extends StatelessWidget {
                         SvgPicture.asset('assets/svg/promotion.svg'),
                         Text(
                           '20%',
-                          style: TextStyle(
-                              color: AppColors.whiteColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
+                          style: TextStyle(color: AppColors.whiteColor, fontSize: 12, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -129,7 +124,7 @@ class ProductVerticalWidget extends StatelessWidget {
                       ),
                       child: InkWell(
                         onTap: () {
-                          CustomProductShowButtomSheet.showBottomSheet(context,data: product);
+                          // CustomProductShowButtomSheet.showBottomSheet(context,data: product);
                         },
                         child: const Icon(
                           Icons.add,

@@ -80,6 +80,9 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
             FocusScope.of(context).unfocus();
           }
         },
+        // onTapOutside: (pointDownEvent) {
+        //   Focus.of(context).unfocus();
+        // },
         onTap: widget.onTap,
         focusNode: widget.focusNode,
         textDirection: TextDirection.ltr,
@@ -126,7 +129,7 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
           suffixIcon: widget.suffixIcon,
           suffixIconColor: widget.suffixIconColor,
           prefixIconColor: widget.prefixIconColor,
-          prefixIcon: widget.prefixIcon,
+          prefixIcon: widget.prefixIcon ?? null,
           hintText: widget.hintText,
           hintStyle: widget.hintStyle ??
               Theme.of(context).textTheme.titleSmall?.copyWith(

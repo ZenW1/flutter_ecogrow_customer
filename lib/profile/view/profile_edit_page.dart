@@ -1,22 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 import 'package:flutter_ecogrow_customer/profile/cubit/profile_edit/profile_edit_bloc.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/app_bar_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class ProfileEditPage extends StatelessWidget {
-  const ProfileEditPage({required this.imageUrl, super.key});
+   ProfileEditPage({required this.imageUrl, super.key});
 
   static const String routePath = '/profile/edit';
 
   final String imageUrl;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +47,16 @@ class ProfileEditPage extends StatelessWidget {
 }
 
 class ProfileEditView extends StatelessWidget {
-  const ProfileEditView({super.key});
+   ProfileEditView({super.key});
+
+  final dateFormat = DateFormat('yyyy-MM-dd');
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Edit Profile',
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-        ),
+      appBar: AppBarWidget(
+        title: 'Edit Profile',
       ),
       body: BlocBuilder<ProfileEditBloc, ProfileEditState>(
         builder: (context, state) {
@@ -71,7 +67,8 @@ class ProfileEditView extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      context.read<ProfileEditBloc>().add(ProfileEditUploadImageEvent(ImageSource.gallery));
+                      context.read<ProfileEditBloc>().add(
+                          ProfileEditUploadImageEvent(ImageSource.gallery));
                     },
                     child: state is ProfileEditUploadImage
                         ? CircleAvatar(
@@ -81,9 +78,9 @@ class ProfileEditView extends StatelessWidget {
                         : CircleAvatar(
                             radius: 50,
                             backgroundImage: Image.network(
-                              // picuture
-                              'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fprofile%2520picture%2F&psig=AOvVaw3'
-                            ).image,
+                                    // picuture
+                                    'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fprofile%2520picture%2F&psig=AOvVaw3')
+                                .image,
                           ),
                   ),
                   const SizedBox(
@@ -95,7 +92,8 @@ class ProfileEditView extends StatelessWidget {
                   ),
                   GlobalTextField(
                     textInputType: TextInputType.text,
-                    controller: context.read<ProfileEditBloc>().firstNameController,
+                    controller:
+                        context.read<ProfileEditBloc>().firstNameController,
                     hintText: 'First Name',
                     labelText: 'First Name',
                   ),
@@ -108,7 +106,8 @@ class ProfileEditView extends StatelessWidget {
                   ),
                   GlobalTextField(
                     textInputType: TextInputType.text,
-                    controller: context.read<ProfileEditBloc>().lastNameController,
+                    controller:
+                        context.read<ProfileEditBloc>().lastNameController,
                     hintText: 'Last Name',
                     labelText: 'Last Name',
                   ),
@@ -135,23 +134,11 @@ class ProfileEditView extends StatelessWidget {
                         if (value != null) {
                           // format the date yyyy-mm-dd
                           final formattedDate = '${value.year}-${value.month}-${value.day}';
-                          context.read<ProfileEditBloc>().dobController.text = formattedDate;
+                          context.read<ProfileEditBloc>().dobController.text =
+                              formattedDate;
                         }
                       });
                     },
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const AppTitleWidget(text: 'Email'),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  GlobalTextField(
-                    textInputType: TextInputType.text,
-                    controller: TextEditingController(),
-                    hintText: 'Input your email',
-                    labelText: 'Email',
                   ),
                   const SizedBox(
                     height: 16,
@@ -168,16 +155,6 @@ class ProfileEditView extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 16,
-                  ),
-                  const AppTitleWidget(text: 'Address'),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  GlobalTextField(
-                    textInputType: TextInputType.text,
-                    controller: TextEditingController(),
-                    hintText: 'Input your address',
-                    labelText: 'Physical address',
                   ),
                 ],
               ),
@@ -215,11 +192,21 @@ class ProfileEditView extends StatelessWidget {
                   context.read<ProfileEditBloc>().add(
                         ProfileOnEditEvent(
                           UserInfoModel(
-                              data: UserModel(
-                            firstName: context.read<ProfileEditBloc>().firstNameController.text,
-                            lastName: context.read<ProfileEditBloc>().lastNameController.text,
-                            phoneNumber: context.read<ProfileEditBloc>().phoneController.text,
-                            dob: DateTime.tryParse(context.read<ProfileEditBloc>().dobController.text),
+                              customerProfile: UserModel(
+                            firstName: context
+                                .read<ProfileEditBloc>()
+                                .firstNameController
+                                .text,
+                            lastName: context
+                                .read<ProfileEditBloc>()
+                                .lastNameController
+                                .text,
+                            phoneNumber: context
+                                .read<ProfileEditBloc>()
+                                .phoneController
+                                .text,
+                            dob: dateFormat.parse(
+                                context.read<ProfileEditBloc>().dobController.text),
                             image: context.read<ProfileEditBloc>().base64Image,
                             id: int.parse('20'),
                           )),

@@ -10,6 +10,8 @@ class AddressCubit extends Cubit<AddressState> {
 
   final AddressRepo repo;
 
+  int selectedAddress = 0;
+
   Future<void> init() async {
     emit(AddressInitial());
     try {
@@ -18,5 +20,46 @@ class AddressCubit extends Cubit<AddressState> {
     } catch (e) {
       emit(AddressFailed(message: e.toString()));
     }
+  }
+
+  Future<void> saveAddress({
+    required String latitude,
+    required String longitude,
+    required String title,
+    required String address,
+    required String description,
+  }) async {
+    emit(AddressInitial());
+    try {
+      final response = await repo.saveAddress(
+        latitude: latitude,
+        longitude: longitude,
+        title: title,
+        address: address,
+        description: description,
+      );
+      emit(AddressLoaded(data: response));
+    } catch (e) {
+      emit(AddressFailed(message: e.toString()));
+    }
+  }
+
+  Future<void> deleteAddresss({
+    required String id,
+  }) async {
+    emit(AddressInitial());
+    try {
+      await repo.deleteAddress(id: id);
+      emit(AddressDelete(message: 'Address deleted successfully'));
+    } catch (e) {
+      emit(AddressFailed(message: e.toString()));
+    }
+  }
+
+  // set default
+  Future<void> setDefaultAddress({
+    required int id,
+  }) async {
+    selectedAddress = id;
   }
 }

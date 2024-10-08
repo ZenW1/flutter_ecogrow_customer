@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecogrow_customer/data/model/product_list_response_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/product_response_model.dart';
 import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_vertical_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +9,7 @@ import '../../product_detail/product_detail.dart';
 class ProductDisplayView extends StatelessWidget {
   const ProductDisplayView({super.key, required this.data});
 
-  final ProductListResponseModel data;
+  final ProductResponseModel data;
 
   @override
   Widget build(BuildContext context) {

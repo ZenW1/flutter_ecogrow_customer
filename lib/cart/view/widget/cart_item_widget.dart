@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/cart/bloc/cart_bloc.dart';
 import 'package:flutter_ecogrow_customer/cart/view/widget/cart_product_widget.dart';
-import 'package:flutter_ecogrow_customer/data/model/cart_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/cart_list_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
@@ -10,21 +8,21 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 class CartItemWidget extends StatefulWidget {
   const CartItemWidget({required this.data, super.key});
 
-  final CartListModel data;
+  final CartModel data;
 
   @override
   State<CartItemWidget> createState() => _CartItemWidgetState();
 }
 
 class _CartItemWidgetState extends State<CartItemWidget> {
-
   bool value = false;
   int count = 0;
 
-   @override
+  @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,9 +37,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               Checkbox(
                 value: value,
                 onChanged: (bool? value) {
-                   setState(() {
+                  setState(() {
                     this.value = value!;
-                   });
+                  });
                 },
                 shape: const CircleBorder(
                   side: BorderSide(color: AppColors.primary),
@@ -66,16 +64,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 data: widget.data.products![index],
                 value: [],
                 index: index,
-                onChanged: (bool? value) {  },
+                onChanged: (bool? value) {},
                 onIncrease: () {
                   setState(() {
-                    count = count +1;
+                    count = count + 1;
                   });
                   // context.read<CartBloc>()..add(CartIncreaseEvent(value: int.parse(widget.data.products![index].quantity!), index: index));
                 },
                 onDecrease: () {
                   setState(() {
-                    count = count! +1;
+                    count = count + 1;
                   });
                 },
                 quantityValue: count,

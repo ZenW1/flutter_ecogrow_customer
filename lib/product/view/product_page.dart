@@ -1,18 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecogrow_customer/data/model/product_list_response_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/product_repo.dart';
 import 'package:flutter_ecogrow_customer/product/view/product_display_view.dart';
 import 'package:flutter_ecogrow_customer/product/view/product_promotion_view.dart';
-import 'package:flutter_ecogrow_customer/product_detail/view/product_detail_page.dart';
-import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_vertical_widget.dart';
-import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
-import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../product.dart';
 
