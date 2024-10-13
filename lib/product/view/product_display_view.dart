@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecogrow_customer/data/model/product_response_model.dart';
 import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_vertical_widget.dart';
@@ -31,12 +32,38 @@ class ProductDisplayView extends StatelessWidget {
           onTap: () {
             // CustomProductShowButtomSheet.showBottomSheet;
           },
-          child: ProductVerticalWidget(
-            onTap: () {
-              GoRouter.of(context).push(ProductDetailPage.routePath);
+          child: OpenContainer(
+            transitionType: ContainerTransitionType.fadeThrough,
+            tappable: true,
+            transitionDuration: Duration(milliseconds: 300),
+            openColor: Colors.white,
+            closedColor: Colors.white,
+            closedElevation: 0,
+            openElevation: 0,
+            openShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            middleColor: Colors.white,
+            closedShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            openBuilder: (context, __) {
+              return ProductDetailPage(
+                id: data.data![index].id.toString(),
+              );
             },
-            product: data.data![index],
-            isPromotion: false,
+            closedBuilder: (BuildContext context, VoidCallback openContainer) {
+              return Container(
+                width: 200,
+                child: ProductVerticalWidget(
+                  onTap: () {
+                    openContainer();
+                  },
+                  product: data.data![index],
+                  isPromotion: true,
+                ),
+              );
+            },
           ),
         );
       },

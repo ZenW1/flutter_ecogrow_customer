@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecogrow_customer/authentication/authentication_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/location/location.dart';
 import 'package:flutter_ecogrow_customer/login/cubit/login_cubit.dart';
+import 'package:flutter_ecogrow_customer/main/main.dart';
 
 import 'package:flutter_ecogrow_customer/profile/profile.dart';
 import 'package:flutter_ecogrow_customer/profile/view/profile_item_widget.dart';
+import 'package:flutter_ecogrow_customer/profile/view/widget/profile_unauthenticate_widget.dart';
+import 'package:flutter_ecogrow_customer/route/app_router.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_profile_header_widgt.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/dialog.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -18,7 +24,19 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileView();
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state.status == LoginStatus.loading) {
+          context.loaderOverlay.show();
+        } else if (state.status == LoginStatus.loginOut) {
+          context.loaderOverlay.hide();
+          AppRouter.router.push(MainPage.routePath);
+        }
+      },
+      child: context.read<AuthenticationBloc>().appToken.hasToken()
+          ? const ProfileView()
+          : const ProfileAuthenticateWidget(),
+    );
   }
 }
 
@@ -29,8 +47,7 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView>
-    with AutomaticKeepAliveClientMixin {
+class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     context.read<ProfileCubit>().fetchUserInfo();
@@ -57,16 +74,7 @@ class _ProfileViewState extends State<ProfileView>
                     onTap: () {},
                     icon: Assets.svg.myOrder,
                   ),
-                  ProfileItemWidget(
-                    title: context.l10n.promotion,
-                    onTap: () {},
-                    icon: Assets.svg.privacy,
-                  ),
-                  ProfileItemWidget(
-                    title: context.l10n.wishlist,
-                    onTap: () {},
-                    icon: Assets.svg.wishlist,
-                  ),
+
                   ProfileItemWidget(
                     title: context.l10n.deliveryAddress,
                     onTap: () {
@@ -92,11 +100,6 @@ class _ProfileViewState extends State<ProfileView>
                   mainTitleWidget(
                     context,
                     title: context.l10n.setting,
-                  ),
-                  ProfileItemWidget(
-                    title: context.l10n.notification,
-                    onTap: () {},
-                    icon: Assets.svg.notification,
                   ),
                   ProfileItemWidget(
                     title: context.l10n.language,
@@ -133,11 +136,6 @@ class _ProfileViewState extends State<ProfileView>
                     onTap: () {},
                     icon: Assets.svg.helpCenter,
                   ),
-                  ProfileItemWidget(
-                    title: context.l10n.faq,
-                    onTap: () {},
-                    icon: Assets.svg.faq,
-                  ),
                   BlocListener<LoginCubit, LoginState>(
                     listener: (context, state) {
                       // if (state.status == LoginStatus.loading) {
@@ -151,7 +149,10 @@ class _ProfileViewState extends State<ProfileView>
                     child: ProfileItemWidget(
                       title: context.l10n.logout,
                       onTap: () {
-                        context.read<LoginCubit>().signOut();
+                        AppDialog.questionDialog(context,
+                            content: 'Are you sure , logging out . Your carts item will be deleted', onYes: () {
+                          context.read<LoginCubit>().signOut();
+                        });
                       },
                       icon: Assets.svg.signout,
                     ),

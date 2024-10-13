@@ -17,28 +17,14 @@ class AppToken {
   // Stream<User?> get user => FirebaseAuth.instance.authStateChanges();
 
   Future<void> saveAccessToken(String message) async {
-    try {
-      await _preferences.setString(AppConstant.accessToken, message);
-    } catch (e) {
-      rethrow;
-    }
+    await _preferences.setString(AppConstant.accessToken, message);
   }
 
   // String accessToken() {
   //   return _preferences.getString(AppConstant.accessToken) ?? '';
   // }
 
-  Future<String> getAccessToken() async {
-    try {
-      final response = _preferences.getString(AppConstant.accessToken);
-      // if (response == null) {
-      //   return '';
-      // }
-      return response!;
-    } catch (e) {
-      return e.toString();
-    }
-  }
+
 
   // Future<String> getRefreshToken() async {
   //   try {
@@ -60,15 +46,12 @@ class AppToken {
     }
   }
 
-  Future<bool> hasToken() async {
-    try {
-      final accessToken = await _preferences.getString(AppConstant.accessToken);
-      final refreshToken =
-          await _preferences.getString(AppConstant.refreshToken);
-      return accessToken != null;
-    } catch (e) {
-      return false;
-    }
+  String getAccessToken()  {
+   return _preferences.getString(AppConstant.accessToken) ?? '';
+  }
+
+  bool hasToken()  {
+    return _preferences.getString(AppConstant.accessToken) != null;
   }
 
   Future<void> deleteToken() async {
@@ -111,14 +94,17 @@ class AppToken {
   // }
 
   Future<void> setUid(String uid) async {
-    try {
       await _preferences.setString('___uid___', uid);
-    } catch (e) {
-      rethrow;
-    }
   }
 
   String getUid() {
     return _preferences.getString('___uid___') ?? '';
+  }
+
+  String saveProfileImage(String image) {
+    return _preferences.getString('profile_image') ?? '';
+  }
+  String getProfileImage() {
+    return _preferences.getString('profile_image') ?? '';
   }
 }

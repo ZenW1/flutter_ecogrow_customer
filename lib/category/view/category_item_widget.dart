@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/data/model/category_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/dimensions.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_cache_image_widget.dart';
@@ -10,7 +11,7 @@ class CategoryItemWidget extends StatelessWidget {
     super.key,
   });
 
-  final CategoryItemModel categoryItemModel;
+  final CategoryModel categoryItemModel;
   final VoidCallback onTap;
 
   @override
@@ -42,13 +43,13 @@ class CategoryItemWidget extends StatelessWidget {
                 ),
               ),
               child: CustomCacheImageWidget(
-                imageUrl: categoryItemModel.imageUrl,
+                imageUrl: categoryItemModel.image! ,
               ),
             ),
             Padding(
               padding: EdgeInsets.all(Dimensions.paddingSizeSmall()),
               child: Text(
-                categoryItemModel.title,
+                categoryItemModel.categoryName.toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
@@ -57,10 +58,4 @@ class CategoryItemWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class CategoryItemModel {
-  const CategoryItemModel({required this.title, required this.imageUrl});
-  final String title;
-  final String imageUrl;
 }

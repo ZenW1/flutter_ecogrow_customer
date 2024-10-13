@@ -17,15 +17,18 @@ class OrderLoading extends OrderState {
 class OrderLoaded extends OrderState {
   OrderLoaded(this.data);
 
-  List<OrderItemModel> data;
+  OrderDetailResponseModel data;
 
   @override
   List<Object> get props => [data];
 }
 
+
 class OrderFailure extends OrderState {
-  const OrderFailure();
+
+  final String message;
+  const OrderFailure(this.message);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [message];
 }

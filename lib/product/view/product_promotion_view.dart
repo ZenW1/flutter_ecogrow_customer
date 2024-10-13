@@ -37,7 +37,9 @@ class ProductPromotionView extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           openBuilder: (context, __) {
-            return ProductDetailPage();
+            return ProductDetailPage(
+               id: data.data![index].id.toString(),
+            );
           },
           closedBuilder: (BuildContext context, VoidCallback openContainer) {
             return Container(

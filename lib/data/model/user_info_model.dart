@@ -46,9 +46,9 @@ class UserModel {
   @JsonKey(name: "dob")
   final DateTime? dob;
   @JsonKey(name: "created_at")
-  final String? createdAt;
+  final DateTime? createdAt;
   @JsonKey(name: "updated_at")
-  final String? updatedAt;
+  final DateTime? updatedAt;
   @JsonKey(name: "phone_number")
   final String? phoneNumber;
 

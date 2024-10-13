@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_ecogrow_customer/data/model/register_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/user_update_response_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:http_client/http_client.dart';
 
@@ -12,42 +13,38 @@ class AuthenticationRepo {
 
   final DioHttpClient _dio;
 
-  Future<UserInfoModel> login() async {
-    try {
-      final response = await _dio.post(AppApi.login,
-        headers: {
-          'Authorization': '${await _dio.getAccessToken()}',
-        },
-      );
+  Future<UserInfoModel> login({required String token}) async {
+    final response = await _dio.post(
+      AppApi.login,
+      // headers: {
+      //   "Authorization": '$token',
+      // },
+    );
 
-      log('login response : $response');
-
-      return UserInfoModel.fromJson(response);
-    } catch (e) {
-      throw Exception(e);
-    }
+    return UserInfoModel.fromJson(response);
   }
 
-  Future<UserInfoModel> editProfile({
-    required UserInfoModel userData,
-    required String old_image,
+
+  Future<UserUpdateResponseModel> editProfile({
+    required String firstName,
+    required String lastName,
+    required String gender,
+    required String dob,
+    required int uid,
+    required String phoneNumber,
+    required String image,
   }) async {
-    try {
-      final body = {
-        'first_name': userData.customerProfile!.firstName,
-        'last_name': userData.customerProfile!.lastName,
-        'gender': userData.customerProfile!.gender,
-        'dob': userData.customerProfile!.dob,
-        'uid': userData.customerProfile!.id,
-        'phone_number': userData.customerProfile!.phoneNumber,
-        'new_image': userData.customerProfile!.image,
-        'old_image' : old_image,
-      };
-      final response = await _dio.post(AppApi.updateProfile, body: body);
-      return UserInfoModel.fromJson(response);
-    } catch (e) {
-      throw Exception(e);
-    }
+    final body = {
+      'id': uid,
+      'first_name': firstName,
+      'last_name': lastName,
+      'gender': gender,
+      'dob': dob,
+      'phone_number': phoneNumber,
+      'image': image,
+    };
+    final response = await _dio.post(AppApi.updateProfile, body: body);
+    return UserUpdateResponseModel.fromJson(response);
   }
 
   Future<RegisterUserModel> registerUser({
@@ -71,7 +68,6 @@ class AuthenticationRepo {
       };
 
       final response = await _dio.post(AppApi.register, body: body, headers: {
-        'Authorization': '',
         'Content-Type': 'application/json',
       });
       log('register response : $response');

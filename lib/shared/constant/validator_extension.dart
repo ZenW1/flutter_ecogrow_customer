@@ -18,6 +18,21 @@ extension ValidatorExtension on dynamic {
     }
   }
 
+  static int orderStatusIdValidator(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.all:
+        return 0;
+      case OrderStatus.processing:
+        return  6;
+      case OrderStatus.pending:
+        return  5;
+      case OrderStatus.completed:
+        return 1;
+      case OrderStatus.cancelled:
+        return 4;
+    }
+  }
+
   static Color orderStatusValidatorColor(OrderStatus status) {
     switch (status) {
       case OrderStatus.all:

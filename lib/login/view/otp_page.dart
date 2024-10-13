@@ -87,9 +87,7 @@ class OTPPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           TextButton(
-                            onPressed: () => context
-                                .read<LoginCubit>()
-                                .sendLoginOtp(phoneNumber: context.read<LoginCubit>().numberController.text),
+                            onPressed: () => context.read<LoginCubit>().sendLoginOtp(phoneNumber: context.read<LoginCubit>().numberController.text),
                             child: Text(
                               context.l10n.resendOtp,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -127,23 +125,41 @@ class OTPPage extends StatelessWidget {
   }
 
   // bloc listener function
-  void _blocListener(BuildContext context, LoginState state) {
+  void _blocListener(BuildContext context, LoginState state) async {
+
     if (state.status == LoginStatus.loading) {
+
       context.loaderOverlay.show();
+
     } else if (state.status == LoginStatus.verifyOtp) {
+
       context.loaderOverlay.hide();
+
       context.read<AuthenticationBloc>()..add(AuthenticatingEvent(accessToken: state.accessToken));
+
       context.read<LoginCubit>().login();
+
     } else if (state.status == LoginStatus.success) {
-      if (state.userInfo.isRegister!) {
-        context.go(MainPage.routePath);
+
+      context.loaderOverlay.show();
+
+      if (state.userInfo!.isRegister!) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MainPage())
+        );
       } else {
-        GoRouter.of(context).go(RegisterPage.routePath);
+       Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => RegisterPage())
+        );
       }
+      context.loaderOverlay.hide();
+
     } else if (state.status == LoginStatus.sendOtp) {
       context.loaderOverlay.hide();
     }
     else if (state.status == LoginStatus.failure) {
+      // GoRouter.of(context).go(RegisterPage.routePath);
+
       context.loaderOverlay.hide();
       CustomDialog.showWarningDialog(state.errorMessage);
     }

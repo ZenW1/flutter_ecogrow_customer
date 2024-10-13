@@ -1,12 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_ecogrow_customer/data/model/order_detail_response_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/order_item_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/store_model.dart';
+import 'package:flutter_ecogrow_customer/data/repo/order_repo.dart';
 
 part 'order_state.dart';
 
 class OrderCubit extends Cubit<OrderState> {
-  OrderCubit() : super(const OrderState());
+  OrderCubit(this._orderRepo) : super(const OrderState());
+
+  final OrderRepo _orderRepo;
 
   List<OrderItemModel> data = [
     const OrderItemModel(
@@ -84,9 +88,10 @@ class OrderCubit extends Cubit<OrderState> {
   Future<void> getOrderData() async {
     emit(const OrderLoading());
     try {
-      emit(OrderLoaded(data));
+      final response = await _orderRepo.getOrderDetail();
+      emit(OrderLoaded(response));
     } catch (e) {
-      emit(const OrderFailure());
+      emit(OrderFailure(e.toString()));
     }
   }
 }

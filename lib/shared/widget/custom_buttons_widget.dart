@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/route/app_router.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:go_router/go_router.dart';
 
@@ -87,12 +88,8 @@ extension AppButton on BuildContext {
   static Widget backButton(BuildContext context, {Color? color}) {
     return GestureDetector(
       onTap: () {
-        if (GoRouter.of(context).canPop()) {
-          GoRouter.of(context).pop();
-        } else {
-          Navigator.of(context).pop();
-        }
-      },
+         context.pop();
+       },
       child: Container(
         width: 30,
         height: 30,

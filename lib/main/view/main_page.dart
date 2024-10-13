@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/cart/cart.dart';
 import 'package:flutter_ecogrow_customer/category/category.dart';
 import 'package:flutter_ecogrow_customer/home/home.dart';
+import 'package:flutter_ecogrow_customer/location/cubit/location_cubit.dart';
 
 import 'package:flutter_ecogrow_customer/main/main.dart';
 import 'package:flutter_ecogrow_customer/order/order.dart';
@@ -18,15 +19,28 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MainCubit(),
+      create: (_) => MainCubit(
+         context.read<CartBloc>(),
+      ),
       child: const MainView(),
     );
   }
 }
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
   const MainView({super.key});
 
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+
+  @override
+  void initState() {
+    context.read<LocationCubit>().getCurrentLocation();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, MainState>(

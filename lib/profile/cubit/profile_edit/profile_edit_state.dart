@@ -15,7 +15,7 @@ class ProfileEditLoading extends ProfileEditState {
 }
 
 class ProfileEditLoadSuccess extends ProfileEditState {
-  final UserInfoModel userData;
+  final UserUpdateResponseModel userData;
   final String message;
 
   ProfileEditLoadSuccess(this.userData, this.message);

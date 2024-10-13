@@ -12,7 +12,7 @@ ProductDetailResponseModel _$ProductDetailResponseModelFromJson(
       id: (json['id'] as num?)?.toInt(),
       productName: json['product_name'] as String?,
       baseQty: (json['base_qty'] as num?)?.toInt(),
-      discount: json['discount'],
+      discount: (json['discount'] as num?)?.toInt(),
       categoryId: (json['category_id'] as num?)?.toInt(),
       categoryName: json['category_name'] as String?,
       sellerId: (json['seller_id'] as num?)?.toInt(),
@@ -25,6 +25,7 @@ ProductDetailResponseModel _$ProductDetailResponseModelFromJson(
       productImage: (json['product_image'] as List<dynamic>?)
           ?.map((e) => ProductImage.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isSelected: json['isSelected'] as bool?,
     );
 
 Map<String, dynamic> _$ProductDetailResponseModelToJson(
@@ -42,6 +43,7 @@ Map<String, dynamic> _$ProductDetailResponseModelToJson(
       'expired_on': instance.expiredOn,
       'product_variation': instance.productVariation,
       'product_image': instance.productImage,
+      'isSelected': instance.isSelected,
     };
 
 ProductImage _$ProductImageFromJson(Map<String, dynamic> json) => ProductImage(

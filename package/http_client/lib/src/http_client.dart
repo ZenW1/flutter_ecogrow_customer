@@ -60,29 +60,33 @@ class DioHttpClient implements HttpClient {
   })  : _dio = dio,
         _baseUrl = baseUrl,
         _appToken = appToken {
+    // _dio.options.headers['Authorization'] = appToken.accessToken();
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['Accept'] = 'application/json';
-    _dio.options.headers['Authorization'] = '${appToken.getAccessToken()}';
+    _dio.options.headers['Authorization'] = appToken.getAccessToken();
     _dio.options.baseUrl = _baseUrl;
-    _dio.interceptors.add(LoggingInterceptor());
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.interceptors.add(LoggingInterceptor());
     _dio.interceptors.add(
       RefreshFirebaseToken(
         appToken: appToken!,
         url: _baseUrl,
-        tokenType: TokenType.FIREBASE,
+        requestHeaders: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': appToken.getAccessToken(),
+        },
         responseTokenKey: AppConstant.accessToken,
         onRequestSuccess: (dynamic) async {
-          await appToken.saveAccessToken(dynamic! as String);
+          await  appToken.saveAccessToken(dynamic as String);
         },
       ),
     );
   }
 
-  Future<String> getAccessToken() async {
-    final token = await _appToken.getAccessToken();
-    return token;
+  String  getAccessToken()  {
+   return _appToken.getAccessToken();
   }
 
   final Dio _dio;
@@ -126,6 +130,7 @@ class DioHttpClient implements HttpClient {
         data: body,
         options: Options(headers: headers),
       );
+
 
       if (response.data is Map<String, dynamic>) {
         return response.data as Map<String, dynamic>;
@@ -234,7 +239,7 @@ class DioHttpClient implements HttpClient {
     } else if (e.type == DioExceptionType.receiveTimeout) {
       return RequestTimeoutException('Receive Timeout');
     } else if (e.type == DioExceptionType.unknown) {
-      final data = e.response?.data;
+      final data = e.response!.data;
       switch (e.response!.statusCode) {
         case 400:
           return RequestFailedException(

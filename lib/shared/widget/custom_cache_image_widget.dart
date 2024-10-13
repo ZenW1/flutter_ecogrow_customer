@@ -29,6 +29,14 @@ class CustomCacheImageWidget extends StatelessWidget {
           child: Container(),
         ),
       ),
+      // placeholder: (context, url) => Center(
+      //   child: SvgPicture.asset(
+      //     'assets/svg/placeholder.svg',
+      //     width: width ?? 100,
+      //     height: height ?? 100,
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
       errorWidget: (context, url, error) {
         return Center(
           child: SvgPicture.asset(
@@ -39,8 +47,10 @@ class CustomCacheImageWidget extends StatelessWidget {
           ),
         );
       },
+
       imageBuilder: (context, imageProvider) => Container(
-        child: ClipRRect(
+        child: imageProvider != 'null' ?
+        ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Container(
             width: width ?? 100,
@@ -52,7 +62,7 @@ class CustomCacheImageWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ) : Container(),
       ),
     );
   }

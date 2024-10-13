@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/product/bloc/product_bloc.dart';
+import 'package:flutter_ecogrow_customer/product_detail/view/product_detail_page.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/global_text_field.dart';
 
 import '../search.dart';
 
@@ -40,33 +42,17 @@ class SearchView extends StatelessWidget {
                 'search',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                margin: const EdgeInsets.only(
-                  top: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.grey[200]!,
-                    width: 0.5,
-                  ),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Search...",
-                    border: InputBorder.none,
-                  ),
-                  controller: context.read<SearchCubit>().searchController,
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (_) {},
-                  onChanged: (value) {
-                    context.read<SearchCubit>().searchProduct(value);
-                  },
-                ),
+              GlobalTextField(
+                textInputType: TextInputType.text,
+                controller: context.read<SearchCubit>().searchController,
+                hintText: 'Search...',
+                autoFocus: true,
+                onSubmitted: (value) {
+                  context.read<SearchCubit>().searchProduct(value);
+                },
+                onChanged: (value) {
+                  context.read<SearchCubit>().searchProduct(value);
+                },
               ),
               if (state is SearchLoaded)
                 if (state.data.length > 0)
@@ -77,7 +63,7 @@ class SearchView extends StatelessWidget {
                         height: 24,
                       ),
                       Text(
-                        'Search',
+                        'Search result',
                       ),
                       Container(
                         height: 1,
@@ -86,21 +72,34 @@ class SearchView extends StatelessWidget {
                       ),
                       ...state.data.map(
                         (keyword) {
-                          return TextButton(
-                            onPressed: () {
+                          return InkWell(
+                            onTap: () {
                               FocusScope.of(context).requestFocus(FocusNode());
-                              // viewModel.onSearchHistoryPressed(keyword);
+
                             },
-                            child: Row(
-                              children: [
-                                Text(keyword.productName!),
-                              ],
-                            ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
+                            child: TextButton(
+                              onPressed: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                // viewModel.onSearchHistoryPressed(keyword);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<ProductDetailPage>(
+                                    builder: (context) => ProductDetailPage(
+                                      id: keyword.id.toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(keyword.productName!),
+                                ],
                               ),
-                              backgroundColor: AppColors.whiteColor,
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                backgroundColor: AppColors.whiteColor,
+                              ),
                             ),
                           );
                         },

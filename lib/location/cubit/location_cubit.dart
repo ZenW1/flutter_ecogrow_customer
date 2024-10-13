@@ -47,8 +47,8 @@ class LocationCubit extends Cubit<LocationState> {
       }
     }
 
-    final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    emit(state.copyWith(status: LocationStatus.loaded,placemarks: state.placemarks,location: LatLng(position.latitude, position.longitude),myMarker: state.myMarker));
     return position;
   }
 

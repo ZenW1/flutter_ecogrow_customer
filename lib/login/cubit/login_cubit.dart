@@ -31,28 +31,38 @@ class LoginCubit extends Cubit<LoginState> {
       );
       emit(state.copyWith(status: LoginStatus.sendOtp, phoneNumber: phoneNumber));
     } catch (e) {
-      emit(state.copyWith(
-          status: LoginStatus.failure, errorMessage: e.toString()));
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
 
   Future<void> login() async {
+
     emit(state.copyWith(status: LoginStatus.loading));
 
     try {
 
-      final response = await _authenticationRepo.login();
+      final accessToken = await _loginService.getAccessToken(forceReFresh: true);
+      _appToken.saveAccessToken(accessToken);
+
+
+
+    final response = await _authenticationRepo.login(token: accessToken);
+
+      log('login response : $response');
 
       Future.wait(
         [
           _appToken.setUser(response.customerProfile!),
-
         ],
       );
-      emit(state.copyWith(status: LoginStatus.success, userInfo: response,isRegister: response.isRegister!,errorMessage: response.message!));
+      emit(state.copyWith(
+          status: LoginStatus.success,
+          userInfo: response,
+          accessToken: accessToken,
+          isRegister: response.isRegister!,));
     } catch (e) {
-       // await _appToken.deleteToken();
-      emit(state.copyWith(status: LoginStatus.failure, errorMessage: state.errorMessage));
+      await _appToken.deleteToken();
+      emit(state.copyWith(status: LoginStatus.failure, errorMessage: '${e.toString()}'));
     }
   }
 
@@ -65,7 +75,7 @@ class LoginCubit extends Cubit<LoginState> {
 
       print('uid: $uid');
 
-      Future.wait([_appToken.setUid(uid)]);
+      _appToken.setUid(uid);
 
       emit(
         state.copyWith(
@@ -99,5 +109,4 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: LoginStatus.failure, errorMessage: e.toString()));
     }
   }
-
 }

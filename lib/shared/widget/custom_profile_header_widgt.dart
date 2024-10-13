@@ -60,7 +60,9 @@ class CustomProfileHeader extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.6,
                   height: 45,
                   onTap: () {
-                    GoRouter.of(context).go(ProfileEditPage.routePath);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) =>  ProfileEditPage(imageUrl: state.data.image!))
+                    );
                     context.read<ProfileEditBloc>().firstNameController.text =
                         state.data.firstName!;
                     context.read<ProfileEditBloc>().lastNameController.text =

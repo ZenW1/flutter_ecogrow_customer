@@ -6,7 +6,9 @@ import 'package:flutter_ecogrow_customer/bootstrap.dart';
 import 'package:flutter_ecogrow_customer/data/model/environment_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/authentication_repo.dart';
 import 'package:flutter_ecogrow_customer/data/repo/cart_repo.dart';
+import 'package:flutter_ecogrow_customer/data/repo/order_repo.dart';
 import 'package:flutter_ecogrow_customer/data/repo/product_repo.dart';
+import 'package:flutter_ecogrow_customer/data/service/cart_service.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_language.dart';
 import 'package:http_client/http_client.dart';
@@ -22,16 +24,21 @@ Future<void> main() async {
       final appLanguage = AppLanguage(preferences: sharedPreferences);
       final productRepo = ProductRepo(dio: dioHttp);
       final cartRepo = CartRepo(dio: dioHttp);
+      final orderRepo = OrderRepo(dio: dioHttp);
+      // final cartRepository = CartRepository();
       final authRepo = AuthenticationRepo(dio: dioHttp);
+      // cartRepository.openCartBox();
 
       return App(
         environment: environment,
         dioHttpClient: dioHttp,
-        authenticationRepo: authRepo,
+        // cartRepository: cartRepository,
+        // authenticationRepo: authRepo,
         appLanguage: appLanguage,
         appToken: appToken,
         productRepo: productRepo,
         cartRepo: cartRepo,
+        orderRepo: orderRepo,
       );
     },
   );

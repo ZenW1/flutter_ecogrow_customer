@@ -25,7 +25,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController dobController = TextEditingController();
 
   // File? image;

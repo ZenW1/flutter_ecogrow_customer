@@ -44,6 +44,34 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
+
+  Future<void> updateAddress({
+    required String id,
+    required String latitude,
+    required String longitude,
+    required String title,
+    required String address,
+    required String description,
+    required String isDefault,
+  }) async {
+    emit(AddressInitial());
+    try {
+      await repo.updateAddress(
+        id: id,
+        latitude: latitude,
+        longitude: longitude,
+        title: title,
+        address: address,
+        description: description,
+        isDefault: isDefault,
+      );
+      emit(AddressSuccess(message: 'Address updated successfully'));
+    } catch (e) {
+      emit(AddressFailed(message: e.toString()));
+    }
+  }
+
+
   Future<void> deleteAddresss({
     required String id,
   }) async {

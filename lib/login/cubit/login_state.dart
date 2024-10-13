@@ -16,7 +16,6 @@ class LoginState extends Equatable {
   LoginState({
     this.status = LoginStatus.initial,
     this.phoneNumber = '',
-    this.isPhoneNumberValid = false,
     this.isSubmitting = false,
     this.isSuccess = false,
     this.isRegister = false,
@@ -28,7 +27,6 @@ class LoginState extends Equatable {
   LoginState copyWith({
     LoginStatus? status,
     String? phoneNumber,
-    bool? isPhoneNumberValid,
     bool? isSubmitting,
     bool? isSuccess,
     bool? isRegister,
@@ -39,7 +37,6 @@ class LoginState extends Equatable {
     return LoginState(
       status: status ?? this.status,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       isRegister: isRegister ?? this.isRegister,
@@ -56,23 +53,21 @@ class LoginState extends Equatable {
   final LoginStatus status;
   final String phoneNumber;
   final String accessToken;
-  final bool isPhoneNumberValid;
   final bool isSubmitting;
   final bool isSuccess;
   final bool isRegister;
   final String errorMessage;
-  final UserInfoModel userInfo;
+  final UserInfoModel? userInfo;
 
   @override
   List<Object> get props => [
         status,
         phoneNumber,
-        isPhoneNumberValid,
         isSubmitting,
         isSuccess,
         errorMessage,
         isRegister,
         accessToken,
-        userInfo,
+        userInfo!,
       ];
 }

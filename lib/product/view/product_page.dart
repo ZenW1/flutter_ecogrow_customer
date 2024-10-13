@@ -5,6 +5,7 @@ import 'package:flutter_ecogrow_customer/product/view/product_display_view.dart'
 import 'package:flutter_ecogrow_customer/product/view/product_promotion_view.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../product.dart';
 
@@ -30,44 +31,47 @@ class ProductView extends StatelessWidget {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductLoaded) {
-          return Column(
-            children: [
-              AppTitleWidget(
-                text: 'បន្លែធម្មជាតិ',
-                isRow: true,
-                widget: Text(
-                  'See all',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
+          return Skeletonizer(
+            enabled: state is ProductInitial ? true : false,
+            child: Column(
+              children: [
+                // AppTitleWidget(
+                //   text: 'បន្លែធម្មជាតិ',
+                //   isRow: true,
+                //   widget: Text(
+                //     'See all',
+                //     style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                //           color: AppColors.primary,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //   ),
+                // ),
+                // // SizedBox(height: Dimensions.paddingSizeDefault()),
+                // ConstrainedBox(
+                //   constraints: const BoxConstraints(
+                //     maxHeight: 250,
+                //     minHeight: 140,
+                //     maxWidth: double.infinity,
+                //     minWidth: double.infinity,
+                //   ),
+                //   child: ProductPromotionView(
+                //     data: state.data,
+                //   ),
+                // ),
+                AppTitleWidget(
+                  text: 'បន្លែធម្មជាតិ',
+                  isRow: true,
+                  widget: Text(
+                    'See all',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
                 ),
-              ),
-              // SizedBox(height: Dimensions.paddingSizeDefault()),
-              ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 250,
-                  minHeight: 140,
-                  maxWidth: double.infinity,
-                  minWidth: double.infinity,
-                ),
-                child: ProductPromotionView(
-                  data: state.data,
-                ),
-              ),
-              AppTitleWidget(
-                text: 'ផលិតផលបញ្ចុះតម្លៃ',
-                isRow: true,
-                widget: Text(
-                  'See all',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ),
-              ProductDisplayView(data: state.data),
-            ],
+                ProductDisplayView(data: state.data),
+              ],
+            ),
           );
         } else {
           return Center(

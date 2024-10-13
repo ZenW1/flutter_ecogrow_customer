@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_ecogrow_customer/data/model/cart_list_response_model.dart';
+import 'package:flutter_ecogrow_customer/data/service/cart_service.dart';
 import 'package:flutter_ecogrow_customer/data/service/local_storage_service.dart';
 import 'package:flutter_ecogrow_customer/firebase_options.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/logger.dart';
@@ -37,14 +38,15 @@ typedef AppBuilder = Future<Widget> Function(
 
 Future<void> bootstrap(AppBuilder builder) async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalStorageService.initialize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // LocalStorageService.initialize();
+  CartRepository.openCartBox();
   Hive.registerAdapter<CartListResponseModel>(CartListResponseModelAdapter());
   Hive.registerAdapter<CartModel>(CartModelAdapter());
   Hive.registerAdapter<CartProductModel>(CartProductModelAdapter());
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };

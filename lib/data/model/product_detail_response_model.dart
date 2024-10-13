@@ -15,7 +15,7 @@ class ProductDetailResponseModel {
   @JsonKey(name: "base_qty")
   final int? baseQty;
   @JsonKey(name: "discount")
-  final dynamic discount;
+  final int? discount;
   @JsonKey(name: "category_id")
   final int? categoryId;
   @JsonKey(name: "category_name")
@@ -32,6 +32,7 @@ class ProductDetailResponseModel {
   final List<ProductVariation>? productVariation;
   @JsonKey(name: "product_image")
   final List<ProductImage>? productImage;
+  final bool? isSelected ;
 
   ProductDetailResponseModel({
     this.id,
@@ -46,6 +47,7 @@ class ProductDetailResponseModel {
     this.expiredOn,
     this.productVariation,
     this.productImage,
+    this.isSelected,
   });
 
   factory ProductDetailResponseModel.fromJson(Map<String, dynamic> json) =>

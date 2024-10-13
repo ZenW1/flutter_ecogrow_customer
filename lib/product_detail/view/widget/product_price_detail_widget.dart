@@ -72,7 +72,7 @@ class ProductPriceDetailWidget extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '៛${state.priceAfterSelection}',
+                    '៛$priceAfterDiscount',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppColors.redColor,
                           fontWeight: FontWeight.w600,
@@ -80,22 +80,22 @@ class ProductPriceDetailWidget extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(width: 16),
-                  discount.isNotEmpty || discount == ''
-                      ? Text(
-                          '៛${price}',
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: Colors.grey.shade600,
-                                    decorationThickness: 2,
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        )
-                      : const SizedBox(),
+                  discount == 'null' || discount.isEmpty
+                      ? SizedBox()
+                      : Text(
+                          '៛${state.priceAfterSelection}',
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: Colors.grey.shade600,
+                                decorationThickness: 2,
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
                   const SizedBox(width: 16),
-                  discount.isNotEmpty || discount == ''
-                      ? Container(
+                  discount.isEmpty || discount == 'null'
+                      ? const SizedBox()
+                      : Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 5,
@@ -106,15 +106,11 @@ class ProductPriceDetailWidget extends StatelessWidget {
                           ),
                           child: Text(
                             '${discount}% OFF',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   color: Colors.white,
                                 ),
                           ),
-                        )
-                      : const SizedBox(),
+                        ),
                 ],
               ),
               const SizedBox(

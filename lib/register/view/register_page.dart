@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +35,18 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  List<String> genderList = ['Male', 'Female'];
+
+  String genderSelected = '';
+
+  String get getGender {
+    if (genderSelected == genderList[0]) {
+      return 'M';
+    } else {
+      return 'F';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterState>(
@@ -44,7 +59,7 @@ class _RegisterViewState extends State<RegisterView> {
         } else if (state is RegisterLoaded) {
           context.loaderOverlay.hide();
           CustomDialog.showWarningDialog(state.message);
-          GoRouter.of(context).go('/main');
+          GoRouter.of(context).go('/home');
         }
       },
       builder: (context, state) {
@@ -68,10 +83,8 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           if (state.image == null)
                             InkWell(
-                              onTap: () => context
-                                  .read<RegisterCubit>()
-                                  .getImageAndConvertToBase64(
-                                      ImageSource.gallery),
+                              onTap: () =>
+                                  context.read<RegisterCubit>().getImageAndConvertToBase64(ImageSource.gallery),
                               child: const CircleAvatar(
                                 radius: 50,
                                 foregroundImage: NetworkImage(
@@ -81,10 +94,8 @@ class _RegisterViewState extends State<RegisterView> {
                             )
                           else
                             InkWell(
-                              onTap: () => context
-                                  .read<RegisterCubit>()
-                                  .getImageAndConvertToBase64(
-                                      ImageSource.gallery),
+                              onTap: () =>
+                                  context.read<RegisterCubit>().getImageAndConvertToBase64(ImageSource.gallery),
                               child: CircleAvatar(
                                 radius: 50,
                                 foregroundImage: FileImage(
@@ -131,24 +142,99 @@ class _RegisterViewState extends State<RegisterView> {
                     GlobalTextField(
                       textInputType: TextInputType.text,
                       autoFocus: true,
-                      controller:
-                          context.read<RegisterCubit>().userNameController,
+                      controller: context.read<RegisterCubit>().userNameController,
                       hintText: 'Your username',
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     const AppTitleWidget(
-                      text: 'Email',
+                      text: 'Last Name',
                       fontWeight: FontWeight.w400,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
                     GlobalTextField(
-                      textInputType: TextInputType.emailAddress,
-                      controller: context.read<RegisterCubit>().emailController,
-                      hintText: 'Your email',
+                      textInputType: TextInputType.text,
+                      controller: context.read<RegisterCubit>().lastNameController,
+                      hintText: 'Last Name',
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const AppTitleWidget(
+                      text: 'Gender',
+                      fontWeight: FontWeight.w400,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 50,
+                      // padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundGrey,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: DropdownButton<String>(
+                        hint: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: genderSelected.isEmpty
+                              ? const Text('Please Select Gender')
+                              : Text(
+                                  genderSelected,
+                                  style: const TextStyle(
+                                    color: AppColors.greyColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        items: genderList.map(
+                          (values) {
+                            return DropdownMenuItem<String>(
+                              enabled: true,
+                              value: values,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      values,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        isExpanded: true,
+                        underline: Container(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            genderSelected = newValue!;
+                          });
+                        },
+                        selectedItemBuilder: (BuildContext context) {
+                          return genderList.map((value) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
@@ -207,7 +293,7 @@ class _RegisterViewState extends State<RegisterView> {
                           context.read<RegisterCubit>().registerUser(
                                 firstName: context.read<RegisterCubit>().userNameController.text,
                                 lastName: context.read<RegisterCubit>().userNameController.text,
-                                gender: 'M',
+                                gender: getGender,
                                 dob: context.read<RegisterCubit>().dobController.text,
                                 image: ImageConstants.constants.convertToBase64(state.image!).toString(),
                                 phoneNumber: context.read<RegisterCubit>().phoneNumber.text,

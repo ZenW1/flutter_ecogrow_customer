@@ -46,23 +46,18 @@ class AppRouter {
       GoRoute(
         path: LoginPage.routePath,
         name: 'login',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const LoginPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return ScaleTransition(
-              scale: animation,
-              child: child,
-            );
-          },
-        ),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: OTPPage.routePath,
         pageBuilder: (context, state) => CustomTransitionPage(
           child: const OTPPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return ScaleTransition(
-              scale: animation,
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(animation),
               child: child,
             );
           },
@@ -169,33 +164,34 @@ class AppRouter {
           },
         ),
       ),
-      GoRoute(
-        path: ProductDetailPage.routePath,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const ProductDetailPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-        ),
-      ),
-      GoRoute(
-        path: CheckoutPage.routePath,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const CheckoutPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return ScaleTransition(
-              scale: animation,
-              child: child,
-            );
-          },
-        ),
-      ),
+      // GoRoute(
+      //   path: ProductDetailPage.routePath,
+      //   pageBuilder: (context, state) => CustomTransitionPage(
+      //     arguments: state.path,
+      //     child:  ProductDetailPage(id: state.path.toString(),),
+      //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //       return SlideTransition(
+      //         position: Tween<Offset>(
+      //           begin: const Offset(1, 0),
+      //           end: Offset.zero,
+      //         ).animate(animation),
+      //         child: child,
+      //       );
+      //     },
+      //   ),
+      // ),
+      // GoRoute(
+      //   path: CheckoutPage.routePath,
+      //   pageBuilder: (context, state) => CustomTransitionPage(
+      //     child: const CheckoutPage(),
+      //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //       return ScaleTransition(
+      //         scale: animation,
+      //         child: child,
+      //       );
+      //     },
+      //   ),
+      // ),
       GoRoute(
         path: PaymentPage.routePath,
         name: 'payment',

@@ -101,7 +101,7 @@ class ProductVerticalWidget extends StatelessWidget {
                       children: [
                         SvgPicture.asset('assets/svg/promotion.svg'),
                         Text(
-                          '20%',
+                          '${product.discount}%',
                           style: TextStyle(color: AppColors.whiteColor, fontSize: 12, fontWeight: FontWeight.w600),
                         ),
                       ],

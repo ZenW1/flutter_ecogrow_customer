@@ -28,21 +28,44 @@ class CustomContainerWidget extends StatelessWidget {
           ? CustomConstantWidget.shadowBoxDecorationWidget()
           : BoxDecoration(),
       child: Center(
-        child: ListTile(
-          leading: leading,
-          title: Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.blackColor,
-                ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 12,
           ),
-          subtitle: Text(
-            subTitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.greyColor,
+          child: Row(
+            children: [
+              leading,
+              const SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      subTitle,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.greyColor,
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              trialing,
+            ],
           ),
-          trailing: trialing,
         ),
       ),
     );

@@ -20,20 +20,26 @@ enum OrderStatus {
 }
 
 class AppApi {
-  static const String baseUrl = 'https://ecogrowmarketplace.com/api/customer';
+  static const String baseUrl = 'https://ecogrowmarketplace.com/api';
   static const String fakeData = 'https://mocki.io/v1/';
-  static const String login = '/login';
-  static const String register = '/register';
-  static const String updateProfile = '/profile';
-  static const String addLocation = '/add_location';
-  static const String deleteLocation = '/delete_location';
-  static const String getLocation = '/get_location';
-  static const String productDetail = '6d76ca60-07a6-44ba-8af3-1b8ea3e4de06';
+  static const String login = '/customer/login';
+  static const String register = '/customer/register';
+  static const String updateProfile = '/customer/update';
+  static const String addLocation = '/customer/add_location';
+  static const String deleteLocation = '/customer/delete_location';
+  static const String updateLocation = '/customer/update_location';
+  static const String getLocation = '/customer/get_location';
+  static const String checkOut = '/order/check_out';
+  static const String category = 'https://ecogrowmarketplace.com/api/category/getCategoryComboListForCustomer';
+  static const String productRecent = 'https://ecogrowmarketplace.com/api/product/showRecentProductPrice';
+  static const String productDetail = 'https://ecogrowmarketplace.com/api/product/show_product_detail_on_screen';
   static const String productDetailDummy = 'https://400b-119-13-156-84.ngrok-free.app/api/product/show_product_detail_on_screen';
   static const String location = 'fe6a9a94-833f-4f9d-8d02-e982210845e8';
-  static const String productList = '609ff4af-f8bf-4ee7-a1d7-9430f848cc8c';
+  static const String productList = '/product/show_product_on_screen';
   static const String productListDummy = 'https://400b-119-13-156-84.ngrok-free.app/api/product/show_product_on_screen';
+  static const String orderDetail = '/order/get_history_purchase';
   static const String cart = '93db2f95-0925-4522-8cca-033a94a9d5ce';
+  static const String productByCategories = '/product/filter_product_by_category';
 }
 
 class ImageConstants {

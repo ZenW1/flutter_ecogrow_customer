@@ -8,18 +8,18 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc(this._appToken) : super(AuthenticationInitial()) {
+  AuthenticationBloc(this.appToken) : super(AuthenticationInitial()) {
     on<AuthenticationEvent>(onAuthenticate);
     on<AuthenticatingEvent>(onAuthenticating);
   }
 
-  final AppToken _appToken;
+  final AppToken appToken;
 
   Future<void> onAuthenticate(
       AuthenticationEvent event, Emitter<AuthenticationState> emit) async {
     emit(AppStarted());
     try {
-      final hasToken = await _appToken.hasToken();
+      final hasToken = await appToken.hasToken();
       if (hasToken) {
         emit(Authenticated());
       } else if (!hasToken) {
@@ -35,7 +35,7 @@ class AuthenticationBloc
       AuthenticatingEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationInitial());
     try {
-      await _appToken.saveAccessToken(event.accessToken);
+      await appToken.saveAccessToken(event.accessToken);
       emit(Authenticated());
     } catch (e) {
       emit(AuthenticateFailed(errorMessage: e.toString()));

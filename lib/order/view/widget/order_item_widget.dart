@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/data/model/order_detail_response_model.dart';
 import 'package:flutter_ecogrow_customer/data/model/order_item_model.dart';
+import 'package:flutter_ecogrow_customer/data/model/store_model.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_constant_widget.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/validator_extension.dart';
@@ -16,7 +18,7 @@ class OrderItemWidget extends StatefulWidget {
     required this.status,
   });
 
-  final OrderItemModel data;
+  final OrderDetailModel data;
   final OrderStatus status;
   final Animation<Offset> animation;
 
@@ -55,40 +57,62 @@ class _OrderItemWidgetState extends State<OrderItemWidget>
             vertical: 8,
           ),
           decoration: CustomConstantWidget.shadowBoxDecorationWidget(),
-          height: MediaQuery.of(context).size.height * 0.187,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.187,
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               CustomRowWidget(
                 leftWidget: Text(
-                  '#${widget.data.id}',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  '${widget.data.orderCode}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                rightWidget: Text(widget.data.dateTime),
+                rightWidget: Text(widget.data.orderDate!.toString(),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyMedium),
               ),
               const Divider(
                 color: AppColors.lightGreyColor,
               ),
               CustomRowWidget(
                 leftWidget: Text(
-                  'QTY : ${widget.data.qty}',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  'QTY : ${widget.data.getOrderDetail!.fold(
+                      0, (previousValue, element) => previousValue + element.qty!)}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyLarge,
                 ),
                 rightWidget: Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
                         text: 'Total : ',
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyLarge,
                       ),
                       TextSpan(
-                        text: r'$' + widget.data.totalPrice,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: AppColors.blackColor,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        text: r'៛' + widget.data.grandTotal.toString(),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(
+                          color: AppColors.blackColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),
@@ -98,13 +122,18 @@ class _OrderItemWidgetState extends State<OrderItemWidget>
                 height: 5,
               ),
               StoreItemWidget(
-                data: widget.data.store,
+                data: StoreModel(
+                    id: widget.data.sellerId.toString(),
+                    storeName: widget.data.storeName!,
+                    storeImage: '',
+                    storeCategory: widget.data.sellerName!,
+                    totalOrder: ''),
                 trailingWidget: AppButton.roundedSidedButton(
                   context,
                   onTap: () {},
                   radius: 12,
                   height: 45,
-                  width: MediaQuery.sizeOf(context).height * 0.1,
+
                   text: ValidatorExtension.orderStatusValidator(widget.status),
                   textColor: ValidatorExtension.orderStatusValidatorColor(
                       widget.status),

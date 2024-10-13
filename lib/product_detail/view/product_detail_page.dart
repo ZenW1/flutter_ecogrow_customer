@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/cart/bloc/cart_bloc.dart';
 import 'package:flutter_ecogrow_customer/data/model/cart_list_response_model.dart';
 import 'package:flutter_ecogrow_customer/data/repo/product_repo.dart';
+import 'package:flutter_ecogrow_customer/data/service/cart_service.dart';
 import 'package:flutter_ecogrow_customer/main/main.dart';
 import 'package:flutter_ecogrow_customer/product_detail/cubit/product_detail_cubit.dart';
 import 'package:flutter_ecogrow_customer/product_detail/cubit/product_selection/product_selection_cubit.dart';
@@ -12,20 +13,23 @@ import 'package:flutter_ecogrow_customer/product_detail/view/widget/description_
 import 'package:flutter_ecogrow_customer/product_detail/view/widget/image_carousel_slider.dart';
 import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_price_detail_widget.dart';
 import 'package:flutter_ecogrow_customer/product_detail/view/widget/product_selection_detail_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/custom_buttons_widget.dart';
+import 'package:flutter_ecogrow_customer/shared/widget/dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({super.key});
+  const ProductDetailPage({super.key, required this.id});
+
+  final String id;
 
   static const String routePath = '/product_detail';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProductDetailCubit(
-        context.read<ProductRepo>(),)..getProductDetail(),
+      create: (_) => ProductDetailCubit(context.read<ProductRepo>())..getProductDetailById(id: id),
       child: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
           if (state is CartAddEvent) {
@@ -37,11 +41,13 @@ class ProductDetailPage extends StatelessWidget {
               ),
             );
           } else if (state is CartSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Added to cart'),
-              ),
-            );
+            context.read<ProductSelectionCubit>().resetQuantity();
+
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text('Added to cart'),
+            //   ),
+            // );
           }
         },
         child: ProductDetailView(),
@@ -50,8 +56,23 @@ class ProductDetailPage extends StatelessWidget {
   }
 }
 
-class ProductDetailView extends StatelessWidget {
+class ProductDetailView extends StatefulWidget {
   const ProductDetailView({super.key});
+
+  @override
+  State<ProductDetailView> createState() => _ProductDetailViewState();
+}
+
+class _ProductDetailViewState extends State<ProductDetailView> {
+  @override
+  void initState() {
+    // context.read<ProductSelectionCubit>().isSelectedOption! = true;
+    super.initState();
+  }
+
+  int priceAfterDiscount({int price = 0, int discount = 1}) {
+    return  price - (price * discount ~/ 100);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +123,7 @@ class ProductDetailView extends StatelessWidget {
                   collapsedHeight: 100,
                   flexibleSpace: FlexibleSpaceBar(
                     background: ImageCarouselSlider(
-                      imageList: state.data.productImage!
-                          .map((e) => e.image!)
-                          .toList(),
+                      imageList: state.data.productImage!.map((e) => e.image!).toList(),
                     ),
                   ),
                 ),
@@ -116,7 +135,10 @@ class ProductDetailView extends StatelessWidget {
                     stockQuantity: state.data.baseQty.toString(),
                     price: state.priceAfterSelection.toString(),
                     discount: state.data.discount.toString(),
-                    priceAfterDiscount: state.priceAfterSelection.toString(),
+                    priceAfterDiscount: priceAfterDiscount(
+                      price: state.priceAfterSelection,
+                      discount: state.data.discount!,
+                    ).toString(),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -225,16 +247,15 @@ class ProductDetailView extends StatelessWidget {
                                 elevation: 0,
                                 shape: CircleBorder(),
                                 shadowColor: Colors.transparent,
-                                color: AppColors.lightGreyColor,
+                                color: Colors.grey[100],
                                 child: IconButton(
                                   onPressed: () {
-                                    context
-                                        .read<ProductSelectionCubit>()
-                                        .decrementQuantity();
+                                    context.read<ProductSelectionCubit>().decrementQuantity();
                                   },
                                   icon: Icon(
                                     CupertinoIcons.minus,
-                                    color: AppColors.blackColor,
+                                    color: state.priceAfterSelection >= 1 ?
+                                     AppColors.greyColor : AppColors.primary,
                                   ),
                                 ),
                               ),
@@ -249,16 +270,14 @@ class ProductDetailView extends StatelessWidget {
                               Card(
                                 elevation: 0,
                                 shape: CircleBorder(),
-                                color: AppColors.lightGreyColor,
+                                color: Colors.grey[100],
                                 child: IconButton(
                                   onPressed: () {
-                                    context
-                                        .read<ProductSelectionCubit>()
-                                        .incrementQuantity();
+                                    context.read<ProductSelectionCubit>().incrementQuantity();
                                   },
                                   icon: Icon(
                                     CupertinoIcons.add,
-                                    color: AppColors.blackColor,
+                                    color: AppColors.primary,
                                   ),
                                 ),
                               ),
@@ -273,35 +292,79 @@ class ProductDetailView extends StatelessWidget {
                     child: AppButton.roundedFilledButton(
                       context,
                       onTap: () {
-                        context.read<CartBloc>()
-                          ..add(
-                            CartAddEvent(
-                              cartModel: CartModel(
-                                storeId: '3',
-                                storeName: 'david',
-                                storeAddress: 'pp',
-                                storeImage:
-                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZzUagFSwrqo2Gh-eVcLYucZaPbx-2EG2nMA&s',
-                                products: [
-                                  CartProductModel(
+                        // > discout
+                        if (context.read<ProductSelectionCubit>().quantity >  state.data.baseQty!) {
+                          CustomDialog.showWarningDialog('You can not add more than ${state.data.baseQty} quantity', );
+                        } else {
+
+                          final res = CartRepository.getCartData();
+
+                          if(res!.items!.isNotEmpty){
+                            AppDialog.questionDialog(
+                                context,
+                                title: 'Adding this item will clear your cart',
+                                content: 'You already have items from another restaurant or shop in your cart', onYes: () {
+                              CartRepository.clearCart();
+                              context.read<CartBloc>()..add(
+                                CartAddEvent(
+                                  cartModel: CartModel(
+                                    storeId: state.data.sellerId.toString(),
+                                    storeName: state.data.sellerName.toString(),
+                                    storeAddress: 'pp',
+                                    storeImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZzUagFSwrqo2Gh-eVcLYucZaPbx-2EG2nMA&s',
+                                    products: [
+                                      CartProductModel(
+                                        productId: state.data.id.toString(),
+                                        productName: state.data.productName,
+                                        unitType: context.read<ProductSelectionCubit>().unitTypeOption,
+                                        price: context.read<ProductSelectionCubit>().priceAfterSelection.toDouble(),
+                                        stockQuantity: state.data.baseQty,
+                                        productImage: state.data.productImage!.first.image,
+                                        description: 'kk',
+                                        discount: state.data.discount.toString(),
+                                        unitTypeId: context.read<ProductSelectionCubit>().id,
+                                        expiredOn: DateTime.tryParse(state.data.expiredOn!.toString()),
+                                        quantity: context.read<ProductSelectionCubit>().quantity.toString(),
+                                        categories: [
+                                          state.data.categoryName!,
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                          } else {
+                            context.read<CartBloc>()..add(
+                              CartAddEvent(
+                                cartModel: CartModel(
+                                  storeId: state.data.sellerId.toString(),
+                                  storeName: state.data.sellerName.toString(),
+                                  storeAddress: 'pp',
+                                  storeImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZzUagFSwrqo2Gh-eVcLYucZaPbx-2EG2nMA&s',
+                                  products: [
+                                    CartProductModel(
                                       productId: state.data.id.toString(),
                                       productName: state.data.productName,
-                                      unitType: 'kg',
-                                      price:
-                                          state.priceAfterSelection.toDouble(),
+                                      unitType: context.read<ProductSelectionCubit>().unitTypeOption,
+                                      price: context.read<ProductSelectionCubit>().priceAfterSelection.toDouble(),
                                       stockQuantity: state.data.baseQty,
-                                      productImage:
-                                          state.data.productImage!.first.image,
+                                      productImage: state.data.productImage!.first.image,
                                       description: 'kk',
                                       discount: state.data.discount.toString(),
-                                      quantity: state.quantity.toString(),
+                                      unitTypeId: context.read<ProductSelectionCubit>().id,
+                                      expiredOn: DateTime.tryParse(state.data.expiredOn!.toString()),
+                                      quantity: context.read<ProductSelectionCubit>().quantity.toString(),
                                       categories: [
                                         state.data.categoryName!,
-                                      ]),
-                                ],
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
+                        }
                       },
                       text: 'Add To Cart',
                     ),

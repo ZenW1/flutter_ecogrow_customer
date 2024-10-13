@@ -32,8 +32,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       gender: json['gender'] as String?,
       image: json['image'] as String?,
       dob: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
-      createdAt: json['created_at'] as String?,
-      updatedAt: json['updated_at'] as String?,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] == null
+          ? null
+          : DateTime.parse(json['updated_at'] as String),
       phoneNumber: json['phone_number'] as String?,
     );
 
@@ -44,7 +48,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'gender': instance.gender,
       'image': instance.image,
       'dob': instance.dob?.toIso8601String(),
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
       'phone_number': instance.phoneNumber,
     };

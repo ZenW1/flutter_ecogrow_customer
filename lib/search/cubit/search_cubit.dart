@@ -11,11 +11,14 @@ class SearchCubit extends Cubit<SearchState> {
 
   final ProductBloc productBloc;
   final TextEditingController searchController = TextEditingController();
+  List<ProductModel> filterData = [];
 
   Future<void> searchProduct(String keyword) async {
     emit(SearchLoading());
     productBloc..add(ProductSearchEvent(keyword: keyword));
     final data = productBloc.listData;
-    emit(SearchLoaded(data: data));
+    filterData = data.where((element) => element.productName!.contains(keyword)).toList();
+
+    emit(SearchLoaded(data: filterData));
   }
 }

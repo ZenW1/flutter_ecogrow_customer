@@ -22,7 +22,7 @@ class SplashPage extends StatelessWidget {
           GoRouter.of(context).go(MainPage.routePath);
         } else if (state is UnAuthenticated) {
           context.loaderOverlay.hide();
-          GoRouter.of(context).go(LoginPage.routePath);
+          GoRouter.of(context).go(MainPage.routePath);
         }
       },
       child: const Scaffold(

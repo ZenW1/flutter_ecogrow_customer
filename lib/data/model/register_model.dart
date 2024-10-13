@@ -1,5 +1,4 @@
 
-
 import 'package:flutter_ecogrow_customer/data/model/user_info_model.dart';
 
 class RegisterUserModel {

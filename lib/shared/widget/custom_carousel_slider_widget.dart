@@ -21,7 +21,7 @@ class CustomCarouselSliderWidget extends StatefulWidget {
 
 class _CustomCarouselSliderWidgetState
     extends State<CustomCarouselSliderWidget> {
-  int _current = 0;
+  int _current = 1;
 
   @override
   Widget build(BuildContext context) {

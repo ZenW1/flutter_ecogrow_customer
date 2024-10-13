@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecogrow_customer/shared/constant/app_constant.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 
 extension CustomConstantWidget on Widget {
@@ -28,4 +29,21 @@ extension AutoFocusNode on FocusNode {
   static void unFocusNode(BuildContext context) {
     FocusScope.of(context).unfocus();
   }
+}
+
+extension CheckOrderStatus on  int{
+   static dynamic checkStatusById(int id){
+     switch(id) {
+       case 1:
+         return OrderStatus.completed;
+       case 4:
+         return OrderStatus.cancelled;
+       case 5:
+          return OrderStatus.pending;
+       case 6:
+          return OrderStatus.processing;
+       default :
+         return OrderStatus.all;
+     }
+   }
 }

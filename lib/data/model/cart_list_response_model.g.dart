@@ -17,28 +17,16 @@ class CartListResponseModelAdapter extends TypeAdapter<CartListResponseModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CartListResponseModel(
-      cartId: fields[1] as String?,
-      customerId: fields[3] as String?,
-      items: (fields[5] as List?)?.cast<CartModel>(),
-      totalPrice: fields[7] as double?,
-      status: fields[9] as String?,
+      items: (fields[1] as List?)?.cast<CartModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, CartListResponseModel obj) {
     writer
-      ..writeByte(5)
       ..writeByte(1)
-      ..write(obj.cartId)
-      ..writeByte(3)
-      ..write(obj.customerId)
-      ..writeByte(5)
-      ..write(obj.items)
-      ..writeByte(7)
-      ..write(obj.totalPrice)
-      ..writeByte(9)
-      ..write(obj.status);
+      ..writeByte(1)
+      ..write(obj.items);
   }
 
   @override
@@ -109,42 +97,54 @@ class CartProductModelAdapter extends TypeAdapter<CartProductModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CartProductModel(
-      productId: fields[1] as String?,
-      productName: fields[3] as String?,
-      unitType: fields[5] as String?,
-      price: fields[7] as double?,
-      stockQuantity: fields[9] as int?,
-      productImage: fields[11] as String?,
-      description: fields[13] as String?,
-      quantity: fields[15] as String?,
-      discount: fields[17] as String?,
-      categories: (fields[19] as List?)?.cast<String>(),
+      id: fields[1] as int?,
+      productId: fields[3] as String?,
+      productName: fields[5] as String?,
+      unitTypeId: fields[7] as int?,
+      unitType: fields[9] as String?,
+      price: fields[11] as double?,
+      stockQuantity: fields[13] as int?,
+      productImage: fields[15] as String?,
+      description: fields[17] as String?,
+      quantity: fields[19] as String?,
+      discount: fields[21] as String?,
+      expiredOn: fields[23] as DateTime?,
+      categoryId: fields[25] as int?,
+      categories: (fields[27] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, CartProductModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(14)
       ..writeByte(1)
-      ..write(obj.productId)
+      ..write(obj.id)
       ..writeByte(3)
-      ..write(obj.productName)
+      ..write(obj.productId)
       ..writeByte(5)
-      ..write(obj.unitType)
+      ..write(obj.productName)
       ..writeByte(7)
-      ..write(obj.price)
+      ..write(obj.unitTypeId)
       ..writeByte(9)
-      ..write(obj.stockQuantity)
+      ..write(obj.unitType)
       ..writeByte(11)
-      ..write(obj.productImage)
+      ..write(obj.price)
       ..writeByte(13)
-      ..write(obj.description)
+      ..write(obj.stockQuantity)
       ..writeByte(15)
-      ..write(obj.quantity)
+      ..write(obj.productImage)
       ..writeByte(17)
-      ..write(obj.discount)
+      ..write(obj.description)
       ..writeByte(19)
+      ..write(obj.quantity)
+      ..writeByte(21)
+      ..write(obj.discount)
+      ..writeByte(23)
+      ..write(obj.expiredOn)
+      ..writeByte(25)
+      ..write(obj.categoryId)
+      ..writeByte(27)
       ..write(obj.categories);
   }
 
@@ -166,23 +166,15 @@ class CartProductModelAdapter extends TypeAdapter<CartProductModel> {
 CartListResponseModel _$CartListResponseModelFromJson(
         Map<String, dynamic> json) =>
     CartListResponseModel(
-      cartId: json['cartId'] as String?,
-      customerId: json['customerId'] as String?,
       items: (json['items'] as List<dynamic>?)
           ?.map((e) => CartModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalPrice: (json['totalPrice'] as num?)?.toDouble(),
-      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$CartListResponseModelToJson(
         CartListResponseModel instance) =>
     <String, dynamic>{
-      'cartId': instance.cartId,
-      'customerId': instance.customerId,
       'items': instance.items,
-      'totalPrice': instance.totalPrice,
-      'status': instance.status,
     };
 
 CartModel _$CartModelFromJson(Map<String, dynamic> json) => CartModel(
@@ -193,6 +185,8 @@ CartModel _$CartModelFromJson(Map<String, dynamic> json) => CartModel(
       products: (json['products'] as List<dynamic>?)
           ?.map((e) => CartProductModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      totalSelected: json['totalSelected'] as bool? ?? false,
+      totalPrice: (json['totalPrice'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$CartModelToJson(CartModel instance) => <String, dynamic>{
@@ -201,12 +195,16 @@ Map<String, dynamic> _$CartModelToJson(CartModel instance) => <String, dynamic>{
       'storeAddress': instance.storeAddress,
       'storeImage': instance.storeImage,
       'products': instance.products,
+      'totalSelected': instance.totalSelected,
+      'totalPrice': instance.totalPrice,
     };
 
 CartProductModel _$CartProductModelFromJson(Map<String, dynamic> json) =>
     CartProductModel(
+      id: (json['id'] as num?)?.toInt(),
       productId: json['productId'] as String?,
       productName: json['productName'] as String?,
+      unitTypeId: (json['unit_type_id'] as num?)?.toInt(),
       unitType: json['unitType'] as String?,
       price: (json['price'] as num?)?.toDouble(),
       stockQuantity: (json['stockQuantity'] as num?)?.toInt(),
@@ -214,15 +212,22 @@ CartProductModel _$CartProductModelFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       quantity: json['quantity'] as String?,
       discount: json['discount'] as String?,
+      expiredOn: json['expired_on'] == null
+          ? null
+          : DateTime.parse(json['expired_on'] as String),
+      categoryId: (json['category_id'] as num?)?.toInt(),
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      selected: json['selected'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CartProductModelToJson(CartProductModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'productId': instance.productId,
       'productName': instance.productName,
+      'unit_type_id': instance.unitTypeId,
       'unitType': instance.unitType,
       'price': instance.price,
       'stockQuantity': instance.stockQuantity,
@@ -230,5 +235,8 @@ Map<String, dynamic> _$CartProductModelToJson(CartProductModel instance) =>
       'description': instance.description,
       'quantity': instance.quantity,
       'discount': instance.discount,
+      'expired_on': instance.expiredOn?.toIso8601String(),
+      'category_id': instance.categoryId,
       'categories': instance.categories,
+      'selected': instance.selected,
     };

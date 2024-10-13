@@ -25,6 +25,15 @@ class AddressDelete extends AddressState {
   List<Object> get props => [message];
 }
 
+class AddressSuccess extends AddressState {
+  final String message;
+
+  AddressSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
 class AddressFailed extends AddressState {
   final String message;
 

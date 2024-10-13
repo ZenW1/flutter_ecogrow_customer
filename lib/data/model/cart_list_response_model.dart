@@ -4,38 +4,23 @@
 
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'dart:convert';
 
 part 'cart_list_response_model.g.dart';
+
 
 @HiveType(typeId: 1)
 @JsonSerializable()
 class CartListResponseModel {
   @HiveField(1)
-  @JsonKey(name: "cartId")
-  final String? cartId;
-  @HiveField(3)
-  @JsonKey(name: "customerId")
-  final String? customerId;
-  @HiveField(5)
   @JsonKey(name: "items")
   final List<CartModel>? items;
-  @HiveField(7)
-  @JsonKey(name: "totalPrice")
-  final double? totalPrice;
-  @HiveField(9)
-  @JsonKey(name: "status")
-  final String? status;
 
   CartListResponseModel({
-    this.cartId,
-    this.customerId,
     this.items,
-    this.totalPrice,
-    this.status,
   });
 
-  factory CartListResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$CartListResponseModelFromJson(json);
+  factory CartListResponseModel.fromJson(Map<String, dynamic> json) => _$CartListResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CartListResponseModelToJson(this);
 }
@@ -58,6 +43,8 @@ class CartModel {
   @HiveField(9)
   @JsonKey(name: "products")
   final List<CartProductModel>? products;
+  bool? totalSelected ;
+  int? totalPrice;
 
   CartModel({
     this.storeId,
@@ -65,10 +52,11 @@ class CartModel {
     this.storeAddress,
     this.storeImage,
     this.products,
+    this.totalSelected = false,
+    this.totalPrice = 0,
   });
 
-  factory CartModel.fromJson(Map<String, dynamic> json) =>
-      _$CartModelFromJson(json);
+  factory CartModel.fromJson(Map<String, dynamic> json) => _$CartModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CartModelToJson(this);
 }
@@ -77,39 +65,54 @@ class CartModel {
 @JsonSerializable()
 class CartProductModel {
   @HiveField(1)
+  @JsonKey(name: "id")
+  final int? id;
+  @HiveField(3)
   @JsonKey(name: "productId")
   final String? productId;
-  @HiveField(3)
+  @HiveField(5)
   @JsonKey(name: "productName")
   final String? productName;
-  @HiveField(5)
+  @HiveField(7)
+  @JsonKey(name: "unit_type_id")
+  final int? unitTypeId;
+  @HiveField(9)
   @JsonKey(name: "unitType")
   final String? unitType;
-  @HiveField(7)
+  @HiveField(11)
   @JsonKey(name: "price")
   final double? price;
-  @HiveField(9)
+  @HiveField(13)
   @JsonKey(name: "stockQuantity")
   final int? stockQuantity;
-  @HiveField(11)
+  @HiveField(15)
   @JsonKey(name: "productImage")
   final String? productImage;
-  @HiveField(13)
+  @HiveField(17)
   @JsonKey(name: "description")
   final String? description;
-  @HiveField(15)
+  @HiveField(19)
   @JsonKey(name: "quantity")
-  final String? quantity;
-  @HiveField(17)
+   String? quantity;
+  @HiveField(21)
   @JsonKey(name: "discount")
   final String? discount;
-  @HiveField(19)
+  @HiveField(23)
+  @JsonKey(name: "expired_on")
+  final DateTime? expiredOn;
+  @HiveField(25)
+  @JsonKey(name: "category_id")
+  final int? categoryId;
+  @HiveField(27)
   @JsonKey(name: "categories")
   final List<String>? categories;
+  bool? selected;
 
   CartProductModel({
+    this.id,
     this.productId,
     this.productName,
+    this.unitTypeId,
     this.unitType,
     this.price,
     this.stockQuantity,
@@ -117,11 +120,13 @@ class CartProductModel {
     this.description,
     this.quantity,
     this.discount,
+    this.expiredOn,
+    this.categoryId,
     this.categories,
+    this.selected  =false,
   });
 
-  factory CartProductModel.fromJson(Map<String, dynamic> json) =>
-      _$CartProductModelFromJson(json);
+  factory CartProductModel.fromJson(Map<String, dynamic> json) => _$CartProductModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CartProductModelToJson(this);
 }

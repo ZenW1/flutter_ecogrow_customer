@@ -1,10 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_ecogrow_customer/data/model/checkout_request_model.dart';
+import 'package:flutter_ecogrow_customer/data/repo/order_repo.dart';
 
 part 'checkout_state.dart';
 
 class CheckoutCubit extends Cubit<CheckoutState> {
-  CheckoutCubit() : super(const CheckoutState());
+  CheckoutCubit(this.repo) : super(const CheckoutState());
+
+  final OrderRepo repo;
 
   List<ProductDummyModel> data = [
     ProductDummyModel(
@@ -48,6 +52,20 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       weight: '3kg',
     ),
   ];
+
+  Future<void> checkout({required CheckoutRequestModel checkoutRequestModel}) async {
+    emit(CheckoutLoading());
+    try {
+
+      print(checkoutRequestModel.toJson());
+      print(checkoutRequestModel.orderDetail!.first.toJson());
+
+      await repo.checkOut(checkoutRequestModel: checkoutRequestModel);
+      emit(const CheckoutSuccess(message: 'Checkout Success'));
+    } catch (e) {
+      emit(CheckoutFailed(message: e.toString()));
+    }
+  }
 }
 
 class ProductDummyModel {

@@ -5,12 +5,34 @@ sealed class ProfileEditEvent extends Equatable {
 }
 
 class ProfileOnEditEvent extends ProfileEditEvent {
-  const ProfileOnEditEvent(this.userData);
+  const ProfileOnEditEvent({
+    required this.firstName,
+    required this.lastName,
+    required this.gender,
+    required this.dob,
+    required this.uid,
+    required this.phoneNumber,
+    required this.image,
+  });
 
-  final UserInfoModel userData;
+  final String firstName;
+  final String lastName;
+  final String gender;
+  final String dob;
+  final int uid;
+  final String phoneNumber;
+  final String image;
 
   @override
-  List<Object?> get props => [userData];
+  List<Object?> get props => [
+        firstName,
+        lastName,
+        gender,
+        dob,
+        uid,
+        phoneNumber,
+        image,
+      ];
 }
 
 class ProfileEditUploadImageEvent extends ProfileEditEvent {

@@ -6,18 +6,16 @@ import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
 
 class ProductSelectionDetailWidget extends StatefulWidget {
-  const ProductSelectionDetailWidget(
-      {super.key, required this.productVariation});
+  const ProductSelectionDetailWidget({super.key, required this.productVariation});
 
   final ProductDetailResponseModel productVariation;
 
   @override
-  State<ProductSelectionDetailWidget> createState() =>
-      _ProductSelectionDetailWidgetState();
+  State<ProductSelectionDetailWidget> createState() => _ProductSelectionDetailWidgetState();
 }
 
-class _ProductSelectionDetailWidgetState
-    extends State<ProductSelectionDetailWidget> {
+class _ProductSelectionDetailWidgetState extends State<ProductSelectionDetailWidget> {
+  // bool isSelectedOption = true;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductSelectionCubit, ProductSelectionState>(
@@ -31,7 +29,6 @@ class _ProductSelectionDetailWidgetState
                 text: 'Select Options',
                 isRow: false,
               ),
-              Text(state.totalPrice.toString()),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,43 +45,32 @@ class _ProductSelectionDetailWidgetState
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget
-                                  .productVariation.productVariation?.length,
+                              itemCount: widget.productVariation.productVariation?.length,
                               itemBuilder: (_, index) {
                                 return InkWell(
                                   onTap: () {
-                                    context
-                                        .read<ProductSelectionCubit>()
-                                        .selectOption(widget.productVariation
-                                            .productVariation![index]);
+                                    context.read<ProductSelectionCubit>().selectOption(widget.productVariation.productVariation![index],widget.productVariation.productVariation![index].id!,widget.productVariation.productVariation![index].unitTypeName!);
                                   },
                                   child: SizedBox(
-                                    width: 60,
                                     height: 45,
                                     child: Card(
                                       elevation: 0,
-                                      color: state.isSelectedOption[index]
-                                          ? AppColors.primary
-                                          : AppColors.lightGreyColor,
+                                      color: state.id == widget.productVariation.productVariation![index].id!  ? AppColors.primary : AppColors.lightGreyColor,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Center(
-                                        child: Text(
-                                          widget
-                                              .productVariation
-                                              .productVariation![index]
-                                              .unitTypeName!,
-                                          textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                color: state
-                                                        .isSelectedOption[index]
-                                                    ? AppColors.whiteColor
-                                                    : AppColors.blackColor,
-                                              ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            widget.productVariation.productVariation![index].unitTypeName!,
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                  color: state.id == widget.productVariation.productVariation![index].id!
+                                                      ? AppColors.whiteColor
+                                                      : AppColors.blackColor,
+                                                ),
+                                          ),
                                         ),
                                       ),
                                     ),

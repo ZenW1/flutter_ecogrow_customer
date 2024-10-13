@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecogrow_customer/gen/assets.gen.dart';
 import 'package:flutter_ecogrow_customer/l10n/l10n.dart';
 import 'package:flutter_ecogrow_customer/login/login.dart';
+import 'package:flutter_ecogrow_customer/login/view/otp_page.dart';
 import 'package:flutter_ecogrow_customer/shared/constant/custom_dialog.dart';
 import 'package:flutter_ecogrow_customer/shared/theme/app_color.dart';
 import 'package:flutter_ecogrow_customer/shared/widget/app_title_widget.dart';
@@ -31,11 +32,15 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.status == LoginStatus.loading) {
+        if (state.status == LoginStatus.initial) {
           context.loaderOverlay.show();
-        } else if (state.status == LoginStatus.sendOtp) {
+        }  else if (state.status == LoginStatus.loading){
+          context.loaderOverlay.show();
+        }else if (state.status == LoginStatus.sendOtp) {
           context.loaderOverlay.hide();
-          GoRouter.of(context).go('/otp');
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const OTPPage()),
+          );
         } else if (state.status == LoginStatus.failure) {
           context.loaderOverlay.hide();
           CustomDialog.showWarningDialog(state.errorMessage);
@@ -43,6 +48,7 @@ class LoginView extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(),
           body: SafeArea(
             child: Form(
               key: _formKey,
@@ -90,8 +96,7 @@ class LoginView extends StatelessWidget {
                           ),
                           GlobalTextField(
                             textInputType: TextInputType.number,
-                            controller:
-                                context.read<LoginCubit>().numberController,
+                            controller: context.read<LoginCubit>().numberController,
                             hintText: context.l10n.phoneNumber,
                             filled: true,
                             prefix: const PrefixNumberIcon(),
