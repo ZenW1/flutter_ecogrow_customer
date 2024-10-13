@@ -202,23 +202,26 @@ class _CartViewState extends State<CartView> {
                                       children: [
                                         Row(
                                           children: [
-                                            Checkbox(
-                                              value: state.data.items![firstIndex].totalSelected!,
-                                              onChanged: (bool? value) {
-                                                setState(() {
-                                                  state.data.items![firstIndex].totalSelected = value!;
-                                                  calculateTotalPrice(state.data.items![firstIndex]);
-                                                });
-                                              },
-                                              shape: const CircleBorder(
-                                                side: BorderSide(color: AppColors.primary),
-                                              ),
-                                              side: const BorderSide(color: AppColors.primary),
-                                              activeColor: AppColors.primary,
-                                            ),
+                                            // Checkbox(
+                                            //   value: state.data.items![firstIndex].totalSelected!,
+                                            //   onChanged: (bool? value) {
+                                            //     setState(() {
+                                            //       state.data.items![firstIndex].totalSelected = value!;
+                                            //       calculateTotalPrice(state.data.items![firstIndex]);
+                                            //     });
+                                            //   },
+                                            //   shape: const CircleBorder(
+                                            //     side: BorderSide(color: AppColors.primary),
+                                            //   ),
+                                            //   side: const BorderSide(color: AppColors.primary),
+                                            //   activeColor: AppColors.primary,
+                                            // ),
                                             Expanded(
-                                              child: Text(
-                                                state.data.items![firstIndex].storeName!,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(16.0),
+                                                child: Text(
+                                                  state.data.items![firstIndex].storeName!,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -242,7 +245,8 @@ class _CartViewState extends State<CartView> {
                                                       children: [
                                                         // if which index item is selected then the other index will disable to select
                                                         Checkbox(
-                                                          value: state.data.items![firstIndex].products![secondIndex].selected!,
+                                                          value: state
+                                                              .data.items![firstIndex].products![secondIndex].selected!,
                                                           onChanged: (bool? value) {
                                                             CartProductModel list = CartProductModel();
                                                             CartModel listCart = CartModel();
@@ -540,17 +544,19 @@ class _CartViewState extends State<CartView> {
                                   context,
                                   onTap: () {
                                     if (context.read<AuthenticationBloc>().appToken.hasToken() == true) {
-                                      if (state.data.items!.every((element) =>
-                                          element.products!.every((element) => element.selected == true))) {
-                                        ScaffoldMessenger.of(context)
-                                          ..hideCurrentSnackBar()
-                                          ..showSnackBar(
-                                            SnackBar(
-                                              content: Text('You can only select from one store'),
+                                      if (totalPrice != 0) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => CheckoutPage(
+                                              cartModel: cartModel!,
+                                              discount: discount!,
+                                              totalPrice: totalPrice.toString(),
+                                              quantity: countSelected.toString(),
+                                              productId: [],
                                             ),
-                                          );
-                                      } else if (state.data.items!.every((element) =>
-                                          element.products!.every((element) => element.selected == false))) {
+                                          ),
+                                        );
+                                      } else if (totalPrice == 0) {
                                         ScaffoldMessenger.of(context)
                                           ..hideCurrentSnackBar()
                                           ..showSnackBar(
@@ -558,28 +564,6 @@ class _CartViewState extends State<CartView> {
                                               content: Text('Please select product'),
                                             ),
                                           );
-                                      } else {
-                                        if (totalPrice != 0) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => CheckoutPage(
-                                                cartModel: cartModel!,
-                                                discount: discount!,
-                                                totalPrice: totalPrice.toString(),
-                                                quantity: countSelected.toString(),
-                                                productId: [],
-                                              ),
-                                            ),
-                                          );
-                                        } else if (totalPrice == 0) {
-                                          ScaffoldMessenger.of(context)
-                                            ..hideCurrentSnackBar()
-                                            ..showSnackBar(
-                                              SnackBar(
-                                                content: Text('Please select product'),
-                                              ),
-                                            );
-                                        }
                                       }
                                     } else {
                                       AppDialog.errorDialog(context,
